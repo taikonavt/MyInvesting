@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- text size for activity_add_deal -->
+    <dimen name="text_size_for_fields">18sp</dimen>
+</resources>

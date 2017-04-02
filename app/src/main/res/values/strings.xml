@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">My Investing</string>
+
+    <!-- Hints -->
+    <!-- activity_add_deal -->
+    <string name="hint_eTTicker">SBER</string>
+    <string name="hint_tVTicker">Ticker:</string>
+    <string name="hint_tVType">Type:</string>
+    <string name="hint_eTType">S, B or D</string>
+    <string name="hint_eTYear">yy</string>
+    <string name="hint_eTMonth">mm</string>
+    <string name="hint_eTDay">dd</string>
+    <string name="hint_tVDate">Date:</string>
+    <string name="hint_slash">/</string>
+    <string name="hint_tVPrice">Price:</string>
+    <string name="hint_eTPrice">0.00000</string>
+    <string name="hint_tVVolume">Volume:</string>
+    <string name="hint_tVFee">Fee:</string>
+    <string name="hint_btnReady">Ready</string>
+
+
 </resources>

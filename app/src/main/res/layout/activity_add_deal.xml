@@ -1,54 +1,300 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    tools:context="com.example.maxim.myinvesting.AddDealActivity"
     android:layout_height="match_parent"
-    tools:context="com.example.maxim.myinvesting.AddDealActivity">
+    android:layout_width="match_parent"
+    >
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_tVTicker"
+            app:layout_constraintTop_toTopOf="@+id/eTTicker"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTTicker"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintRight_toLeftOf="@+id/eTTicker"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:id="@+id/eTTicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:ems="5"
+            android:inputType="textCapCharacters"
+            android:hint="@string/hint_eTTicker"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.503" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_tVType"
+            app:layout_constraintRight_toLeftOf="@+id/eTType"
+            android:layout_marginRight="8dp"
+            app:layout_constraintTop_toTopOf="@+id/eTType"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTType"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.2"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
 
-    <EditText
-        android:id="@+id/tickerET"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textCapCharacters"
-        android:hint="Ticker: SBER"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.50" />
+        <EditText
+            android:id="@+id/eTType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:ems="5"
+            android:inputType="textPersonName"
+            android:hint="@string/hint_eTType"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/eTTicker"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/tickerET"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.503" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_tVDate"
+            app:layout_constraintTop_toTopOf="@+id/eTYear"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTYear"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintRight_toLeftOf="@+id/eTType"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/editText2"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        <EditText
+            android:id="@+id/eTYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:textSize="@dimen/text_size_for_fields"
+            android:hint="@string/hint_eTYear"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/eTType"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="@+id/eTType"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.0" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/slash1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_slash"
+            app:layout_constraintLeft_toRightOf="@+id/eTYear"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintTop_toTopOf="@+id/eTYear"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTYear"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <EditText
+            android:id="@+id/eTMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:textSize="@dimen/text_size_for_fields"
+            android:hint="@string/hint_eTMonth"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/slash1"
+            app:layout_constraintTop_toTopOf="@+id/eTYear"
+            app:layout_constraintBottom_toBottomOf="@+id/eTYear"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/slash2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_slash"
+            app:layout_constraintLeft_toRightOf="@+id/eTMonth"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintTop_toTopOf="@+id/eTYear"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTYear"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintVertical_bias="0.5"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" />
+
+        <EditText
+            android:id="@+id/eTDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:textSize="@dimen/text_size_for_fields"
+            android:hint="@string/hint_eTDay"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/slash2"
+            app:layout_constraintTop_toTopOf="@+id/eTYear"
+            app:layout_constraintBottom_toBottomOf="@+id/eTYear"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_tVPrice"
+            app:layout_constraintTop_toTopOf="@+id/eTPrice"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTPrice"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintRight_toLeftOf="@+id/eTTicker"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHorizontal_bias="0.506" />
+
+        <EditText
+            android:id="@+id/eTPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:ems="5"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintTop_toBottomOf="@+id/eTYear" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_tVVolume"
+            app:layout_constraintTop_toTopOf="@+id/eTVolume"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTVolume"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintRight_toLeftOf="@+id/eTTicker"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:id="@+id/eTVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:ems="5"
+            android:inputType="number"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintTop_toBottomOf="@+id/eTPrice" />
+
+        <TextView
+            android:id="@+id/tVFee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_tVFee"
+            app:layout_constraintTop_toTopOf="@+id/eTFee"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTFee"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintRight_toLeftOf="@+id/eTFee"
+            android:layout_marginRight="6dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:id="@+id/eTFee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:ems="5"
+            android:inputType="number"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintTop_toBottomOf="@+id/eTVolume" />
+
+        <Button
+            android:id="@+id/btnReady"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_btnReady"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/eTFee"
+            android:onClick="onClick"/>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
