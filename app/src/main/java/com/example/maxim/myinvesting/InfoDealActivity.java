@@ -10,7 +10,8 @@ import android.view.View;
  * Created by maxim on 09.04.17.
  */
 
-public class InfoDealActivity extends AppCompatActivity {
+public class InfoDealActivity extends AppCompatActivity
+implements {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
