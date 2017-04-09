@@ -36,11 +36,11 @@ public class Contract {
         //Цена сделки
         public static final String COLUMN_PRICE = "price";
 
-        // комиссия брокера
-        public static final String COLUMN_FEE = "fee";
-
         // количество единиц в сделке
         public static final String COLUMN_VOLUME = "volume";
+
+        // комиссия брокера
+        public static final String COLUMN_FEE = "fee";
     }
 
 }

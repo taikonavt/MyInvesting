@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import static com.example.maxim.myinvesting.data.Contract.DealsEntry.TABLE_NAME;
 
@@ -18,11 +19,11 @@ import static com.example.maxim.myinvesting.data.Contract.DealsEntry.TABLE_NAME;
 
 public class InvestingProvider extends ContentProvider{
 
+    String TAG = "MyLog";
     public static final int CODE_DEALS = 100;
     public static final int CODE_DEAL_WITH_DATE = 101;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    private InvestingDbHelper mOpenHelper;
 
     public static UriMatcher buildUriMatcher() {
 
@@ -35,8 +36,11 @@ public class InvestingProvider extends ContentProvider{
         return  matcher;
     }
 
+    private InvestingDbHelper mOpenHelper;
+
     @Override
     public boolean onCreate() {
+        Log.d(TAG, "in onCreate Provider");
         mOpenHelper = new InvestingDbHelper(getContext());
         return true;
     }
@@ -56,9 +60,9 @@ public class InvestingProvider extends ContentProvider{
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-
+        Log.d(TAG, "before get DB");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-
+        Log.d(TAG, "after get DB");
         Uri returnUri;
 
         switch (sUriMatcher.match(uri)) {
@@ -66,7 +70,7 @@ public class InvestingProvider extends ContentProvider{
             case CODE_DEALS:
 
                 long id = db.insert(TABLE_NAME, null, values);
-
+                Log.d(TAG, "after insert");
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(Contract.DealsEntry.CONTENT_URI, id);
                 } else {
