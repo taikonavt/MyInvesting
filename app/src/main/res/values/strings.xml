@@ -18,5 +18,8 @@
     <string name="hint_tVFee">Fee:</string>
     <string name="hint_btnReady">Ready</string>
 
+    <!-- activity_info_deal -->
+    <string name="hint_btnAdd">Add new deals</string>
+
 
 </resources>

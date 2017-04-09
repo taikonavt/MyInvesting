@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
+import static com.example.maxim.myinvesting.MainActivity.TAG;
 
 import java.util.GregorianCalendar;
 
@@ -21,8 +22,6 @@ import java.util.GregorianCalendar;
  */
 
 public class AddDealActivity extends AppCompatActivity {
-
-    String TAG = "MyLog";
 
     EditText eTTicker;
     EditText eTType;
@@ -59,7 +58,7 @@ public class AddDealActivity extends AppCompatActivity {
     int fee;
 
     public void onClick(View view) {
-        Log.d(TAG, "in onClick");
+
         try {
             ticker = eTTicker.getText().toString();
             if (ticker.length() == 0)
@@ -111,7 +110,7 @@ public class AddDealActivity extends AppCompatActivity {
 
             return;
         }
-        Log.d(TAG, "before contentValues");
+
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(Contract.DealsEntry.COLUMN_TICKER, ticker);
@@ -121,7 +120,7 @@ public class AddDealActivity extends AppCompatActivity {
         contentValues.put(Contract.DealsEntry.COLUMN_PRICE, price);
         contentValues.put(Contract.DealsEntry.COLUMN_VOLUME, volume);
         contentValues.put(Contract.DealsEntry.COLUMN_FEE, fee);
-        Log.d(TAG, "after contentValues");
+
         Uri uri = getContentResolver().insert(Contract.DealsEntry.CONTENT_URI, contentValues);
 
         Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();

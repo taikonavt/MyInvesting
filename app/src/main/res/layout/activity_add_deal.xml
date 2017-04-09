@@ -48,6 +48,7 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.503" />
 
+        <!-- Todo Cделать выпадающий список с выбором нужно типа -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,6 +99,7 @@
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent" />
 
+        <!-- todo сделать ограничения на ввод даты -->
         <EditText
             android:id="@+id/eTYear"
             android:layout_width="wrap_content"

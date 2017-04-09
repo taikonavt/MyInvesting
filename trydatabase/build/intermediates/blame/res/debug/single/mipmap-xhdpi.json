@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/build/intermediates/res/merged/debug/mipmap-xhdpi/ic_launcher.png",
+        "source": "/home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/res/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/build/intermediates/res/merged/debug/mipmap-xhdpi/ic_launcher_round.png",
+        "source": "/home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/res/mipmap-xhdpi/ic_launcher_round.png"
+    }
+]

@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/build/intermediates/res/merged/debug/layout-v21/notification_action_tombstone.xml",
+        "source": "/home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/build/intermediates/res/merged/debug/layout-v21/notification_action.xml",
+        "source": "/home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/build/intermediates/res/merged/debug/layout-v21/notification_template_icon_group.xml",
+        "source": "/home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/build/intermediates/res/merged/debug/layout-v21/notification_template_custom_big.xml",
+        "source": "/home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/res/layout-v21/notification_template_custom_big.xml"
+    }
+]

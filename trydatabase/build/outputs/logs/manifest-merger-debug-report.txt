@@ -1,0 +1,87 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:2:1-17:12
+	package
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:3:5-38
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+application
+ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:5:5-15:19
+MERGED from [com.android.support:appcompat-v7:25.3.1] /home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] /home/maxim/.android/build-cache/ad9a2887ab1119c3fb36e88552cf629edf756aaa/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] /home/maxim/.android/build-cache/c2fb8402bcd666333878c7ce988dc9970b2700e3/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/maxim/.android/build-cache/32f1ee63ee4a819210800a71176f12510edbe86a/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/maxim/.android/build-cache/8c6078c0efbc07f273e225d5674c452c53eefa5e/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/maxim/.android/build-cache/bddd1c94001be20ef258ec832698b36491fa1de4/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/maxim/.android/build-cache/8ad57d20973e45db4363c91129604bbd2a944bb0/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/maxim/.android/build-cache/83abe77e3294d7ae4972db5229f3e0c4d18953aa/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-compat:25.3.1] /home/maxim/.android/build-cache/81599996356c7b7781bc6a27912dae7fa9f569c2/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/maxim/.android/build-cache/0ef886424f80db61e3c878f7894b0d5e93ccdb85/output/AndroidManifest.xml:9:5-20
+	android:label
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:6:9-41
+	android:supportsRtl
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:7:9-35
+	android:roundIcon
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:6:42-87
+	android:allowBackup
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:5:18-44
+	android:icon
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:5:45-79
+	android:theme
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:7:36-67
+activity#com.example.trydatabase.MainActivity
+ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:8:9-14:20
+	android:name
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:8:19-47
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:9:13-13:29
+action#android.intent.action.MAIN
+ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:10:17-69
+	android:name
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:10:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:12:17-77
+	android:name
+		ADDED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml:12:27-74
+uses-sdk
+INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:appcompat-v7:25.3.1] /home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:25.3.1] /home/maxim/.android/build-cache/ad9a2887ab1119c3fb36e88552cf629edf756aaa/output/AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] /home/maxim/.android/build-cache/c2fb8402bcd666333878c7ce988dc9970b2700e3/output/AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/maxim/.android/build-cache/32f1ee63ee4a819210800a71176f12510edbe86a/output/AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/maxim/.android/build-cache/8c6078c0efbc07f273e225d5674c452c53eefa5e/output/AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/maxim/.android/build-cache/bddd1c94001be20ef258ec832698b36491fa1de4/output/AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/maxim/.android/build-cache/8ad57d20973e45db4363c91129604bbd2a944bb0/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/maxim/.android/build-cache/83abe77e3294d7ae4972db5229f3e0c4d18953aa/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-compat:25.3.1] /home/maxim/.android/build-cache/81599996356c7b7781bc6a27912dae7fa9f569c2/output/AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/maxim/.android/build-cache/0ef886424f80db61e3c878f7894b0d5e93ccdb85/output/AndroidManifest.xml:5:5-7:41
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+		INJECTED from /home/maxim/AndroidStudioProjects/MyInvesting/trydatabase/src/main/AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:appcompat-v7:25.3.1] /home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] /home/maxim/.android/build-cache/ad9a2887ab1119c3fb36e88552cf629edf756aaa/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] /home/maxim/.android/build-cache/c2fb8402bcd666333878c7ce988dc9970b2700e3/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/maxim/.android/build-cache/32f1ee63ee4a819210800a71176f12510edbe86a/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/maxim/.android/build-cache/8c6078c0efbc07f273e225d5674c452c53eefa5e/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/maxim/.android/build-cache/bddd1c94001be20ef258ec832698b36491fa1de4/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/maxim/.android/build-cache/8ad57d20973e45db4363c91129604bbd2a944bb0/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/maxim/.android/build-cache/83abe77e3294d7ae4972db5229f3e0c4d18953aa/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-compat:25.3.1] /home/maxim/.android/build-cache/81599996356c7b7781bc6a27912dae7fa9f569c2/output/AndroidManifest.xml:25:5-27:34
+	android:value
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/AndroidManifest.xml:27:9-31
+	android:name
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/maxim/.android/build-cache/ff4d81cec39b8a5c182623b096ce3e6e4ebfc90a/output/AndroidManifest.xml:26:9-47

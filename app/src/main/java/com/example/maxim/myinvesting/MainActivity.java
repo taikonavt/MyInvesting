@@ -11,7 +11,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     final static int MULTIPLIER_FOR_MONEY = 10000;
-    String TAG = "MyLog";
+    public static final String TAG = "MyLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
 
-        Intent intent = new Intent(this, AddDealActivity.class);
+        Intent intent = new Intent(this, InfoDealActivity.class);
         startActivity(intent);
-
-
     }
 }

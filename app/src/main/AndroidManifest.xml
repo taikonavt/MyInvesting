@@ -21,6 +21,10 @@
 
         </activity>
 
+        <activity android:name=".InfoDealActivity">
+
+        </activity>
+
         <provider
             android:authorities="com.example.maxim.myinvesting"
             android:name=".data.InvestingProvider"
