@@ -22,7 +22,7 @@ import static com.example.maxim.myinvesting.MainActivity.TAG;
 public class InvestingProvider extends ContentProvider{
 
     public static final int CODE_DEALS = 100;
-    public static final int CODE_DEAL_WITH_DATE = 101;
+    public static final int CODE_DEAL_WITH_ID = 101;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -32,7 +32,7 @@ public class InvestingProvider extends ContentProvider{
         final String authority = Contract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, Contract.PATH_DEALS, CODE_DEALS);
-        matcher.addURI(authority, Contract.PATH_DEALS + "/#", CODE_DEAL_WITH_DATE);
+        matcher.addURI(authority, Contract.PATH_DEALS + "/#", CODE_DEAL_WITH_ID);
 
         return  matcher;
     }
@@ -51,7 +51,32 @@ public class InvestingProvider extends ContentProvider{
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection,
                         @Nullable String selection, @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
-        return null;
+
+        final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+
+        int match = sUriMatcher.match(uri);
+        Cursor cursor;
+
+        switch (match) {
+
+            case CODE_DEALS:
+                cursor = db.query(TABLE_NAME,
+                        projection, // список возвращаемых полей
+                        selection, // where
+                        selectionArgs, // значения аргументов
+                        null,
+                        null,
+                        sortOrder
+                        );
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        // // TODO: 14.04.17 не очень понятно, надо попробовать
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return cursor;
     }
 
     @Nullable
@@ -91,7 +116,30 @@ public class InvestingProvider extends ContentProvider{
     // todo сделать swipe для удаления
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+
+        int rowDeleted;
+
+        switch (match) {
+
+            case CODE_DEAL_WITH_ID:
+
+                String id = uri.getPathSegments().get(1);
+
+                rowDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (rowDeleted !=0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowDeleted;
     }
 
     @Override
