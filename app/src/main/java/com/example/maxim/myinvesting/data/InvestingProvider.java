@@ -23,6 +23,7 @@ public class InvestingProvider extends ContentProvider{
 
     public static final int CODE_DEALS = 100;
     public static final int CODE_DEAL_WITH_ID = 101;
+    public static final int CODE_DEALS_WITH_DATE = 102; // пока не используется
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -33,6 +34,7 @@ public class InvestingProvider extends ContentProvider{
 
         matcher.addURI(authority, Contract.PATH_DEALS, CODE_DEALS);
         matcher.addURI(authority, Contract.PATH_DEALS + "/#", CODE_DEAL_WITH_ID);
+        matcher.addURI(authority, Contract.PATH_DEALS + "/#/#", CODE_DEALS_WITH_DATE);
 
         return  matcher;
     }
