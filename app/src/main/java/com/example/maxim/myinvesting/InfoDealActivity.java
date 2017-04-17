@@ -12,6 +12,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.example.maxim.myinvesting.data.Contract;
@@ -27,9 +28,6 @@ public class InfoDealActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
 
     private static final int INFO_DEAL_LOADER_ID = 11;
-
-    // todo change number into real when it become clear
-    private static final int numOfItems = 100;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +45,28 @@ public class InfoDealActivity extends AppCompatActivity implements
         mRecyclerView.setAdapter(mAdapter);
 
         getSupportLoaderManager().initLoader(0, null, this);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+                int id = (int) viewHolder.itemView.getTag();
+
+                String stringId = Integer.toString(id);
+                Uri uri = Contract.DealsEntry.CONTENT_URI;
+                uri = uri.buildUpon().appendPath(stringId).build();
+
+                getContentResolver().delete(uri, null, null);
+
+                getSupportLoaderManager().restartLoader(INFO_DEAL_LOADER_ID, null, InfoDealActivity.this);
+            }
+        }).attachToRecyclerView(mRecyclerView);
     }
 
     @Override

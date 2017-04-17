@@ -2,4 +2,8 @@
 <resources>
     <!-- text size for activity_add_deal -->
     <dimen name="text_size_for_fields">18sp</dimen>
+
+    <!-- padding right for item_info_deal.xml -->
+    <dimen name="right_padding_info_item">8dp</dimen>
+    <dimen name="text_size_for_info_item">18sp</dimen>
 </resources>

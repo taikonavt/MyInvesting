@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
+import com.example.maxim.myinvesting.utilities.DateUtils;
 
 /**
  * Created by maxim on 09.04.17.
@@ -53,8 +54,10 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
         int price = mCursor.getInt(priceIndex);
         int volume = mCursor.getInt(volumeIndex);
         int fee = mCursor.getInt(feeIndex);
-// TODO: 15.04.17 stop here
-        holder.bind(ticker);
+
+        String dateNormal = DateUtils.getNormalTimeForMoscow(dateInMillis);
+
+        holder.bind(ticker, type, dateNormal, price, volume, fee);
 
         // TODO: 15.04.17 do rotation: when vert - few piece of info, when horiz - all info is seen
     }
@@ -86,16 +89,36 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
 
     class InfoViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvInfoItem;
+        TextView tvInfoItemTicker;
+        TextView tvInfoItemType;
+        TextView tvInfoItemDate;
+        TextView tvInfoItemPrice;
+        TextView tvInfoItemVolume;
+        TextView tvInfoItemFee;
 
         public InfoViewHolder(View itemView) {
             super(itemView);
 
-            tvInfoItem = (TextView) itemView.findViewById(R.id.tv_info_item);
+            tvInfoItemTicker = (TextView) itemView.findViewById(R.id.tv_info_item_ticker);
+            tvInfoItemType = (TextView) itemView.findViewById(R.id.tv_info_item_type);
+            tvInfoItemDate = (TextView) itemView.findViewById(R.id.tv_info_item_date);
+            tvInfoItemPrice = (TextView) itemView.findViewById(R.id.tv_info_item_price);
+            tvInfoItemVolume = (TextView) itemView.findViewById(R.id.tv_info_item_volume);
+            tvInfoItemFee = (TextView) itemView.findViewById(R.id.tv_info_item_fee);
         }
 
-        void bind(String listIndex) {
-            tvInfoItem.setText(String.valueOf(listIndex));
+        void bind(String lTicker,
+                  String lType,
+                  String lDate,
+                  int lPrice,
+                  int lVolume,
+                  int lFee) {
+            tvInfoItemTicker.setText(lTicker);
+            tvInfoItemType.setText(lType);
+            tvInfoItemDate.setText(lDate);
+            tvInfoItemPrice.setText(String.valueOf(lPrice));
+            tvInfoItemVolume.setText(String.valueOf(lVolume));
+            tvInfoItemFee.setText(String.valueOf(lFee));
         }
     }
 }
