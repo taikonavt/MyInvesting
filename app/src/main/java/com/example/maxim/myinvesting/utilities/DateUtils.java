@@ -10,7 +10,7 @@ import java.util.TimeZone;
  */
 
 public class DateUtils {
-
+    // TODO: 17.04.17 Проверить дату, пишет какую-то хрень
     public static long getTimeForMoscowInMillis(int yy, int mm, int dd) {
 
         GregorianCalendar calendar;

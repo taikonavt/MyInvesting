@@ -55,6 +55,8 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
         int volume = mCursor.getInt(volumeIndex);
         int fee = mCursor.getInt(feeIndex);
 
+        holder.itemView.setTag(id);
+
         String dateNormal = DateUtils.getNormalTimeForMoscow(dateInMillis);
 
         holder.bind(ticker, type, dateNormal, price, volume, fee);

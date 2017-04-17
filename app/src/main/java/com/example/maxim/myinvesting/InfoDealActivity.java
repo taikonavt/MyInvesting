@@ -6,16 +6,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 
 import com.example.maxim.myinvesting.data.Contract;
+import static com.example.maxim.myinvesting.MainActivity.TAG;
 
 /**
  * Created by maxim on 09.04.17.
@@ -46,22 +47,26 @@ public class InfoDealActivity extends AppCompatActivity implements
 
         getSupportLoaderManager().initLoader(0, null, this);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        Log.d(TAG, "onCreate");
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
+                Log.d(TAG, "onSwiped begin");
                 int id = (int) viewHolder.itemView.getTag();
-
+                Log.d(TAG, Integer.toString(id) + " In Swiped");
                 String stringId = Integer.toString(id);
                 Uri uri = Contract.DealsEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
-
+                Log.d(TAG, "onSwiped" + uri.toString());
                 getContentResolver().delete(uri, null, null);
 
                 getSupportLoaderManager().restartLoader(INFO_DEAL_LOADER_ID, null, InfoDealActivity.this);
