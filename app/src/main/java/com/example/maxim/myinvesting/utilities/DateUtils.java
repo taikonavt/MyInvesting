@@ -39,7 +39,7 @@ public class DateUtils {
         int dd = calendar.get(Calendar.DAY_OF_MONTH);
 
         return ( Integer.toString(dd) + "/" +
-                Integer.toString(mm + 1) + "/" +
+                Integer.toString(mm + 1) + "/" + // перевожу значение константы MONTH на человеческий
                 Integer.toString(yy).substring(2));
     }
 

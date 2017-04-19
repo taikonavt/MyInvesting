@@ -70,13 +70,23 @@ public class AddDealActivity extends AppCompatActivity {
 
             year = Integer.valueOf(eTYear.getText().toString());
 
+            // ввел это условие т.к. все мои сделки были сделаны после 2014 года
+            if (year + 2000 > Calendar.getInstance().get(Calendar.YEAR)
+                    || year + 2000 < 2010) {
+                throw new UnsupportedOperationException
+                        ("В это время сделка не могла быть выполнена");
+            }
+
             // проверяем введенную дату(двухзначную): если больше текущей значит 1900,
             // если нет - 2000
             if ((year + 2000) > Calendar.getInstance().get(Calendar.YEAR)) {
                 year = year + 1900;
             } else year = year + 2000;
 
+
             month = Integer.valueOf(eTMonth.getText().toString());
+            month = month - 1; // перевожу в значения константы Calendar.MONTH
+
             day = Integer.valueOf(eTDay.getText().toString());
 
             String strPrice = eTPrice.getText().toString();
