@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ import java.util.GregorianCalendar;
 public class AddDealActivity extends AppCompatActivity {
 
     EditText eTTicker;
-    EditText eTType;
+    Spinner spinnerType;
     EditText eTYear;
     EditText eTMonth;
     EditText eTDay;
@@ -40,7 +41,7 @@ public class AddDealActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_deal);
 
         eTTicker = (EditText) findViewById(R.id.eTTicker);
-        eTType = (EditText) findViewById(R.id.eTType);
+        spinnerType = (Spinner) findViewById(R.id.spinnerType);
         eTYear = (EditText) findViewById(R.id.eTYear);
         eTMonth = (EditText) findViewById(R.id.eTMonth);
         eTDay = (EditText) findViewById(R.id.eTDay);
@@ -65,11 +66,7 @@ public class AddDealActivity extends AppCompatActivity {
             if (ticker.length() == 0)
                 throw new UnsupportedOperationException("Ticker не задан");
 
-            type = eTType.getText().toString();
-            if (type.length() == 0)
-                throw new UnsupportedOperationException("Type не задан");
-            if ( ! (type.equals("S") || type.equals("B") || type.equals("D")))
-                throw new UnsupportedOperationException("Type не определен");
+            type = spinnerType.getSelectedItem().toString();
 
             year = Integer.valueOf(eTYear.getText().toString());
 

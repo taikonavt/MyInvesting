@@ -6,7 +6,13 @@
     <string name="hint_eTTicker">SBER</string>
     <string name="hint_tVTicker">Ticker:</string>
     <string name="hint_tVType">Type:</string>
-    <string name="hint_eTType">S, B or D</string>
+
+    <string-array name="spinType_array">
+        <item>S</item>
+        <item>B</item>
+        <item>D</item>
+    </string-array>
+
     <string name="hint_eTYear">yy</string>
     <string name="hint_eTMonth">mm</string>
     <string name="hint_eTDay">dd</string>
