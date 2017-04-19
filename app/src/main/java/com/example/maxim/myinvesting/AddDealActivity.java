@@ -15,6 +15,7 @@ import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
 import static com.example.maxim.myinvesting.MainActivity.TAG;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
@@ -71,6 +72,13 @@ public class AddDealActivity extends AppCompatActivity {
                 throw new UnsupportedOperationException("Type не определен");
 
             year = Integer.valueOf(eTYear.getText().toString());
+
+            // проверяем введенную дату(двухзначную): если больше текущей значит 1900,
+            // если нет - 2000
+            if ((year + 2000) > Calendar.getInstance().get(Calendar.YEAR)) {
+                year = year + 1900;
+            } else year = year + 2000;
+
             month = Integer.valueOf(eTMonth.getText().toString());
             day = Integer.valueOf(eTDay.getText().toString());
 
@@ -80,6 +88,7 @@ public class AddDealActivity extends AppCompatActivity {
             price = (int) (floatPrice * MainActivity.MULTIPLIER_FOR_MONEY);
             // если price и floatprice не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
+            // TODO: 19.04.17 проверить это условие
             if (price != floatPrice * MainActivity.MULTIPLIER_FOR_MONEY) {
                 throw new UnsupportedOperationException("Разряд числа price не поддерживается");
             }
@@ -117,6 +126,7 @@ public class AddDealActivity extends AppCompatActivity {
         contentValues.put(Contract.DealsEntry.COLUMN_TYPE, type);
         contentValues.put(Contract.DealsEntry.COLUMN_DATE,
                 DateUtils.getTimeForMoscowInMillis(year, month, day));
+
         contentValues.put(Contract.DealsEntry.COLUMN_PRICE, price);
         contentValues.put(Contract.DealsEntry.COLUMN_VOLUME, volume);
         contentValues.put(Contract.DealsEntry.COLUMN_FEE, fee);

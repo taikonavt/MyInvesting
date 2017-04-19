@@ -47,8 +47,6 @@ public class InfoDealActivity extends AppCompatActivity implements
 
         getSupportLoaderManager().initLoader(0, null, this);
 
-        Log.d(TAG, "onCreate");
-
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -60,16 +58,17 @@ public class InfoDealActivity extends AppCompatActivity implements
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                Log.d(TAG, "onSwiped begin");
+
                 int id = (int) viewHolder.itemView.getTag();
-                Log.d(TAG, Integer.toString(id) + " In Swiped");
+
                 String stringId = Integer.toString(id);
                 Uri uri = Contract.DealsEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
-                Log.d(TAG, "onSwiped" + uri.toString());
+
                 getContentResolver().delete(uri, null, null);
 
-                getSupportLoaderManager().restartLoader(INFO_DEAL_LOADER_ID, null, InfoDealActivity.this);
+                getSupportLoaderManager().restartLoader(INFO_DEAL_LOADER_ID,
+                        null, InfoDealActivity.this);
             }
         }).attachToRecyclerView(mRecyclerView);
     }

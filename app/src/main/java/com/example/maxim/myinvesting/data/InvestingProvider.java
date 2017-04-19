@@ -121,7 +121,7 @@ public class InvestingProvider extends ContentProvider{
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         int match = sUriMatcher.match(uri);
-        Log.d(TAG, uri.toString());
+
         int rowDeleted;
 
         switch (match) {
@@ -129,7 +129,7 @@ public class InvestingProvider extends ContentProvider{
             case CODE_DEAL_WITH_ID:
 
                 String id = uri.getPathSegments().get(1);
-                Log.d(TAG, id);
+
                 rowDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
                 break;
             default:

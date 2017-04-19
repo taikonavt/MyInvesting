@@ -3,7 +3,9 @@ package com.example.maxim.myinvesting;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.nfc.Tag;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
+
+import static com.example.maxim.myinvesting.MainActivity.TAG;
 
 /**
  * Created by maxim on 09.04.17.
@@ -50,7 +54,7 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
         final int id = mCursor.getInt(idIndex);
         String ticker = mCursor.getString(tickerIndex);
         String type = mCursor.getString(typeIndex);
-        int dateInMillis = mCursor.getInt(dateIndex);
+        long dateInMillis = mCursor.getLong(dateIndex);
         int price = mCursor.getInt(priceIndex);
         int volume = mCursor.getInt(volumeIndex);
         int fee = mCursor.getInt(feeIndex);
