@@ -17,9 +17,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onClick(View view) {
+    public void onClickDeal(View view) {
 
         Intent intent = new Intent(this, InfoDealActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickInput(View view) {
+
+        Intent intent = new Intent(this, InfoInputActivity.class);
         startActivity(intent);
     }
 }

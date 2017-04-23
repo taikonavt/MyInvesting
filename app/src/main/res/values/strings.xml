@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">My Investing</string>
 
+    <!-- main_activity -->
+    <string name="deal_btn">Deal info</string>
+    <string name="input_btn">Input info</string>
+
     <!-- Hints -->
     <!-- activity_add_deal -->
     <string name="hint_eTTicker">SBER</string>
