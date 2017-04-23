@@ -31,6 +31,7 @@ public class Contract {
         public static final String COLUMN_TYPE = "type";
 
         // Дата проведения операции в виде 1702
+        // todo испаравить на "date" когда буду менять таблицу
         public static final String COLUMN_DATE = "data";
 
         //Цена сделки
@@ -41,6 +42,24 @@ public class Contract {
 
         // комиссия брокера
         public static final String COLUMN_FEE = "fee";
+    }
+
+
+    public static final class InputEntry implements BaseColumns {
+
+        public static final String COLUMN_TYPE = "type";
+
+        public static final String COLUMN_DATE = "date";
+
+        public static final String COLUMN_AMOUNT = "amount";
+
+        public static final String COLUMN_CURRENCY = "currency";
+
+        public static final String COLUMN_FEE = "fee";
+
+        public static final String COLUMN_PORTFOLIO = "portfolio";
+
+        public static final String COLUMN_NOTE = "note";
     }
 
 }

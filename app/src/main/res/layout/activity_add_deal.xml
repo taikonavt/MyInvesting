@@ -97,7 +97,6 @@
             app:layout_constraintHorizontal_bias="0.5"
             android:id="@+id/textView2" />
 
-        <!-- todo сделать ограничения на ввод даты -->
         <EditText
             android:id="@+id/eTDay"
             android:layout_width="wrap_content"

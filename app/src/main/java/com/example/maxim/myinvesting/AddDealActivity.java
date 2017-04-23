@@ -91,11 +91,11 @@ public class AddDealActivity extends AppCompatActivity {
 
             String strPrice = eTPrice.getText().toString();
             Float floatPrice = Float.valueOf(strPrice);
-            //цену акции умножаю на 100000 чтобы уйти от запятой, т.е. 1 руб = 100000 ед.
+            //цену акции умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
+            // т.к. на бирже акций меньше 0,0001 нет
             price = (int) (floatPrice * MainActivity.MULTIPLIER_FOR_MONEY);
             // если price и floatprice не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
-            // TODO: 19.04.17 проверить это условие
             if (price != floatPrice * MainActivity.MULTIPLIER_FOR_MONEY) {
                 throw new UnsupportedOperationException("Разряд числа price не поддерживается");
             }
@@ -104,7 +104,7 @@ public class AddDealActivity extends AppCompatActivity {
 
             String strFee = eTFee.getText().toString();
             Float floatFee = Float.valueOf(strFee);
-            //коммисию умножаю на 100000 чтобы уйти от запятой, т.е. 1 руб = 100000 ед.
+            //коммисию умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
             fee = (int) (floatFee * MainActivity.MULTIPLIER_FOR_MONEY);
             // если price и floatprice не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
