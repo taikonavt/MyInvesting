@@ -7,6 +7,7 @@ import android.util.Log;
 
 import static com.example.maxim.myinvesting.MainActivity.TAG;
 import com.example.maxim.myinvesting.data.Contract.DealsEntry;
+import com.example.maxim.myinvesting.data.Contract.InputEntry;
 
 /**
  * Created by maxim on 26.03.17.
@@ -41,7 +42,7 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
                         // цена на одну единицу товара в копейках
                         DealsEntry.COLUMN_PRICE + " INTEGER NOT NULL, " +
 
-                        DealsEntry.COLUMN_VOLUME + " INTEGER NOT NULL," +
+                        DealsEntry.COLUMN_VOLUME + " INTEGER NOT NULL, " +
 
                         DealsEntry.COLUMN_FEE + " INTEGER" +
 
@@ -49,12 +50,34 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_CREATE_DEALS_TABLE);
 
+        final String SQL_CREATE_INPUT_TABLE =
+                "CREATE TABLE " + InputEntry.TABLE_NAME + " (" +
+
+                        InputEntry._ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+                        InputEntry.COLUMN_TYPE + " STRING NOT NULL, " +
+
+                        InputEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
+
+                        InputEntry.COLUMN_AMOUNT + " INTEGER NOT NULL, " +
+
+                        InputEntry.COLUMN_CURRENCY + " STRING NOT NULL, " +
+
+                        InputEntry.COLUMN_FEE + " INTEGER NOT NULL, " +
+
+                        InputEntry.COLUMN_PORTFOLIO + " STRING NOT NULL, " +
+
+                        InputEntry.COLUMN_NOTE + " STRING NOT NULL" +
+
+                        ");";
+
+        db.execSQL(SQL_CREATE_INPUT_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DealsEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + InputEntry.TABLE_NAME);
         onCreate(db);
-
     }
 }

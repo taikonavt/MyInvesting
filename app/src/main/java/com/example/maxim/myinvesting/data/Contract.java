@@ -15,6 +15,8 @@ public class Contract {
 
     public static final String PATH_DEALS = "deals";
 
+    public static final String PATH_INPUT = "input";
+
 
     public static final class DealsEntry implements BaseColumns {
 
@@ -46,6 +48,12 @@ public class Contract {
 
 
     public static final class InputEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_INPUT)
+                .build();
+
+        public static final String TABLE_NAME = "input";
 
         public static final String COLUMN_TYPE = "type";
 
