@@ -12,7 +12,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 
-import static com.example.maxim.myinvesting.data.Contract.DealsEntry.TABLE_NAME;
+import static com.example.maxim.myinvesting.data.Contract.DealsEntry;
+import static com.example.maxim.myinvesting.data.Contract.InputEntry;
 import static com.example.maxim.myinvesting.MainActivity.TAG;
 
 /**
@@ -23,7 +24,10 @@ public class InvestingProvider extends ContentProvider{
 
     public static final int CODE_DEALS = 100;
     public static final int CODE_DEAL_WITH_ID = 101;
-    public static final int CODE_DEALS_WITH_DATE = 102; // пока не используется
+    public static final int CODE_DEALS_WITH_DATE = 102; // todo пока не используется, убрать если не будет
+
+    public static final int CODE_INPUT = 200;
+    public static final int CODE_INPUT_WITH_ID = 201;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -35,6 +39,9 @@ public class InvestingProvider extends ContentProvider{
         matcher.addURI(authority, Contract.PATH_DEALS, CODE_DEALS);
         matcher.addURI(authority, Contract.PATH_DEALS + "/#", CODE_DEAL_WITH_ID);
         matcher.addURI(authority, Contract.PATH_DEALS + "/#/#", CODE_DEALS_WITH_DATE);
+
+        matcher.addURI(authority, Contract.PATH_INPUT, CODE_INPUT);
+        matcher.addURI(authority, Contract.PATH_INPUT + "/#", CODE_INPUT_WITH_ID);
 
         return  matcher;
     }
@@ -62,7 +69,7 @@ public class InvestingProvider extends ContentProvider{
         switch (match) {
 
             case CODE_DEALS:
-                cursor = db.query(TABLE_NAME,
+                cursor = db.query(DealsEntry.TABLE_NAME,
                         projection, // список возвращаемых полей
                         selection, // where
                         selectionArgs, // значения аргументов
@@ -97,16 +104,29 @@ public class InvestingProvider extends ContentProvider{
 
         switch (sUriMatcher.match(uri)) {
 
-            case CODE_DEALS:
+            case CODE_DEALS: {
 
-                long id = db.insert(TABLE_NAME, null, values);
+                long id = db.insert(DealsEntry.TABLE_NAME, null, values);
 
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(Contract.DealsEntry.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
+            }
                 break;
+
+            case CODE_INPUT: {
+
+                long id = db.insert(InputEntry.TABLE_NAME, null, values);
+
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(InputEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -130,7 +150,7 @@ public class InvestingProvider extends ContentProvider{
 
                 String id = uri.getPathSegments().get(1);
 
-                rowDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
+                rowDeleted = db.delete(DealsEntry.TABLE_NAME, "_id=?", new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
