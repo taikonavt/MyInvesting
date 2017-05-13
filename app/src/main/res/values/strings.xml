@@ -5,6 +5,15 @@
     <string name="deal_btn">Deal info</string>
     <string name="input_btn">Input info</string>
 
+    <string-array name="drawer_items_array">
+        <item>Deal</item>
+        <item>Inputs</item>
+    </string-array>
+
+    <string name="drawer_open"> Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+
     <!-- Hints -->
     <!-- activity_add_deal -->
     <string name="hint_eTTicker">SBER</string>
@@ -27,6 +36,7 @@
     <string name="hint_tVVolume">Volume:</string>
     <string name="hint_tVFee">Fee:</string>
     <string name="hint_btnReady">Ready</string>
+
 
     <!-- activity_info_deal -->
     <string name="hint_btnAdd">Add new deals</string>
