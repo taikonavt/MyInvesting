@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final String TAG = "MyLog";
 
     private DrawerLayout drawerLayout = null;
-    private ActionBarDrawerToggle toggle = null; // в чем разница между v4 и v7?
+    private ActionBarDrawerToggle toggle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,25 +30,25 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         ListView drawer = (ListView) findViewById(R.id.drawer);
-Log.d(TAG, "after drawer");
+
         drawer.setAdapter(new ArrayAdapter<String>(
                 this,
                 R.layout.drawer_row,
                 getResources().getStringArray(R.array.drawer_items_array)
         ));
-Log.d(TAG, "after setAdapter");
+
+        drawer.setOnItemClickListener(this);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-Log.d(TAG, "after drawerLayout");
+
         toggle =
                 new ActionBarDrawerToggle(this, drawerLayout,
                         R.string.drawer_open,
                         R.string.drawer_close);
-Log.d(TAG, "after toggle");
+
         //кнопка для открытия sliding меню
-        drawerLayout.setDrawerListener(toggle);
-Log.d(TAG, "after setDrawerListener");
+        drawerLayout.addDrawerListener(toggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-Log.d(TAG, "after setDisplayHome");
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
@@ -78,16 +78,25 @@ Log.d(TAG, "after setDisplayHome");
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        switch (position) {
+            case 0:
+                drawerLayout.closeDrawers();
+                onClickDeal();
+                break;
+            case 1:
+                drawerLayout.closeDrawers();
+                onClickInput();
+                break;
+        }
     }
 
-    public void onClickDeal(View view) {
+    public void onClickDeal() {
 
         Intent intent = new Intent(this, InfoDealActivity.class);
         startActivity(intent);
     }
 
-    public void onClickInput(View view) {
+    public void onClickInput() {
 
         Intent intent = new Intent(this, InfoInputActivity.class);
         startActivity(intent);
