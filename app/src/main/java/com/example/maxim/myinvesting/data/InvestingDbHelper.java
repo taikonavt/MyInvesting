@@ -53,7 +53,7 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_INPUT_TABLE =
                 "CREATE TABLE " + InputEntry.TABLE_NAME + " (" +
 
-                        InputEntry._ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        InputEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
                         InputEntry.COLUMN_TYPE + " STRING NOT NULL, " +
 

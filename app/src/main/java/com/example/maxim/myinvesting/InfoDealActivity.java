@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.maxim.myinvesting.data.Contract;
@@ -22,8 +23,8 @@ import static com.example.maxim.myinvesting.MainActivity.TAG;
  * Created by maxim on 09.04.17.
  */
 
-public class InfoDealActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>{
+public class InfoDealActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private InfoDealAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -44,6 +45,8 @@ public class InfoDealActivity extends AppCompatActivity implements
 
         mAdapter = new InfoDealAdapter();
         mRecyclerView.setAdapter(mAdapter);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportLoaderManager().initLoader(0, null, this);
 
@@ -119,5 +122,17 @@ public class InfoDealActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
