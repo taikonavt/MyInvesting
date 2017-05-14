@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements
             // Inputs
             case 1:
                 drawerLayout.closeDrawers();
-                onClick(InfoInputActivity.class, INPUTS);
+                onClick(InfoDealActivity.class, INPUTS);
                 break;
             // Transaction
             case 2:
