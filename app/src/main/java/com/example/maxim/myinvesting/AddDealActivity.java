@@ -9,15 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
-import static com.example.maxim.myinvesting.MainActivity.TAG;
+import static com.example.maxim.myinvesting.data.Const.TAG;
+import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Created by maxim on 27.03.17.
@@ -93,10 +92,10 @@ public class AddDealActivity extends AppCompatActivity {
             Float floatPrice = Float.valueOf(strPrice);
             //цену акции умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
             // т.к. на бирже акций меньше 0,0001 нет
-            price = (int) (floatPrice * MainActivity.MULTIPLIER_FOR_MONEY);
+            price = (int) (floatPrice * MULTIPLIER_FOR_MONEY);
             // если price и floatprice не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
-            if (price != floatPrice * MainActivity.MULTIPLIER_FOR_MONEY) {
+            if (price != floatPrice * MULTIPLIER_FOR_MONEY) {
                 throw new UnsupportedOperationException("Разряд числа price не поддерживается");
             }
 
@@ -105,10 +104,10 @@ public class AddDealActivity extends AppCompatActivity {
             String strFee = eTFee.getText().toString();
             Float floatFee = Float.valueOf(strFee);
             //коммисию умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
-            fee = (int) (floatFee * MainActivity.MULTIPLIER_FOR_MONEY);
+            fee = (int) (floatFee * MULTIPLIER_FOR_MONEY);
             // если price и floatprice не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
-            if (fee != floatFee * MainActivity.MULTIPLIER_FOR_MONEY)
+            if (fee != floatFee * MULTIPLIER_FOR_MONEY)
                 throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
             fee = Integer.valueOf(eTFee.getText().toString());
 

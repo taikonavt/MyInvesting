@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
 
-import static com.example.maxim.myinvesting.MainActivity.TAG;
+import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
  * Created by maxim on 09.04.17.

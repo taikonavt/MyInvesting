@@ -15,7 +15,10 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.maxim.myinvesting.data.Contract;
-import static com.example.maxim.myinvesting.MainActivity.TAG;
+import static com.example.maxim.myinvesting.data.Const.TAG;
+import static com.example.maxim.myinvesting.data.Const.DEALS;
+import static com.example.maxim.myinvesting.data.Const.INPUTS;
+import static com.example.maxim.myinvesting.data.Const.KEY;
 
 /**
  * Created by maxim on 09.04.17.
@@ -41,6 +44,9 @@ public class InfoDealActivity extends AppCompatActivity
 
         mRecyclerView.setHasFixedSize(true);
 
+        String key = getIntent().getStringExtra("key");
+
+        if (key == "Deals")
         mAdapter = new InfoDealAdapter();
         mRecyclerView.setAdapter(mAdapter);
 

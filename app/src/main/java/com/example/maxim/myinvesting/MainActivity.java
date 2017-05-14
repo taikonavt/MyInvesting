@@ -16,11 +16,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import static com.example.maxim.myinvesting.data.Const.DEALS;
+import static com.example.maxim.myinvesting.data.Const.INPUTS;
+import static com.example.maxim.myinvesting.data.Const.KEY;
+
 public class MainActivity extends AppCompatActivity implements
         OnItemClickListener {
-
-    final static int MULTIPLIER_FOR_MONEY = 10000;
-    public static final String TAG = "MyLog";
 
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
@@ -82,23 +83,24 @@ public class MainActivity extends AppCompatActivity implements
             // Deals
             case 0:
                 drawerLayout.closeDrawers();
-                onClick(InfoDealActivity.class);
+                onClick(InfoDealActivity.class, DEALS);
                 break;
             // Inputs
             case 1:
                 drawerLayout.closeDrawers();
-                onClick(InfoInputActivity.class);
+                onClick(InfoInputActivity.class, INPUTS);
                 break;
             // Transaction
             case 2:
                 drawerLayout.closeDrawers();
-                onClick(AddDealActivity.class);
+                onClick(AddDealActivity.class, null);
         }
     }
 
-    public void onClick(Class clazz) {
+    public void onClick(Class clazz, CharSequence str) {
 
         Intent intent = new Intent(this, clazz);
+        intent.putExtra(KEY, str);
         startActivity(intent);
     }
 }
