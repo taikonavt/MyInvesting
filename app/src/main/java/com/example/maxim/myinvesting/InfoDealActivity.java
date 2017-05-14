@@ -1,6 +1,5 @@
 package com.example.maxim.myinvesting;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.maxim.myinvesting.data.Contract;
 import static com.example.maxim.myinvesting.MainActivity.TAG;
@@ -82,13 +80,6 @@ public class InfoDealActivity extends AppCompatActivity
 
         getSupportLoaderManager().restartLoader(INFO_DEAL_LOADER_ID, null, this);
     }
-
-    public void onClick(View view) {
-
-        Intent intent = new Intent(this, AddDealActivity.class);
-        startActivity(intent);
-    }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

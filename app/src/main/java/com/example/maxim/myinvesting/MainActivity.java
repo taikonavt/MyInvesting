@@ -79,26 +79,26 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
+            // Deals
             case 0:
                 drawerLayout.closeDrawers();
-                onClickDeal();
+                onClick(InfoDealActivity.class);
                 break;
+            // Inputs
             case 1:
                 drawerLayout.closeDrawers();
-                onClickInput();
+                onClick(InfoInputActivity.class);
                 break;
+            // Transaction
+            case 2:
+                drawerLayout.closeDrawers();
+                onClick(AddDealActivity.class);
         }
     }
 
-    public void onClickDeal() {
+    public void onClick(Class clazz) {
 
-        Intent intent = new Intent(this, InfoDealActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickInput() {
-
-        Intent intent = new Intent(this, InfoInputActivity.class);
+        Intent intent = new Intent(this, clazz);
         startActivity(intent);
     }
 }
