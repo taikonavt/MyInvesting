@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.example.maxim.myinvesting.MainActivity.TAG;
+import static com.example.maxim.myinvesting.data.Const.TAG;
 import com.example.maxim.myinvesting.data.Contract.DealsEntry;
 import com.example.maxim.myinvesting.data.Contract.InputEntry;
 

@@ -14,7 +14,7 @@ import android.util.Log;
 
 import static com.example.maxim.myinvesting.data.Contract.DealsEntry;
 import static com.example.maxim.myinvesting.data.Contract.InputEntry;
-import static com.example.maxim.myinvesting.MainActivity.TAG;
+import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
  * Created by maxim on 26.03.17.

@@ -29,6 +29,7 @@ public class InfoDealActivity extends AppCompatActivity
 
     private InfoDealAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private String key;
 
     private static final int INFO_DEAL_LOADER_ID = 11;
 
@@ -44,10 +45,18 @@ public class InfoDealActivity extends AppCompatActivity
 
         mRecyclerView.setHasFixedSize(true);
 
-        String key = getIntent().getStringExtra("key");
+        key = getIntent().getStringExtra(KEY);
 
-        if (key == "Deals")
-        mAdapter = new InfoDealAdapter();
+        // в зависимости от кеу переданного из mainActivity использую разные адаптеры
+        switch (key) {
+            case DEALS:
+                mAdapter = new InfoDealAdapter();
+                break;
+            // TODO: 14.05.17 Make Inputs
+//            case INPUTS:
+//                mAdapter = new InfoInputAdapter();
+        }
+
         mRecyclerView.setAdapter(mAdapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -94,14 +103,23 @@ public class InfoDealActivity extends AppCompatActivity
         // TODO: 15.04.17 Добавить возможность загрузки сделок после определенной даты
         //Uri dealsSinceDate = Contract.DealsEntry.
 
-        String sortOrder = Contract.DealsEntry.COLUMN_DATE + " ASC"; // ASC = по возрастанию
+//        в зависимости от key переданного из mainActivity использую разные адаптеры
+        switch (key) {
+            case DEALS:
+                String sortOrder = Contract.DealsEntry.COLUMN_DATE + " ASC"; // ASC = по возрастанию
 
-        return new CursorLoader(this,
-                Contract.DealsEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                sortOrder);
+                return new CursorLoader(this,
+                        Contract.DealsEntry.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        sortOrder);
+           // TODO: 14.05.17  Сделать Inputs
+            case INPUTS:
+                return null;
+            default:
+                return null;
+        }
     }
 
     @Override
