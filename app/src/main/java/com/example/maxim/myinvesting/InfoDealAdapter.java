@@ -3,7 +3,6 @@ package com.example.maxim.myinvesting;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.nfc.Tag;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
