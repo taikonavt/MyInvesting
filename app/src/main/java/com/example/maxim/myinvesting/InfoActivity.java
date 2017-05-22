@@ -16,9 +16,6 @@ import android.view.MenuItem;
 
 import com.example.maxim.myinvesting.data.Contract;
 import static com.example.maxim.myinvesting.data.Const.TAG;
-import static com.example.maxim.myinvesting.data.Const.DEALS;
-import static com.example.maxim.myinvesting.data.Const.INPUTS;
-import static com.example.maxim.myinvesting.data.Const.KEY;
 
 /**
  * Created by maxim on 16.05.17.
@@ -44,8 +41,6 @@ public abstract class InfoActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setHasFixedSize(true);
-
-        key = getIntent().getStringExtra(KEY);
 
         // в зависимости от кеу переданного из mainActivity использую разные адаптеры
 

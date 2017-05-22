@@ -16,9 +16,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import static com.example.maxim.myinvesting.data.Const.DEALS;
-import static com.example.maxim.myinvesting.data.Const.INPUTS;
-import static com.example.maxim.myinvesting.data.Const.KEY;
 
 public class MainActivity extends AppCompatActivity implements
         OnItemClickListener {
@@ -83,24 +80,23 @@ public class MainActivity extends AppCompatActivity implements
             // Deals
             case 0:
                 drawerLayout.closeDrawers();
-                onClick(InfoDealActivity.class, DEALS);
+                onClick(InfoDealActivity.class);
                 break;
             // Inputs
             case 1:
                 drawerLayout.closeDrawers();
-                onClick(InfoDealActivity.class, INPUTS);
+                onClick(InfoInputActivity.class);
                 break;
             // Transaction
             case 2:
                 drawerLayout.closeDrawers();
-                onClick(AddDealActivity.class, null);
+                onClick(AddDealActivity.class);
         }
     }
 
-    public void onClick(Class clazz, CharSequence str) {
+    public void onClick(Class clazz) {
 
         Intent intent = new Intent(this, clazz);
-        intent.putExtra(KEY, str);
         startActivity(intent);
     }
 }
