@@ -23,7 +23,7 @@ import java.util.Calendar;
  */
 
 public class AddDealActivity extends AppCompatActivity {
-
+    // TODO: 23.05.17 NEXT: add page for input transaction
     EditText eTTicker;
     Spinner spinnerType;
     EditText eTYear;

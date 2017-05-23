@@ -78,6 +78,18 @@ public class InvestingProvider extends ContentProvider{
                         sortOrder
                         );
                 break;
+
+            case CODE_INPUT:
+                cursor = db.query(InputEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                        );
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
