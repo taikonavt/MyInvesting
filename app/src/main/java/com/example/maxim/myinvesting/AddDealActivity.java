@@ -140,5 +140,16 @@ public class AddDealActivity extends AppCompatActivity {
         Uri uri = getContentResolver().insert(Contract.DealsEntry.CONTENT_URI, contentValues);
 
         Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
+
+        // удалить потом
+        ContentValues contentValues1 = new ContentValues();
+
+        contentValues1.put(Contract.InputEntry.COLUMN_TYPE, "i");
+        contentValues1.put(Contract.InputEntry.COLUMN_DATE,
+                DateUtils.getTimeForMoscowInMillis(year, month, day));
+        contentValues1.put(Contract.InputEntry.COLUMN_AMOUNT, 10);
+        contentValues1.put(Contract.InputEntry.COLUMN_CURRENCY, "RUB");
+        contentValues1.put(Contract.InputEntry.COLUMN_FEE, 1);
+        contentValues1.put(Contract.InputEntry.COLUMN_PORTFOLIO, );
     }
 }

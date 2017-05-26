@@ -155,15 +155,24 @@ public class InvestingProvider extends ContentProvider{
         int match = sUriMatcher.match(uri);
 
         int rowDeleted;
+        String id;
 
         switch (match) {
 
             case CODE_DEAL_WITH_ID:
 
-                String id = uri.getPathSegments().get(1);
+                id = uri.getPathSegments().get(1);
 
                 rowDeleted = db.delete(DealsEntry.TABLE_NAME, "_id=?", new String[]{id});
                 break;
+
+            case CODE_INPUT_WITH_ID:
+
+                id = uri.getPathSegments().get(1);
+
+                rowDeleted = db.delete(InputEntry.TABLE_NAME, "_id=?", new String[]{id});
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

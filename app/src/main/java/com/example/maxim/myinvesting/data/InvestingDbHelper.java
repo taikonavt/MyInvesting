@@ -67,7 +67,7 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
                         InputEntry.COLUMN_PORTFOLIO + " STRING NOT NULL, " +
 
-                        InputEntry.COLUMN_NOTE + " STRING NOT NULL" +
+                        InputEntry.COLUMN_NOTE + " STRING" +
 
                         ");";
 
