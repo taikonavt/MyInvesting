@@ -141,6 +141,7 @@ public class AddDealActivity extends AppCompatActivity {
 
         Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
 
+
         // удалить потом
         ContentValues contentValues1 = new ContentValues();
 
@@ -150,6 +151,8 @@ public class AddDealActivity extends AppCompatActivity {
         contentValues1.put(Contract.InputEntry.COLUMN_AMOUNT, 10);
         contentValues1.put(Contract.InputEntry.COLUMN_CURRENCY, "RUB");
         contentValues1.put(Contract.InputEntry.COLUMN_FEE, 1);
-        contentValues1.put(Contract.InputEntry.COLUMN_PORTFOLIO, );
+        contentValues1.put(Contract.InputEntry.COLUMN_PORTFOLIO, "6611000");
+
+        getContentResolver().insert(Contract.InputEntry.CONTENT_URI, contentValues1);
     }
 }

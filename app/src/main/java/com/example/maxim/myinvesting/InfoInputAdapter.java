@@ -3,6 +3,7 @@ package com.example.maxim.myinvesting;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
+
+import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
  * Created by maxim on 16.05.17.
@@ -55,7 +58,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         int fee = mCursor.getInt(feeIndex);
         int portfolio = mCursor.getInt(portfoiloIndex);
         String note = mCursor.getString(noteIndex);
-
+Log.d(TAG, type);
         holder.itemView.setTag(id);
 
         String dateNormal = DateUtils.getNormalTimeForMoscow(dateInMillis);
