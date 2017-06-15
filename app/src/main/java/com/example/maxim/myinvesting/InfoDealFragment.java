@@ -5,20 +5,18 @@ import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.example.maxim.myinvesting.data.Contract;
-import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
- * Created by maxim on 09.04.17.
+ * Created by maxim on 15.06.17.
  */
 
-public class InfoDealActivity extends InfoActivity {
+public class InfoDealFragment extends InfoFragment {
 
     private InfoDealAdapter mAdapter;
 
-    // метод используется в суперклассе для получения адаптера
+    // метод используется для доступа к экземпляру адаптера из суперкласса
     @Override
     public RecyclerView.Adapter getAdapter() {
 
@@ -34,7 +32,7 @@ public class InfoDealActivity extends InfoActivity {
 
         String sortOrder = Contract.DealsEntry.COLUMN_DATE + " ASC"; // ASC = по возрастанию
 
-        return new CursorLoader(this,
+        return new CursorLoader(getContext(),
                 Contract.DealsEntry.CONTENT_URI,
                 null,
                 null,
@@ -47,13 +45,6 @@ public class InfoDealActivity extends InfoActivity {
         mAdapter.swapCursor(data);
     }
 
-    /**
-     * Called when a previously created loader is being reset, and thus
-     * making its data unavailable.
-     * onLoaderReset removes any references this activity had to the loader's data.
-     *
-     * @param loader The Loader that is being reset.
-     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);

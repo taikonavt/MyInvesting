@@ -25,7 +25,7 @@ public abstract class InfoFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private RecyclerView mRecyclerView;
-    protected RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter mAdapter;
 
     private static final int INFO_DEAL_LOADER_ID = 11;
 

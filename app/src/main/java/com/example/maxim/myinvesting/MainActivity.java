@@ -16,7 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-
+// TODO: 15.06.17 Исправить активити для работы с фрагментом
 public class MainActivity extends AppCompatActivity implements
         OnItemClickListener {
 
