@@ -69,17 +69,19 @@ public abstract class InfoFragment extends Fragment
                 Uri uri = Contract.DealsEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
 
-                getContentResolver().delete(uri, null, null);
+                getContext().getContentResolver().delete(uri, null, null);
 
                 getLoaderManager().restartLoader(INFO_DEAL_LOADER_ID,
                         null, InfoFragment.this);
             }
         }).attachToRecyclerView(mRecyclerView);
+
+        return rootView;
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    public void onResume() {
+        super.onResume();
 
         getLoaderManager().restartLoader(INFO_DEAL_LOADER_ID, null, this);
     }
