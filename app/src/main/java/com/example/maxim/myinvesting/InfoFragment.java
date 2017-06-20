@@ -24,7 +24,7 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
  * Created by maxim on 14.06.17.
  */
 
-public abstract class InfoFragment extends Fragment
+public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнать что будет если заменить на FragmetnActivity как написано в мануале на v4
         implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private RecyclerView mRecyclerView;

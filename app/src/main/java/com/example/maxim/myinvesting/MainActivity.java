@@ -82,17 +82,19 @@ public class MainActivity extends AppCompatActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             // Deals
-            case 0:
+            case 0: {
                 drawerLayout.closeDrawers();
                 InfoDealFragment fragment = new InfoDealFragment();
                 onClick(fragment);
                 break;
+            }
             // Inputs
-            case 1:
+            case 1: {
                 drawerLayout.closeDrawers();
-//                InfoDealFragment fragment = new InfoDealFragment();
-//                onClick(fragment);
+                InfoInputFragment fragment = new InfoInputFragment();
+                onClick(fragment);
                 break;
+            }
             // Transaction
             case 2:
                 drawerLayout.closeDrawers();
@@ -107,7 +109,7 @@ Log.d(TAG, "MainActivity.onClick()");
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction()
-                .add(R.id.ll_main_activity, fragment)
+                .replace(R.id.ll_main_activity, fragment)
                 .commit();
     }
 }
