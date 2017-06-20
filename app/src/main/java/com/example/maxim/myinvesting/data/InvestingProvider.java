@@ -77,6 +77,8 @@ public class InvestingProvider extends ContentProvider{
                         null,
                         sortOrder
                         );
+
+Log.d(TAG, "InvestingProvider.query() " + cursor.getCount());
                 break;
 
             case CODE_INPUT:

@@ -3,6 +3,8 @@ package com.example.maxim.myinvesting;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import static com.example.maxim.myinvesting.data.Const.TAG;
 
 // TODO: 15.06.17 Исправить активити для работы с фрагментом
 public class MainActivity extends AppCompatActivity implements
@@ -80,23 +84,30 @@ public class MainActivity extends AppCompatActivity implements
             // Deals
             case 0:
                 drawerLayout.closeDrawers();
-                onClick(InfoDealActivity.class);
+                InfoDealFragment fragment = new InfoDealFragment();
+                onClick(fragment);
                 break;
             // Inputs
             case 1:
                 drawerLayout.closeDrawers();
-                onClick(InfoInputActivity.class);
+//                InfoDealFragment fragment = new InfoDealFragment();
+//                onClick(fragment);
                 break;
             // Transaction
             case 2:
                 drawerLayout.closeDrawers();
-                onClick(AddDealActivity.class);
+//                InfoDealFragment fragment = new InfoDealFragment();
+//                onClick(fragment);
+                break;
         }
     }
 
-    public void onClick(Class clazz) {
+    public void onClick(Fragment fragment) {
+Log.d(TAG, "MainActivity.onClick()");
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
-        Intent intent = new Intent(this, clazz);
-        startActivity(intent);
+        fragmentManager.beginTransaction()
+                .add(R.id.ll_main_activity, fragment)
+                .commit();
     }
 }

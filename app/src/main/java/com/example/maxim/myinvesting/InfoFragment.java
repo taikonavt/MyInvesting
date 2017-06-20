@@ -10,12 +10,15 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.maxim.myinvesting.data.Contract;
+
+import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
  * Created by maxim on 14.06.17.
@@ -34,7 +37,7 @@ public abstract class InfoFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_info, container, false);
-
+Log.d(TAG, "InfoFragment.onCreateView");
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_info);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

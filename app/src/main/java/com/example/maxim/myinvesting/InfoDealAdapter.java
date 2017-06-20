@@ -49,7 +49,7 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
         int feeIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_FEE);
 
         mCursor.moveToPosition(position);
-
+Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
         final int id = mCursor.getInt(idIndex);
         String ticker = mCursor.getString(tickerIndex);
         String type = mCursor.getString(typeIndex);
@@ -124,6 +124,7 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
             tvInfoItemPrice.setText(String.valueOf(lPrice));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
             tvInfoItemFee.setText(String.valueOf(lFee));
+Log.d(TAG, lType);
         }
     }
 }
