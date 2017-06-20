@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements
             // Transaction
             case 2:
                 drawerLayout.closeDrawers();
-//                InfoDealFragment fragment = new InfoDealFragment();
-//                onClick(fragment);
+                Intent intent = new Intent(this, AddDealActivity.class);
+                startActivity(intent);
                 break;
         }
     }
