@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,20 +16,26 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
-// TODO: 15.06.17 Исправить активити для работы с фрагментом
 public class MainActivity extends AppCompatActivity implements
         OnItemClickListener {
 
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
+    private Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // если экран пустой, то показываем Deal фрагмент
+        if (getFragmentManager().findFragmentById(R.id.ll_main_activity) == null) {
+            showFragment(fragment);
+        }
 
         ListView drawer = (ListView) findViewById(R.id.drawer);
 
@@ -82,34 +87,49 @@ public class MainActivity extends AppCompatActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             // Deals
-            case 0: {
+            case 0:
                 drawerLayout.closeDrawers();
-                InfoDealFragment fragment = new InfoDealFragment();
-                onClick(fragment);
+                fragment = new InfoDealFragment();
+                showFragment(fragment);
                 break;
-            }
+
             // Inputs
-            case 1: {
+            case 1:
                 drawerLayout.closeDrawers();
-                InfoInputFragment fragment = new InfoInputFragment();
-                onClick(fragment);
+                fragment = new InfoInputFragment();
+                showFragment(fragment);
                 break;
-            }
+
             // Transaction
             case 2:
                 drawerLayout.closeDrawers();
                 Intent intent = new Intent(this, AddDealActivity.class);
                 startActivity(intent);
                 break;
+
+            default:
+                Toast.makeText(this, "Неизвестная команда", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void onClick(Fragment fragment) {
-Log.d(TAG, "MainActivity.onClick()");
-        FragmentManager fragmentManager = getSupportFragmentManager();
+//    public void onClick(Fragment fragment) {
+//Log.d(TAG, "MainActivity.onClick()");
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.ll_main_activity, fragment)
+//                .commit();
+//    }
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.ll_main_activity, fragment)
-                .commit();
+    private void showFragment(Fragment fragment) {
+        if (fragment == null) {
+            fragment = new InfoDealFragment();
+        }
+
+        if (!fragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.ll_main_activity, fragment)
+                    .commit();
+        }
     }
 }
