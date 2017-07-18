@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
     private Fragment fragment = null;
+    private ListView drawer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements
             showFragment(fragment);
         }
 
-        ListView drawer = (ListView) findViewById(R.id.drawer);
+        drawer = (ListView) findViewById(R.id.drawer);
 
         drawer.setAdapter(new ArrayAdapter<String>(
                 this,
@@ -112,20 +113,13 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-//    public void onClick(Fragment fragment) {
-//Log.d(TAG, "MainActivity.onClick()");
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.ll_main_activity, fragment)
-//                .commit();
-//    }
-
     private void showFragment(Fragment fragment) {
+        // срабатывает при запуске программы
         if (fragment == null) {
             fragment = new InfoDealFragment();
         }
 
+        // срабатывает при нажатии на пункт дровера
         if (!fragment.isVisible()) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.ll_main_activity, fragment)

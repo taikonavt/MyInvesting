@@ -6,4 +6,6 @@
     <!-- padding right for item_info_deal.xml -->
     <dimen name="right_padding_info_item">8dp</dimen>
     <dimen name="text_size_for_info_item">18sp</dimen>
+    <dimen name="small_text_size_for_info_item">14sp</dimen>
+    <dimen name="padding_info_item">8dp</dimen>
 </resources>
