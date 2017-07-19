@@ -102,6 +102,7 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
         TextView tvInfoItemDate;
         TextView tvInfoItemPrice;
         TextView tvInfoItemVolume;
+        TextView tvInfoItemCost;
         //TextView tvInfoItemFee;
         TableRow tableRowInfo;
 
@@ -113,6 +114,7 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
             tvInfoItemDate = (TextView) itemView.findViewById(R.id.tv_info_item_date);
             tvInfoItemPrice = (TextView) itemView.findViewById(R.id.tv_info_item_price);
             tvInfoItemVolume = (TextView) itemView.findViewById(R.id.tv_info_item_volume);
+            tvInfoItemCost = (TextView) itemView.findViewById(R.id.tv_info_item_cost);
             //tvInfoItemFee = (TextView) itemView.findViewById(R.id.tv_info_item_fee);
             tableRowInfo = (TableRow) itemView.findViewById(R.id.tr_info_deal);
         }
@@ -128,6 +130,7 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
             tvInfoItemDate.setText(lDate);
             tvInfoItemPrice.setText(String.valueOf(lPrice));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
+            tvInfoItemCost.setText(String.valueOf(lPrice * lVolume));
             //tvInfoItemFee.setText(String.valueOf(lFee));
 
             switch (lType) {
