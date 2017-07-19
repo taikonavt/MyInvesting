@@ -3,11 +3,14 @@ package com.example.maxim.myinvesting;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
@@ -100,6 +103,7 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
         TextView tvInfoItemPrice;
         TextView tvInfoItemVolume;
         //TextView tvInfoItemFee;
+        TableRow tableRowInfo;
 
         public InfoViewHolder(View itemView) {
             super(itemView);
@@ -110,6 +114,7 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
             tvInfoItemPrice = (TextView) itemView.findViewById(R.id.tv_info_item_price);
             tvInfoItemVolume = (TextView) itemView.findViewById(R.id.tv_info_item_volume);
             //tvInfoItemFee = (TextView) itemView.findViewById(R.id.tv_info_item_fee);
+            tableRowInfo = (TableRow) itemView.findViewById(R.id.tr_info_deal);
         }
 
         void bind(String lTicker,
@@ -125,10 +130,18 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
             //tvInfoItemFee.setText(String.valueOf(lFee));
 
-//            switch (lType) {
-//                case S
-//            }
+            switch (lType) {
+                case "Sell": tableRowInfo.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorSell));
+                    break;
 
+                case "Buy": tableRowInfo.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorBuy));
+                    break;
+
+                default: Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
+
+            }
         }
     }
 }
