@@ -19,6 +19,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_tVPortfolio"
+            app:layout_constraintTop_toTopOf="@+id/eTPortfolio"
+            app:layout_constraintBottom_toBottomOf="@+id/eTPortfolio"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintRight_toLeftOf="@+id/eTPortfolio"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.5" />
+
+        <EditText
+            android:id="@+id/eTPortfolio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:ems="5"
+            android:hint="@string/hint_eTPortfolio"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
             android:text="@string/hint_tVTicker"
             app:layout_constraintTop_toTopOf="@+id/eTTicker"
             app:layout_constraintBottom_toBottomOf="@+id/eTTicker"
@@ -40,14 +73,12 @@
             android:ems="5"
             android:inputType="textCapCharacters"
             android:hint="@string/hint_eTTicker"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eTPortfolio"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="@+id/eTPortfolio"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.5" />
+            android:layout_marginTop="24dp" />
 
         <TextView
             android:layout_width="wrap_content"

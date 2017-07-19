@@ -44,6 +44,7 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
     public void onBindViewHolder(InfoViewHolder holder, int position) {
 
         int idIndex = mCursor.getColumnIndex(Contract.DealsEntry._ID);
+        int portfolioIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_PORTFOLIO);
         int tickerIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_TICKER);
         int typeIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_TYPE);
         int dateIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_DATE);
@@ -54,6 +55,7 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
         mCursor.moveToPosition(position);
 Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
         final int id = mCursor.getInt(idIndex);
+        String portfolio = mCursor.getString(portfolioIndex);
         String ticker = mCursor.getString(tickerIndex);
         String type = mCursor.getString(typeIndex);
         long dateInMillis = mCursor.getLong(dateIndex);
@@ -65,7 +67,7 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
 
         String dateNormal = DateUtils.getNormalTimeForMoscow(dateInMillis);
 
-        holder.bind(ticker, type, dateNormal, price, volume, fee);
+        holder.bind(portfolio, ticker, type, dateNormal, price, volume, fee);
 
         // TODO: 15.04.17 do rotation: when vert - few piece of info, when horiz - all info is seen
     }
@@ -97,6 +99,7 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
 
     class InfoViewHolder extends RecyclerView.ViewHolder {
 
+        TextView tvInfoItemPortfolio;
         TextView tvInfoItemTicker;
         TextView tvInfoItemType;
         TextView tvInfoItemDate;
@@ -109,6 +112,7 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
         public InfoViewHolder(View itemView) {
             super(itemView);
 
+            tvInfoItemPortfolio = (TextView) itemView.findViewById(R.id.tv_portfolio);
             tvInfoItemTicker = (TextView) itemView.findViewById(R.id.tv_info_item_ticker);
             tvInfoItemType = (TextView) itemView.findViewById(R.id.tv_info_item_type);
             tvInfoItemDate = (TextView) itemView.findViewById(R.id.tv_info_item_date);
@@ -119,12 +123,14 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
             tableRowInfo = (TableRow) itemView.findViewById(R.id.tr_info_deal);
         }
 
-        void bind(String lTicker,
+        void bind(String lPortfolio,
+                  String lTicker,
                   String lType,
                   String lDate,
                   int lPrice,
                   int lVolume,
                   int lFee) {
+            tvInfoItemPortfolio.setText(lPortfolio);
             tvInfoItemTicker.setText(lTicker);
             tvInfoItemType.setText(lType);
             tvInfoItemDate.setText(lDate);

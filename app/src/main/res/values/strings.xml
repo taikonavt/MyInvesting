@@ -20,6 +20,8 @@
     <string name="hint_eTTicker">SBER</string>
     <string name="hint_tVTicker">Ticker:</string>
     <string name="hint_tVType">Type:</string>
+    <string name="hint_tVPortfolio">Portfolio:</string>
+    <string name="hint_eTPortfolio">123ABC</string>
 
     <string-array name="spinType_array">
         <item>Sell</item>

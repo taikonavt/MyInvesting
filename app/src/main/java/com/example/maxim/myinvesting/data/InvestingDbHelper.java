@@ -32,9 +32,11 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
                         DealsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
+                        DealsEntry.COLUMN_PORTFOLIO + " STRING, " +
+
                         DealsEntry.COLUMN_TICKER + " STRING, " +
 
-                        // тип бумаги: S - акция, B - облигация, D - дивиденд, T - налог
+                        // тип операции: Sell, Buy
                         DealsEntry.COLUMN_TYPE + " STRING NOT NULL, " +
 
                         DealsEntry.COLUMN_DATE + " INTEGER NOT NULL, " +

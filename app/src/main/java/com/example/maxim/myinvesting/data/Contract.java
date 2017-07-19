@@ -1,6 +1,7 @@
 package com.example.maxim.myinvesting.data;
 
 import android.net.Uri;
+import android.os.StrictMode;
 import android.provider.BaseColumns;
 
 /**
@@ -26,6 +27,9 @@ public class Contract {
 
         public static final String TABLE_NAME = "deals";
 
+        // Номер портфеля
+        public static final String COLUMN_PORTFOLIO = "portfolio";
+
         // Тикер акции или номер облигации
         public static final String COLUMN_TICKER = "ticker";
 
@@ -33,8 +37,7 @@ public class Contract {
         public static final String COLUMN_TYPE = "type";
 
         // Дата проведения операции в виде 1702
-        // todo испаравить на "date" когда буду менять таблицу
-        public static final String COLUMN_DATE = "data";
+        public static final String COLUMN_DATE = "date";
 
         //Цена сделки
         public static final String COLUMN_PRICE = "price";

@@ -24,6 +24,7 @@ import java.util.Calendar;
 
 public class AddDealActivity extends AppCompatActivity {
     // TODO: 23.05.17 NEXT: add page for input transaction
+    EditText eTPortfolio;
     EditText eTTicker;
     Spinner spinnerType;
     EditText eTYear;
@@ -39,6 +40,7 @@ public class AddDealActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_add_deal);
 
+        eTPortfolio = (EditText) findViewById(R.id.eTPortfolio);
         eTTicker = (EditText) findViewById(R.id.eTTicker);
         spinnerType = (Spinner) findViewById(R.id.spinnerType);
         eTYear = (EditText) findViewById(R.id.eTYear);
@@ -49,6 +51,7 @@ public class AddDealActivity extends AppCompatActivity {
         eTFee = (EditText) findViewById(R.id.eTFee);
     }
 
+    String portfolio;
     String ticker;
     String type;
     int year;
@@ -61,6 +64,11 @@ public class AddDealActivity extends AppCompatActivity {
     public void onClick(View view) {
 
         try {
+
+            portfolio = eTPortfolio.getText().toString();
+            if (portfolio.length() == 0)
+                throw new UnsupportedOperationException("Portfolio не задан");
+
             ticker = eTTicker.getText().toString();
             if (ticker.length() == 0)
                 throw new UnsupportedOperationException("Ticker не задан");
@@ -128,6 +136,7 @@ public class AddDealActivity extends AppCompatActivity {
 
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put(Contract.DealsEntry.COLUMN_PORTFOLIO, portfolio);
         contentValues.put(Contract.DealsEntry.COLUMN_TICKER, ticker);
         contentValues.put(Contract.DealsEntry.COLUMN_TYPE, type);
         contentValues.put(Contract.DealsEntry.COLUMN_DATE,
