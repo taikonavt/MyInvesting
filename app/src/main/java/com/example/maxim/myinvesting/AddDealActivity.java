@@ -142,7 +142,7 @@ public class AddDealActivity extends AppCompatActivity {
         Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
 
 
-        // удалить потом
+        // todo удалить потом
         ContentValues contentValues1 = new ContentValues();
 
         contentValues1.put(Contract.InputEntry.COLUMN_TYPE, "i");

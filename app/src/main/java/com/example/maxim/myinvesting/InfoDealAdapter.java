@@ -124,7 +124,11 @@ Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
             tvInfoItemPrice.setText(String.valueOf(lPrice));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
             //tvInfoItemFee.setText(String.valueOf(lFee));
-Log.d(TAG, lType);
+
+//            switch (lType) {
+//                case S
+//            }
+
         }
     }
 }

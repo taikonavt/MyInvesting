@@ -22,9 +22,8 @@
     <string name="hint_tVType">Type:</string>
 
     <string-array name="spinType_array">
-        <item>S</item>
-        <item>B</item>
-        <item>D</item>
+        <item>Sell</item>
+        <item>Buy</item>
     </string-array>
 
     <string name="hint_eTYear">yy</string>

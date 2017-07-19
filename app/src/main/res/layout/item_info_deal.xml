@@ -16,9 +16,10 @@
         >
 
         <TableRow
+            android:id="@+id/tr_info_deal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorBuy">
+            >
 
             <TextView
                 android:id="@+id/tv_info_item_ticker"
