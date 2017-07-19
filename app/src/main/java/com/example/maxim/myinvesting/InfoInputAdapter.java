@@ -58,7 +58,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         int fee = mCursor.getInt(feeIndex);
         int portfolio = mCursor.getInt(portfoiloIndex);
         String note = mCursor.getString(noteIndex);
-Log.d(TAG, type);
+
         holder.itemView.setTag(id);
 
         String dateNormal = DateUtils.getNormalTimeForMoscow(dateInMillis);

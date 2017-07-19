@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements
             // Transaction
             case 2:
                 drawerLayout.closeDrawers();
-                Intent intent = new Intent(this, AddDealActivity.class);
+                Intent intent = new Intent(this, AddInputActivity.class);
                 startActivity(intent);
                 break;
 

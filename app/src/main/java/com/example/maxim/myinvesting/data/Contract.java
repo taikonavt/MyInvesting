@@ -58,6 +58,7 @@ public class Contract {
 
         public static final String TABLE_NAME = "input";
 
+        // input, output
         public static final String COLUMN_TYPE = "type";
 
         public static final String COLUMN_DATE = "date";

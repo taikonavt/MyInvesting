@@ -21,6 +21,10 @@
             android:name=".AddDealActivity">
         </activity>
 
+        <activity
+            android:name=".AddInputActivity">
+        </activity>
+
         <provider
             android:authorities="com.example.maxim.myinvesting"
             android:name=".data.InvestingProvider"

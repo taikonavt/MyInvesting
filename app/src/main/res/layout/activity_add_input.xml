@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.maxim.myinvesting.AddDealActivity"
+    tools:context="com.example.maxim.myinvesting.AddInputActivity"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     >
@@ -20,11 +20,11 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
             android:text="@string/hint_tVPortfolio"
-            app:layout_constraintTop_toTopOf="@+id/eTPortfolio"
-            app:layout_constraintBottom_toBottomOf="@+id/eTPortfolio"
+            app:layout_constraintTop_toTopOf="@+id/eTPortfolio_input"
+            app:layout_constraintBottom_toBottomOf="@+id/eTPortfolio_input"
             android:layout_marginBottom="0dp"
             app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintRight_toLeftOf="@+id/eTPortfolio"
+            app:layout_constraintRight_toLeftOf="@+id/eTPortfolio_input"
             android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -33,7 +33,7 @@
             app:layout_constraintHorizontal_bias="0.5" />
 
         <EditText
-            android:id="@+id/eTPortfolio"
+            android:id="@+id/eTPortfolio_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
@@ -52,55 +52,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
-            android:text="@string/hint_tVTicker"
-            app:layout_constraintTop_toTopOf="@+id/eTTicker"
-            app:layout_constraintBottom_toBottomOf="@+id/eTTicker"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintRight_toLeftOf="@+id/eTTicker"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.5" />
-
-        <EditText
-            android:id="@+id/eTTicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_for_fields"
-            android:ems="5"
-            android:inputType="textCapCharacters"
-            android:hint="@string/hint_eTTicker"
-            app:layout_constraintTop_toBottomOf="@+id/eTPortfolio"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toLeftOf="@+id/eTPortfolio" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_for_fields"
             android:text="@string/hint_tVDate"
-            app:layout_constraintTop_toTopOf="@+id/eTDay"
+            app:layout_constraintTop_toTopOf="@+id/eTDay_input"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/eTDay"
+            app:layout_constraintBottom_toBottomOf="@+id/eTDay_input"
             android:layout_marginBottom="8dp"
             app:layout_constraintVertical_bias="0.4"
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintRight_toLeftOf="@+id/eTDay"
+            app:layout_constraintRight_toLeftOf="@+id/eTDay_input"
             android:layout_marginRight="8dp"
             app:layout_constraintHorizontal_bias="0.5"
             />
 
         <EditText
-            android:id="@+id/eTDay"
+            android:id="@+id/eTDay_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="date"
@@ -111,30 +79,30 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/eTYear"
+            app:layout_constraintBottom_toBottomOf="@+id/eTYear_input"
             app:layout_constraintVertical_bias="0.0"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/eTTicker"
+            app:layout_constraintTop_toBottomOf="@+id/eTPortfolio_input"
             android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toLeftOf="@+id/eTTicker"
+            app:layout_constraintLeft_toLeftOf="@+id/eTPortfolio_input"
             app:layout_constraintHorizontal_bias="0.0" />
 
         <TextView
-            android:id="@+id/slash1"
+            android:id="@+id/slash1_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
             android:text="@string/hint_slash"
-            app:layout_constraintLeft_toRightOf="@+id/eTDay"
-            app:layout_constraintTop_toTopOf="@+id/eTDay"
+            app:layout_constraintLeft_toRightOf="@+id/eTDay_input"
+            app:layout_constraintTop_toTopOf="@+id/eTDay_input"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/eTDay"
+            app:layout_constraintBottom_toBottomOf="@+id/eTDay_input"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="0dp"
             app:layout_constraintVertical_bias="0.4" />
 
         <EditText
-            android:id="@+id/eTMonth"
+            android:id="@+id/eTMonth_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="date"
@@ -147,22 +115,22 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toRightOf="@+id/slash1"
-            app:layout_constraintTop_toTopOf="@+id/eTDay"
-            app:layout_constraintBottom_toBottomOf="@+id/eTDay"
+            app:layout_constraintLeft_toRightOf="@+id/slash1_input"
+            app:layout_constraintTop_toTopOf="@+id/eTDay_input"
+            app:layout_constraintBottom_toBottomOf="@+id/eTDay_input"
             app:layout_constraintVertical_bias="1.0"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp" />
 
         <TextView
-            android:id="@+id/slash2"
+            android:id="@+id/slash2_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
             android:text="@string/hint_slash"
-            app:layout_constraintLeft_toRightOf="@+id/eTMonth"
-            app:layout_constraintTop_toTopOf="@+id/eTMonth"
-            app:layout_constraintBottom_toBottomOf="@+id/eTMonth"
+            app:layout_constraintLeft_toRightOf="@+id/eTMonth_input"
+            app:layout_constraintTop_toTopOf="@+id/eTMonth_input"
+            app:layout_constraintBottom_toBottomOf="@+id/eTMonth_input"
             android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -172,7 +140,7 @@
             android:layout_marginBottom="8dp" />
 
         <EditText
-            android:id="@+id/eTYear"
+            android:id="@+id/eTYear_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="date"
@@ -185,9 +153,9 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.08"
             android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toRightOf="@+id/slash2"
-            app:layout_constraintTop_toTopOf="@+id/eTMonth"
-            app:layout_constraintBottom_toBottomOf="@+id/eTMonth"
+            app:layout_constraintLeft_toRightOf="@+id/slash2_input"
+            app:layout_constraintTop_toTopOf="@+id/eTMonth_input"
+            app:layout_constraintBottom_toBottomOf="@+id/eTMonth_input"
             android:layout_marginBottom="0dp"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -200,37 +168,37 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toTopOf="@+id/spinnerType"
+            app:layout_constraintTop_toTopOf="@+id/spinnerType_input"
             android:layout_marginTop="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/spinnerType"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerType_input"
             android:layout_marginBottom="0dp"
             app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintRight_toLeftOf="@+id/spinnerType"
+            app:layout_constraintRight_toLeftOf="@+id/spinnerType_input"
             android:layout_marginRight="8dp"
             app:layout_constraintHorizontal_bias="0.5" />
 
         <Spinner
-            android:id="@+id/spinnerType"
+            android:id="@+id/spinnerType_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/eTDay"
+            app:layout_constraintTop_toBottomOf="@+id/eTDay_input"
             android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toLeftOf="@+id/eTDay"
-            android:entries="@array/spinType_deal_array"
+            app:layout_constraintLeft_toLeftOf="@+id/eTDay_input"
+            android:entries="@array/spinType_input_array"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
-            android:text="@string/hint_tVPrice"
-            app:layout_constraintTop_toTopOf="@+id/eTPrice"
+            android:text="@string/hint_tVAmount"
+            app:layout_constraintTop_toTopOf="@+id/eTAmount_input"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/eTPrice"
+            app:layout_constraintBottom_toBottomOf="@+id/eTAmount_input"
             android:layout_marginBottom="8dp"
             app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintRight_toLeftOf="@+id/spinnerType"
+            app:layout_constraintRight_toLeftOf="@+id/spinnerType_input"
             android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -239,7 +207,7 @@
             android:layout_marginEnd="8dp" />
 
         <EditText
-            android:id="@+id/eTPrice"
+            android:id="@+id/eTAmount_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
@@ -253,54 +221,19 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerType" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_for_fields"
-            android:text="@string/hint_tVVolume"
-            app:layout_constraintTop_toTopOf="@+id/eTVolume"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/eTVolume"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintRight_toLeftOf="@+id/eTTicker"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.5" />
-
-        <EditText
-            android:id="@+id/eTVolume"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_for_fields"
-            android:ems="5"
-            android:inputType="number"
-            android:layout_marginTop="24dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintTop_toBottomOf="@+id/eTPrice" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerType_input" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
             android:text="@string/hint_tVFee"
-            app:layout_constraintTop_toTopOf="@+id/eTFee"
+            app:layout_constraintTop_toTopOf="@+id/eTFee_input"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/eTFee"
+            app:layout_constraintBottom_toBottomOf="@+id/eTFee_input"
             android:layout_marginBottom="8dp"
             app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintRight_toLeftOf="@+id/eTFee"
+            app:layout_constraintRight_toLeftOf="@+id/eTFee_input"
             android:layout_marginRight="6dp"
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -309,7 +242,7 @@
             app:layout_constraintHorizontal_bias="0.5" />
 
         <EditText
-            android:id="@+id/eTFee"
+            android:id="@+id/eTFee_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_for_fields"
@@ -323,7 +256,41 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintTop_toBottomOf="@+id/eTVolume" />
+            app:layout_constraintTop_toBottomOf="@+id/eTAmount_input" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:text="@string/hint_tVNote"
+            app:layout_constraintTop_toTopOf="@+id/eTNote_input"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eTNote_input"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintRight_toLeftOf="@+id/eTNote_input"
+            android:layout_marginRight="6dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="6dp"
+            app:layout_constraintHorizontal_bias="0.5" />
+
+        <EditText
+            android:id="@+id/eTNote_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_for_fields"
+            android:ems="5"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintTop_toBottomOf="@+id/eTFee_input" />
 
         <Button
             android:layout_width="wrap_content"
@@ -332,8 +299,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/eTFee"
-            android:onClick="onClick"/>
+            app:layout_constraintTop_toBottomOf="@+id/eTNote_input"
+            android:onClick="onClick"
+            />
 
     </android.support.constraint.ConstraintLayout>
 

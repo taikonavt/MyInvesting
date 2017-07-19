@@ -16,16 +16,22 @@
 
 
     <!-- Hints -->
-    <!-- activity_add_deal -->
+    <!-- activity_add_deal.xml -->
+    <!-- activity_add_input.xml -->
     <string name="hint_eTTicker">SBER</string>
     <string name="hint_tVTicker">Ticker:</string>
     <string name="hint_tVType">Type:</string>
     <string name="hint_tVPortfolio">Portfolio:</string>
     <string name="hint_eTPortfolio">123ABC</string>
 
-    <string-array name="spinType_array">
+    <string-array name="spinType_deal_array">
         <item>Sell</item>
         <item>Buy</item>
+    </string-array>
+
+    <string-array name="spinType_input_array">
+        <item>Input</item>
+        <item>Output</item>
     </string-array>
 
     <string name="hint_eTYear">yy</string>
@@ -38,6 +44,8 @@
     <string name="hint_tVVolume">Volume:</string>
     <string name="hint_tVFee">Fee:</string>
     <string name="hint_btnReady">Ready</string>
+    <string name="hint_tVAmount">Amount</string>
+    <string name="hint_tVNote">Note</string>
 
 
     <!-- activity_info_deal -->
