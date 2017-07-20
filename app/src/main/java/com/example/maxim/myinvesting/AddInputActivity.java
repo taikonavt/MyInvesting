@@ -72,8 +72,6 @@ public class AddInputActivity extends AppCompatActivity {
             type = spinnerType.getSelectedItem().toString();
 
             year = Integer.valueOf(eTYear.getText().toString());
-            if (year == 0)
-                throw new UnsupportedOperationException("Year не задан");
 
             // ввел это условие т.к. все мои вводы были сделаны после 2014 года
             if (year + 2000 > Calendar.getInstance().get(Calendar.YEAR)
@@ -89,13 +87,9 @@ public class AddInputActivity extends AppCompatActivity {
             } else year = year + 2000;
 
             month = Integer.valueOf(eTMonth.getText().toString());
-            if (month == 0)
-                throw new UnsupportedOperationException("Month не задан");
             month = month - 1; // перевожу в значения константы Calendar.MONTH
 
             day = Integer.valueOf(eTDay.getText().toString());
-            if (day == 0)
-                throw new UnsupportedOperationException("Day не задан");
 
             String strAmount = eTAmount.getText().toString();
             if (strAmount.length() == 0)

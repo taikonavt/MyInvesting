@@ -102,12 +102,18 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             // Transaction
-            case 2:
+            case 2: {
+                drawerLayout.closeDrawers();
+                Intent intent = new Intent(this, AddDealActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case 3: {
                 drawerLayout.closeDrawers();
                 Intent intent = new Intent(this, AddInputActivity.class);
                 startActivity(intent);
                 break;
-
+            }
             default:
                 Toast.makeText(this, "Неизвестная команда", Toast.LENGTH_LONG).show();
         }

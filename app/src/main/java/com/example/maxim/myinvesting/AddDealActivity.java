@@ -51,15 +51,15 @@ public class AddDealActivity extends AppCompatActivity {
         eTFee = (EditText) findViewById(R.id.eTFee);
     }
 
-    String portfolio;
-    String ticker;
-    String type;
-    int year;
-    int month;
-    int day;
-    int price;
-    int volume;
-    int fee;
+    String portfolio = null;
+    String ticker = null;
+    String type = null;
+    int year = 0;
+    int month = 0;
+    int day = 0;
+    int price = 0;
+    int volume = 0;
+    int fee = 0;
 
     public void onClick(View view) {
 
@@ -97,6 +97,9 @@ public class AddDealActivity extends AppCompatActivity {
             day = Integer.valueOf(eTDay.getText().toString());
 
             String strPrice = eTPrice.getText().toString();
+            if (strPrice.length() == 0)
+                throw new UnsupportedOperationException("Price не задан");
+
             Float floatPrice = Float.valueOf(strPrice);
             //цену акции умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
             // т.к. на бирже акций меньше 0,0001 нет
@@ -107,10 +110,16 @@ public class AddDealActivity extends AppCompatActivity {
                 throw new UnsupportedOperationException("Разряд числа price не поддерживается");
             }
 
-            volume = Integer.valueOf(eTVolume.getText().toString());
+            String strVolume = eTVolume.getText().toString();
+            if (strVolume.length() == 0)
+                throw new UnsupportedOperationException("Volume не задан");
+            volume = Integer.valueOf(strVolume);
 
             // TODO: 19.07.17 изменить 10000 на 100, т.к. комиссия не может быть меньше копейки
             String strFee = eTFee.getText().toString();
+            if (strFee.length() == 0)
+                throw new UnsupportedOperationException("Fee не задан");
+
             Float floatFee = Float.valueOf(strFee);
             //коммисию умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
             // и привожу к int. если есть значение после запятой оно будет отброшено

@@ -8,7 +8,8 @@
     <string-array name="drawer_items_array">
         <item>Deal</item>
         <item>Inputs</item>
-        <item>Add transaction</item>
+        <item>Add deal</item>
+        <item>Add input</item>
     </string-array>
 
     <string name="drawer_open"> Open navigation drawer</string>
