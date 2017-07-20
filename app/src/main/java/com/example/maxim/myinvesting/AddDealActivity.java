@@ -90,7 +90,7 @@ public class AddDealActivity extends AppCompatActivity {
                 year = year + 1900;
             } else year = year + 2000;
 
-
+            // TODO: 19.07.17 Проверить работоспособность при постом поле, ввести исключения
             month = Integer.valueOf(eTMonth.getText().toString());
             month = month - 1; // перевожу в значения константы Calendar.MONTH
 
@@ -109,12 +109,13 @@ public class AddDealActivity extends AppCompatActivity {
 
             volume = Integer.valueOf(eTVolume.getText().toString());
 
+            // TODO: 19.07.17 изменить 10000 на 100, т.к. комиссия не может быть меньше копейки
             String strFee = eTFee.getText().toString();
             Float floatFee = Float.valueOf(strFee);
             //коммисию умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
+            // и привожу к int. если есть значение после запятой оно будет отброшено
             fee = (int) (floatFee * MULTIPLIER_FOR_MONEY);
             // если price и floatprice не равны значит разрядность цены слишком мала
-            //  и часть после запятой будет отброшена
             if (fee != floatFee * MULTIPLIER_FOR_MONEY)
                 throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
             fee = Integer.valueOf(eTFee.getText().toString());
