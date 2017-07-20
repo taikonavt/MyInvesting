@@ -69,7 +69,7 @@ Log.d(TAG, "InfoFragment.onCreateView");
                 int id = (int) viewHolder.itemView.getTag();
 
                 String stringId = Integer.toString(id);
-                Uri uri = Contract.DealsEntry.CONTENT_URI;
+                Uri uri = getUri();
                 uri = uri.buildUpon().appendPath(stringId).build();
 
                 getContext().getContentResolver().delete(uri, null, null);
@@ -93,4 +93,6 @@ Log.d(TAG, "InfoFragment.onCreateView");
     public abstract Loader<Cursor> onCreateLoader(int id, Bundle args);
 
     public abstract RecyclerView.Adapter getAdapter();
+
+    public abstract Uri getUri();
 }

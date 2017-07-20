@@ -1,6 +1,7 @@
 package com.example.maxim.myinvesting;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -25,6 +26,12 @@ public class InfoDealFragment extends InfoFragment {
 Log.d(TAG, "InfoDealFragment.getAdapter");
         mAdapter = new InfoDealAdapter();
         return mAdapter;
+    }
+
+    // возвращает CONTENT_URI для InfoFragment.onSwiped();
+    @Override
+    public Uri getUri() {
+        return Contract.DealsEntry.CONTENT_URI;
     }
 
     @Override
