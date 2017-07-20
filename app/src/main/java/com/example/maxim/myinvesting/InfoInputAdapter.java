@@ -2,11 +2,13 @@ package com.example.maxim.myinvesting;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
@@ -54,7 +56,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         String type = mCursor.getString(typeIndex);
         long dateInMillis = mCursor.getLong(dateIndex);
         int amount = mCursor.getInt(amountIndex);
-        int currency = mCursor.getInt(currencyIndex);
+        String currency = mCursor.getString(currencyIndex);
         int fee = mCursor.getInt(feeIndex);
         int portfolio = mCursor.getInt(portfoiloIndex);
         String note = mCursor.getString(noteIndex);
@@ -102,6 +104,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         TextView tvInfoInputItemFee;
         TextView tvInfoInputItemPortfolio;
         TextView tvInfoInputItemNote; // TODO: 16.05.17 Добавить Note для горизонт. экрана
+        TableRow tableRowInput;
 
         public InfoViewHolder(View itemView) {
             super(itemView);
@@ -109,24 +112,39 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             tvInfoInputItemType = (TextView) itemView.findViewById(R.id.tv_info_input_item_type);
             tvInfoInputItemDate = (TextView) itemView.findViewById(R.id.tv_info_input_item_date);
             tvInfoInputItemAmount = (TextView) itemView.findViewById(R.id.tv_info_input_item_amount);
-            tvInfoInputItemCurrency = (TextView) itemView.findViewById(R.id.tv_info_input_item_currency);
+            //tvInfoInputItemCurrency = (TextView) itemView.findViewById(R.id.tv_info_input_item_currency);
             tvInfoInputItemFee = (TextView) itemView.findViewById(R.id.tv_info_input_item_fee);
             tvInfoInputItemPortfolio = (TextView) itemView.findViewById(R.id.tv_info_input_item_portfolio);
+            tableRowInput = (TableRow) itemView.findViewById(R.id.tr_info_input);
+
         }
 
         void bind(String lType,
                   String lDate,
                   int lAmount,
-                  int lCurrency,
+                  String lCurrency,
                   int lFee,
                   int lPortfolio,
                   String lNote) {
             tvInfoInputItemType.setText(lType);
             tvInfoInputItemDate.setText(lDate);
-            tvInfoInputItemAmount.setText(String.valueOf(lAmount));
-            tvInfoInputItemCurrency.setText(String.valueOf(lCurrency));
-            tvInfoInputItemFee.setText(String.valueOf(lFee));
+            tvInfoInputItemAmount.setText(String.valueOf(lAmount) + " " + lCurrency);
+            tvInfoInputItemFee.setText("- " + String.valueOf(lFee) + " " + lCurrency);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
+
+            switch (lType) {
+                case "Output": tableRowInput.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorSell));
+                    break;
+
+                case "Input": tableRowInput.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorBuy));
+                    break;
+
+                default:
+                    tableRowInput.setBackgroundColor(0);
+                    Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
+            }
         }
     }
 }

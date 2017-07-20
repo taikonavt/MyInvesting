@@ -82,6 +82,12 @@ public class AddInputActivity extends AppCompatActivity {
                         ("В это время сделка не могла быть выполнена");
             }
 
+            // проверяем введенную дату(двухзначную): если больше текущей значит 1900,
+            // если нет - 2000
+            if ((year + 2000) > Calendar.getInstance().get(Calendar.YEAR)) {
+                year = year + 1900;
+            } else year = year + 2000;
+
             month = Integer.valueOf(eTMonth.getText().toString());
             if (month == 0)
                 throw new UnsupportedOperationException("Month не задан");
@@ -141,7 +147,8 @@ public class AddInputActivity extends AppCompatActivity {
         contentValues.put(Contract.InputEntry.COLUMN_TYPE, type);
         contentValues.put(Contract.InputEntry.COLUMN_DATE,
                 DateUtils.getTimeForMoscowInMillis(year, month, day));
-
+Log.d(TAG, Integer.toString(year) + "/" + Integer.toString(month) + "/" + Integer.toString(day) + "y/m/d");
+Log.d(TAG, Long.toString(DateUtils.getTimeForMoscowInMillis(year, month, day)) + " time in milis to DB");
         contentValues.put(Contract.InputEntry.COLUMN_AMOUNT, amount);
         contentValues.put(Contract.InputEntry.COLUMN_CURRENCY, currency);
         contentValues.put(Contract.InputEntry.COLUMN_FEE, fee);
