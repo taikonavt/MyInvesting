@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -135,20 +134,6 @@ public class MainActivity extends AppCompatActivity implements
                 fragment = new InfoInputFragment();
                 showFragment();
                 break;
-
-            // Transaction
-            case 2: {
-                drawerLayout.closeDrawers();
-                Intent intent = new Intent(this, AddDealActivity.class);
-                startActivity(intent);
-                break;
-            }
-            case 3: {
-                drawerLayout.closeDrawers();
-                Intent intent = new Intent(this, AddInputActivity.class);
-                startActivity(intent);
-                break;
-            }
             default:
                 Toast.makeText(this, "Неизвестная команда", Toast.LENGTH_LONG).show();
         }
