@@ -2,6 +2,7 @@ package com.example.maxim.myinvesting;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.maxim.myinvesting.data.Contract;
+
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 public class MainActivity extends AppCompatActivity implements
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
-    private Fragment fragment = null;
+    private InfoFragment fragment = null;
     private ListView drawer = null;
 
     @Override
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // если экран пустой, то показываем Deal фрагмент
         if (getFragmentManager().findFragmentById(R.id.ll_main_activity) == null) {
-            showFragment(fragment);
+            showFragment();
         }
 
         drawer = (ListView) findViewById(R.id.drawer);
@@ -57,7 +60,14 @@ public class MainActivity extends AppCompatActivity implements
 
         //кнопка для открытия sliding меню
         drawerLayout.addDrawerListener(toggle);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.info_fragment_menu, menu);
+        return true;
     }
 
     @Override
@@ -81,6 +91,31 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
 
+        // срабатывает при нажатии кнопки "add"
+        switch (item.getItemId()) {
+            case R.id.add_info_fragment:
+
+                try {
+
+                    // получаем Uri фрагмента. В зависимости от полученного uri вызываем тот или иной фрагмент
+                    Uri uri = fragment.getUri();
+
+                    if (uri == Contract.DealsEntry.CONTENT_URI) {
+                        drawerLayout.closeDrawers();
+                        Intent intent = new Intent(this, AddDealActivity.class);
+                        startActivity(intent);
+                    } else if (uri == Contract.InputEntry.CONTENT_URI) {
+                        drawerLayout.closeDrawers();
+                        Intent intent = new Intent(this, AddInputActivity.class);
+                        startActivity(intent);
+                    } else throw new UnsupportedOperationException
+                            ("MainActivity.java, onOptionItemSelected, Unknown Uri");
+                } catch (UnsupportedOperationException e) {
+                    Log.d(TAG, e.toString());
+                    e.printStackTrace();
+                }
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -91,14 +126,14 @@ public class MainActivity extends AppCompatActivity implements
             case 0:
                 drawerLayout.closeDrawers();
                 fragment = new InfoDealFragment();
-                showFragment(fragment);
+                showFragment();
                 break;
 
             // Inputs
             case 1:
                 drawerLayout.closeDrawers();
                 fragment = new InfoInputFragment();
-                showFragment(fragment);
+                showFragment();
                 break;
 
             // Transaction
@@ -119,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void showFragment(Fragment fragment) {
+    private void showFragment() {
         // срабатывает при запуске программы
         if (fragment == null) {
             fragment = new InfoDealFragment();

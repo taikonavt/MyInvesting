@@ -49,9 +49,6 @@ Log.d(TAG, "InfoFragment.onCreateView");
 
         mRecyclerView.setAdapter(mAdapter);
 
-        // удаляю потому что относится к MainActivity?
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getLoaderManager().initLoader(0, null, this);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
