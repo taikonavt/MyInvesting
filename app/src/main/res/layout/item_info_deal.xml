@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:stretchColumns="6"
         >
 
         <TableRow
@@ -23,43 +24,52 @@
 
             <TextView
                 android:id="@+id/tv_info_item_ticker"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
-                android:layout_weight="4"
                 android:textSize="@dimen/text_size_for_info_item"
                 tools:text="SBER"
-                android:padding="@dimen/padding_info_item"/>
+                android:padding="@dimen/padding_info_item"
+                android:layout_span="1"
+                android:layout_column="1"
+                />
 
             <TextView
                 android:id="@+id/tv_info_item_date"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
-                android:layout_weight="6"
                 android:textSize="@dimen/text_size_for_info_item"
                 tools:text="01/02/17"
-                android:padding="@dimen/padding_info_item"/>
+                android:padding="@dimen/padding_info_item"
+                android:layout_column="2"
+                android:layout_span="1"
+                />
 
             <TextView
                 android:id="@+id/tv_portfolio"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:layout_weight="12"
+                android:layout_gravity="center_vertical|center"
                 android:padding="@dimen/padding_info_item"
                 android:textSize="@dimen/small_text_size_for_info_item"
-                tools:text="6611001" />
+                tools:text="6611001"
+                android:layout_span="3"
+                android:layout_column="4"
+                />
 
             <ImageButton
                 android:id="@+id/ib_delete"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|end"
+                android:paddingRight="6dp"
+                android:paddingEnd="6dp"
                 android:src="@drawable/ic_delete_black_24px"
                 android:background="@null"
                 android:tint="@color/colorBasket"
-                android:layout_weight="1"
+                android:layout_column="7"
+                android:layout_span="1"
                 />
 
         </TableRow>
@@ -70,66 +80,80 @@
 
             <TextView
                 android:id="@+id/tv_info_item_type"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:textSize="@dimen/text_size_for_info_item"
                 tools:text="Sell"
                 android:padding="@dimen/padding_info_item"
                 android:layout_weight="4"
+                android:layout_column="1"
                 />
 
             <TextView
                 android:id="@+id/tv_info_item_price"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:textSize="@dimen/small_text_size_for_info_item"
                 tools:text="162"
                 android:padding="@dimen/padding_info_item"
                 android:layout_weight="2"
+                android:layout_column="2"
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:textSize="@dimen/small_text_size_for_info_item"
                 android:text="x"
                 android:padding="@dimen/padding_info_item"
                 android:layout_weight="1"
+                android:layout_column="3"
                 />
 
             <TextView
                 android:id="@+id/tv_info_item_volume"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:textSize="@dimen/small_text_size_for_info_item"
                 tools:text="100"
                 android:padding="@dimen/padding_info_item"
                 android:layout_weight="1"
+                android:layout_column="4"
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:textSize="@dimen/small_text_size_for_info_item"
                 android:text="="
                 android:padding="@dimen/padding_info_item"
                 android:layout_weight="1"
+                android:layout_column="5"
                 />
 
             <TextView
                 android:id="@+id/tv_info_item_cost"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
+                android:layout_gravity="center_vertical|center"
                 android:textSize="@dimen/small_text_size_for_info_item"
                 tools:text="16200"
                 android:padding="@dimen/padding_info_item"
                 android:layout_weight="10"
+                android:layout_column="6"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_info_item"
+                android:layout_weight="1"
+                android:layout_column="7"
                 />
 
         </TableRow>
