@@ -18,6 +18,8 @@ public class Contract {
 
     public static final String PATH_INPUT = "input";
 
+    public static final String PATH_PORTFOLIO = "portfolio";
+
 
     public static final class DealsEntry implements BaseColumns {
 
@@ -72,6 +74,19 @@ public class Contract {
         public static final String COLUMN_PORTFOLIO = "portfolio";
 
         public static final String COLUMN_NOTE = "note";
+    }
+
+    public static final class PortfolioEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_PORTFOLIO)
+                .build();
+
+        public static final String TABLE_NAME = "portfolio";
+
+        public static final String COLUMN_TICKER = "ticker";
+
+        public static final String COLUMN_VOLUME = "volume";
     }
 
 }

@@ -30,7 +30,7 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
 
-    private static final int INFO_DEAL_LOADER_ID = 11;
+    private static final int INFO_LOADER_ID = 11;
 
     @Nullable
     @Override
@@ -71,7 +71,7 @@ Log.d(TAG, "InfoFragment.onCreateView");
 
                 getContext().getContentResolver().delete(uri, null, null);
 
-                getLoaderManager().restartLoader(INFO_DEAL_LOADER_ID,
+                getLoaderManager().restartLoader(INFO_LOADER_ID,
                         null, InfoFragment.this);
             }
         }).attachToRecyclerView(mRecyclerView);
@@ -83,7 +83,7 @@ Log.d(TAG, "InfoFragment.onCreateView");
     public void onResume() {
         super.onResume();
 
-        getLoaderManager().restartLoader(INFO_DEAL_LOADER_ID, null, this);
+        getLoaderManager().restartLoader(INFO_LOADER_ID, null, this);
     }
 
     @Override
@@ -91,5 +91,6 @@ Log.d(TAG, "InfoFragment.onCreateView");
 
     public abstract RecyclerView.Adapter getAdapter();
 
+    // используется для определения какой фрагмент сейчас активен
     public abstract Uri getUri();
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 import com.example.maxim.myinvesting.data.Contract.DealsEntry;
 import com.example.maxim.myinvesting.data.Contract.InputEntry;
+import com.example.maxim.myinvesting.data.Contract.PortfolioEntry;
 
 /**
  * Created by maxim on 26.03.17.
@@ -27,11 +28,13 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        // TODO: 25.07.17 добавить валюту сделки
         final String SQL_CREATE_DEALS_TABLE =
                 "CREATE TABLE " + DealsEntry.TABLE_NAME + " (" +
 
                         DealsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
+                        // номер портфеля
                         DealsEntry.COLUMN_PORTFOLIO + " STRING, " +
 
                         DealsEntry.COLUMN_TICKER + " STRING, " +
@@ -39,13 +42,16 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
                         // тип операции: Sell, Buy
                         DealsEntry.COLUMN_TYPE + " STRING NOT NULL, " +
 
+                        // дата сделки
                         DealsEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
 
-                        // цена на одну единицу товара в копейках
+                        // цена одной акции
                         DealsEntry.COLUMN_PRICE + " INTEGER NOT NULL, " +
 
+                        // количество акций в сделке
                         DealsEntry.COLUMN_VOLUME + " INTEGER NOT NULL, " +
 
+                        // уплаченная комиссия
                         DealsEntry.COLUMN_FEE + " INTEGER" +
 
                         ");";
@@ -57,6 +63,7 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
                         InputEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
+                        // input, output
                         InputEntry.COLUMN_TYPE + " STRING NOT NULL, " +
 
                         InputEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
@@ -74,12 +81,24 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
                         ");";
 
         db.execSQL(SQL_CREATE_INPUT_TABLE);
+
+        final String SQL_CREATE_PORTFOLIO_TABLE =
+                "CREATE TABLE " + PortfolioEntry.TABLE_NAME + " (" +
+
+                        PortfolioEntry.COLUMN_TICKER + " STRING NOT NULL, " +
+
+                        PortfolioEntry.COLUMN_VOLUME + " INTEGER NOT NULL" +
+
+                        ");";
+
+        db.execSQL(SQL_CREATE_PORTFOLIO_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DealsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + InputEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE ID EXISTS " + PortfolioEntry.TABLE_NAME);
         onCreate(db);
     }
 }
