@@ -23,7 +23,7 @@ public class InfoDealFragment extends InfoFragment {
     // метод используется для доступа к экземпляру адаптера из суперкласса
     @Override
     public RecyclerView.Adapter getAdapter() {
-Log.d(TAG, "InfoDealFragment.getAdapter");
+
         mAdapter = new InfoDealAdapter();
         return mAdapter;
     }
@@ -39,7 +39,7 @@ Log.d(TAG, "InfoDealFragment.getAdapter");
         // TODO: 15.04.17 Добавить возможность загрузки только сделок с определенным тикером
         // TODO: 15.04.17 Добавить возможность загрузки сделок после определенной даты
         //Uri dealsSinceDate = Contract.DealsEntry.
-Log.d(TAG, "InfoDealFragment.onCreateLoader");
+
         String sortOrder = Contract.DealsEntry.COLUMN_DATE + " ASC"; // ASC = по возрастанию
 
         return new CursorLoader(getContext(),

@@ -37,7 +37,7 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_info, container, false);
-Log.d(TAG, "InfoFragment.onCreateView");
+
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_info);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

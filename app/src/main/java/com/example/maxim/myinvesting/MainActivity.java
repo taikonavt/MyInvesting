@@ -3,7 +3,9 @@ package com.example.maxim.myinvesting;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,24 +13,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
-public class MainActivity extends AppCompatActivity implements
-        OnItemClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
     private InfoFragment fragment = null;
-    private ListView drawer = null;
+    private MenuItem itemAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +36,17 @@ public class MainActivity extends AppCompatActivity implements
             showFragment();
         }
 
-        drawer = (ListView) findViewById(R.id.drawer);
+        NavigationView mDrawer = (NavigationView) findViewById(R.id.drawer);
 
-        drawer.setAdapter(new ArrayAdapter<String>(
-                this,
-                R.layout.drawer_row,
-                getResources().getStringArray(R.array.drawer_items_array)
-        ));
-
-        drawer.setOnItemClickListener(this);
+        mDrawer.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        selectDrawerItem(item);
+                        return true;
+                    }
+                }
+        );
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -118,19 +116,23 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
+    // выбор пунктов в drawer меню
+    public void selectDrawerItem(MenuItem item) {
+
+        switch (item.getItemId()) {
+
             // Deals
-            case 0:
+            case R.id.nav_deal_item:
                 drawerLayout.closeDrawers();
+                itemAdd.setVisible(true);
                 fragment = new InfoDealFragment();
                 showFragment();
                 break;
 
             // Inputs
-            case 1:
+            case R.id.nav_input_item:
                 drawerLayout.closeDrawers();
+                itemAdd.setVisible(true);
                 fragment = new InfoInputFragment();
                 showFragment();
                 break;

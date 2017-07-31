@@ -5,10 +5,11 @@
     <string name="deal_btn">Deal info</string>
     <string name="input_btn">Input info</string>
 
-    <string-array name="drawer_items_array">
-        <item>Deal</item>
-        <item>Inputs</item>
-    </string-array>
+    <!-- navigation drawer menu items -->
+    <string name="nav_deal_item">Deals</string>
+    <string name="nav_input_item">Inputs</string>
+    <string name="nav_title_submenu">Portfolios</string>
+    <string name="nev_add_new_subitem">Add new</string>
 
     <string name="drawer_open"> Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
