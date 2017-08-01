@@ -1,5 +1,6 @@
 package com.example.maxim.myinvesting;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -143,9 +144,13 @@ public class MainActivity extends AppCompatActivity {
                 showFragment();
                 break;
 
-            case ADD_BUTTON_ID:
+            // Add new portfolio name
+            case ADD_BUTTON_ID: {
                 drawerLayout.closeDrawers();
-
+                DialogFragment dialogFragment = new EnterPortfolioDialogFragment();
+                dialogFragment.show(getFragmentManager(), "Enter portfolio name fragment");
+                break;
+            }
 
             default:
                 Toast.makeText(this, "Неизвестная команда", Toast.LENGTH_LONG).show();

@@ -54,4 +54,10 @@
     <!-- InfoFragment.class -->
     <string name="add">Add</string>
 
+
+    <!-- enter_name_of_portfolio_dialog_fragment.xml -->
+    <string name="et_df_hint">Enter name of portfolio</string>
+    <string name="btn_df_ok">OK</string>
+    <string name="btn_df_cancel">CANCEL</string>
+
 </resources>
