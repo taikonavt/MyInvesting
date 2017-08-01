@@ -10,20 +10,6 @@
             android:id="@+id/nav_input_item"
             android:title="@string/nav_input_item"
             />
-        <item android:title="@string/nav_title_submenu">
-            <menu>
-                <group
-                    android:checkableBehavior="single"
-                    android:id="@+id/nav_submenu"
-                    >
-                    <item
-                        android:icon="@drawable/ic_add_black_24dp"
-                        android:title="@string/nev_add_new_subitem"
-                        android:orderInCategory="100"
-                        />
-                </group>
-            </menu>
-        </item>
     </group>
 
 </menu>

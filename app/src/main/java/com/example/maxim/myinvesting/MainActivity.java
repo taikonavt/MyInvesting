@@ -1,6 +1,7 @@
 package com.example.maxim.myinvesting;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,18 +14,23 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
     private InfoFragment fragment = null;
-    private MenuItem itemAdd;
+
+    private final static int ADD_BUTTON_ID = 25943;
+    private final static String KEY = "key";
+    private final static String ARRAY_SIZE = "array_size";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         NavigationView mDrawer = (NavigationView) findViewById(R.id.drawer);
+
+        addItemsToDrawer(mDrawer);
 
         mDrawer.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -124,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
             // Deals
             case R.id.nav_deal_item:
                 drawerLayout.closeDrawers();
-                itemAdd.setVisible(true);
                 fragment = new InfoDealFragment();
                 showFragment();
                 break;
@@ -132,10 +139,14 @@ public class MainActivity extends AppCompatActivity {
             // Inputs
             case R.id.nav_input_item:
                 drawerLayout.closeDrawers();
-                itemAdd.setVisible(true);
                 fragment = new InfoInputFragment();
                 showFragment();
                 break;
+
+            case ADD_BUTTON_ID:
+                drawerLayout.closeDrawers();
+
+
             default:
                 Toast.makeText(this, "Неизвестная команда", Toast.LENGTH_LONG).show();
         }
@@ -153,5 +164,51 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.ll_main_activity, fragment)
                     .commit();
         }
+    }
+
+    private void addItemsToDrawer(NavigationView mDrawer) {
+
+        Menu menu = mDrawer.getMenu();
+
+        SubMenu subMenu = menu.addSubMenu(R.string.nav_title_submenu);
+
+        int i = subMenu.size();
+
+        subMenu
+                .add(0, ADD_BUTTON_ID, 1, R.string.nev_add_new_subitem)
+                .setIcon(R.drawable.ic_add_black_24dp);
+    }
+
+    private String[] readPortfoliosNames() {
+
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+
+        int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
+
+        if (arraySize == 0)
+            return null;
+
+        String [] portfolios = new String[arraySize];
+
+        for (int i = 0; i < arraySize; i++) {
+            portfolios[i] = sharedPreferences.getString(KEY + i, null);
+        }
+
+        return portfolios;
+    }
+
+    private void savePortfolioName(String string) {
+
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+
+        int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(KEY+ arraySize, string);
+
+        editor.putInt(ARRAY_SIZE, arraySize + 1);
+
+        editor.commit();
     }
 }

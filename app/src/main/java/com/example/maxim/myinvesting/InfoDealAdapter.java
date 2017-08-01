@@ -53,7 +53,7 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
         int feeIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_FEE);
 
         mCursor.moveToPosition(position);
-Log.d(TAG, "InfoDealAdapter.onBindViewHolder " + Integer.toString(position));
+
         final int id = mCursor.getInt(idIndex);
         String portfolio = mCursor.getString(portfolioIndex);
         String ticker = mCursor.getString(tickerIndex);
