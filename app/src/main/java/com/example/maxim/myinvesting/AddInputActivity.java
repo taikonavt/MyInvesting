@@ -1,12 +1,15 @@
 package com.example.maxim.myinvesting;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -16,9 +19,7 @@ import com.example.maxim.myinvesting.utilities.DateUtils;
 
 import java.util.Calendar;
 
-import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_CURRENCY;
-import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
-import static com.example.maxim.myinvesting.data.Const.TAG;
+import static com.example.maxim.myinvesting.data.Const.*;
 
 /**
  * Created by maxim on 19.07.17.
@@ -26,7 +27,7 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
 
 public class AddInputActivity extends AppCompatActivity {
 
-    EditText eTPortfolio;
+    Spinner spinnerPortfolio;
     Spinner spinnerType;
     EditText eTYear;
     EditText eTMonth;
@@ -41,7 +42,16 @@ public class AddInputActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_add_input);
 
-        eTPortfolio = (EditText) findViewById(R.id.eTPortfolio_input);
+        String [] strings = readPortfoliosNames();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, strings);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerPortfolio = (Spinner) findViewById(R.id.spinner_portfolio_input);
+        spinnerPortfolio.setAdapter(adapter);
+
         spinnerType = (Spinner) findViewById(R.id.spinnerType_input);
         eTYear = (EditText) findViewById(R.id.eTYear_input);
         eTMonth = (EditText) findViewById(R.id.eTMonth_input);
@@ -65,9 +75,7 @@ public class AddInputActivity extends AppCompatActivity {
 
         try {
 
-            portfolio = eTPortfolio.getText().toString();
-            if (portfolio.length() == 0)
-                throw new UnsupportedOperationException("Portfolio не задан");
+            portfolio = spinnerPortfolio.getSelectedItem().toString();
 
             type = spinnerType.getSelectedItem().toString();
 
@@ -141,8 +149,6 @@ public class AddInputActivity extends AppCompatActivity {
         contentValues.put(Contract.InputEntry.COLUMN_TYPE, type);
         contentValues.put(Contract.InputEntry.COLUMN_DATE,
                 DateUtils.getTimeForMoscowInMillis(year, month, day));
-Log.d(TAG, Integer.toString(year) + "/" + Integer.toString(month) + "/" + Integer.toString(day) + "y/m/d");
-Log.d(TAG, Long.toString(DateUtils.getTimeForMoscowInMillis(year, month, day)) + " time in milis to DB");
         contentValues.put(Contract.InputEntry.COLUMN_AMOUNT, amount);
         contentValues.put(Contract.InputEntry.COLUMN_CURRENCY, currency);
         contentValues.put(Contract.InputEntry.COLUMN_FEE, fee);
@@ -152,5 +158,24 @@ Log.d(TAG, Long.toString(DateUtils.getTimeForMoscowInMillis(year, month, day)) +
         Uri uri = getContentResolver().insert(Contract.InputEntry.CONTENT_URI, contentValues);
 
         Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    public String[] readPortfoliosNames() {
+
+        SharedPreferences sharedPreferences
+                = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
+
+        if (arraySize == 0)
+            return null;
+
+        String [] portfolios = new String[arraySize];
+
+        for (int i = 0; i < arraySize; i++) {
+            portfolios[i] = sharedPreferences.getString(KEY + i, null);
+        }
+
+        return portfolios;
     }
 }

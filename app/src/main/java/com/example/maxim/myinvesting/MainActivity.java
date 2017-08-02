@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 
-import static com.example.maxim.myinvesting.data.Const.TAG;
+import static com.example.maxim.myinvesting.data.Const.*;
 
 
 public class MainActivity extends AppCompatActivity
@@ -32,8 +33,6 @@ public class MainActivity extends AppCompatActivity
     private NavigationView mDrawer;
 
     private final static int ADD_BUTTON_ID = 25943;
-    private final static String KEY = "key";
-    private final static String ARRAY_SIZE = "array_size";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,9 +203,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private String[] readPortfoliosNames() {
+    public String[] readPortfoliosNames() {
 
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
 
@@ -222,9 +222,10 @@ public class MainActivity extends AppCompatActivity
         return portfolios;
     }
 
-    public void savePortfolioName(String string) {
+    private void savePortfolioName(String string) {
 
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
 

@@ -1,20 +1,22 @@
 package com.example.maxim.myinvesting;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
-import static com.example.maxim.myinvesting.data.Const.TAG;
-import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
+import static com.example.maxim.myinvesting.data.Const.*;
 
 import java.util.Calendar;
 
@@ -23,8 +25,8 @@ import java.util.Calendar;
  */
 
 public class AddDealActivity extends AppCompatActivity {
-    // TODO: 23.05.17 NEXT: add page for input transaction
-    EditText eTPortfolio;
+
+    Spinner spinnerPortfolio;
     EditText eTTicker;
     Spinner spinnerType;
     EditText eTYear;
@@ -40,7 +42,16 @@ public class AddDealActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_add_deal);
 
-        eTPortfolio = (EditText) findViewById(R.id.eTPortfolio);
+        String [] strings = readPortfoliosNames();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, strings);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerPortfolio = (Spinner) findViewById(R.id.spinnerPortfolio);
+        spinnerPortfolio.setAdapter(adapter);
+
         eTTicker = (EditText) findViewById(R.id.eTTicker);
         spinnerType = (Spinner) findViewById(R.id.spinnerType);
         eTYear = (EditText) findViewById(R.id.eTYear);
@@ -49,6 +60,7 @@ public class AddDealActivity extends AppCompatActivity {
         eTPrice = (EditText) findViewById(R.id.eTPrice);
         eTVolume = (EditText) findViewById(R.id.eTVolume);
         eTFee = (EditText) findViewById(R.id.eTFee);
+
     }
 
     String portfolio = null;
@@ -65,9 +77,7 @@ public class AddDealActivity extends AppCompatActivity {
 
         try {
 
-            portfolio = eTPortfolio.getText().toString();
-            if (portfolio.length() == 0)
-                throw new UnsupportedOperationException("Portfolio не задан");
+            portfolio = spinnerPortfolio.getSelectedItem().toString();
 
             ticker = eTTicker.getText().toString();
             if (ticker.length() == 0)
@@ -159,5 +169,24 @@ public class AddDealActivity extends AppCompatActivity {
         Uri uri = getContentResolver().insert(Contract.DealsEntry.CONTENT_URI, contentValues);
 
         Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    public String[] readPortfoliosNames() {
+
+        SharedPreferences sharedPreferences
+                = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
+
+        if (arraySize == 0)
+            return null;
+
+        String [] portfolios = new String[arraySize];
+
+        for (int i = 0; i < arraySize; i++) {
+            portfolios[i] = sharedPreferences.getString(KEY + i, null);
+        }
+
+        return portfolios;
     }
 }
