@@ -23,11 +23,13 @@ import com.example.maxim.myinvesting.data.Contract;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+                    implements EnterPortfolioDialogFragment.FragmentListener {
 
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
     private InfoFragment fragment = null;
+    private NavigationView mDrawer;
 
     private final static int ADD_BUTTON_ID = 25943;
     private final static String KEY = "key";
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             showFragment();
         }
 
-        NavigationView mDrawer = (NavigationView) findViewById(R.id.drawer);
+        mDrawer = (NavigationView) findViewById(R.id.drawer);
 
         addItemsToDrawer(mDrawer);
 
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             case ADD_BUTTON_ID: {
                 drawerLayout.closeDrawers();
                 DialogFragment dialogFragment = new EnterPortfolioDialogFragment();
-                dialogFragment.show(getFragmentManager(), "Enter portfolio name fragment");
+                dialogFragment.show(getFragmentManager(), "Enter name fragment");
                 break;
             }
 
@@ -173,15 +175,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void addItemsToDrawer(NavigationView mDrawer) {
 
+        int GROUP_ID = 1;
+        int SUBMENU_ID = 1834;
+
         Menu menu = mDrawer.getMenu();
 
-        SubMenu subMenu = menu.addSubMenu(R.string.nav_title_submenu);
+        menu.removeItem(SUBMENU_ID);
 
-        int i = subMenu.size();
+        SubMenu subMenu = menu.addSubMenu(GROUP_ID, SUBMENU_ID, 100, R.string.nav_title_submenu);
 
         subMenu
-                .add(0, ADD_BUTTON_ID, 1, R.string.nev_add_new_subitem)
+                .add(GROUP_ID, ADD_BUTTON_ID, 1, R.string.nev_add_new_subitem)
                 .setIcon(R.drawable.ic_add_black_24dp);
+
+        String [] strings = readPortfoliosNames();
+
+        int length;
+        try {
+            length = strings.length;
+        }
+        catch (NullPointerException e) {
+            length = 0;
+        }
+
+        for (int i = 0; i < length; i++) {
+            subMenu
+                    .add(GROUP_ID, i+1, i+1, strings[i]);
+        }
     }
 
     private String[] readPortfoliosNames() {
@@ -202,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         return portfolios;
     }
 
-    private void savePortfolioName(String string) {
+    public void savePortfolioName(String string) {
 
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
 
@@ -210,10 +230,26 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(KEY+ arraySize, string);
+        editor.putString(KEY + arraySize, string);
 
         editor.putInt(ARRAY_SIZE, arraySize + 1);
 
         editor.commit();
+
+        // TODO: 02.08.17 Удаляет все preferences. Удалить когда будет не нужно
+//        sharedPreferences = getPreferences(MODE_PRIVATE);
+//        editor = sharedPreferences.edit();
+//        editor.clear();
+//        editor.commit();
+    }
+
+    // реализация интерфейса EnterPortfolioDialogFragment.FragmentListener
+    // позволяет получить String с названием портфеля из EnterPortfolioDialogFragment
+    @Override
+    public void fragmentOnClickOKButton(String nameOfPortfolio) {
+
+        savePortfolioName(nameOfPortfolio);
+
+        addItemsToDrawer(mDrawer);
     }
 }

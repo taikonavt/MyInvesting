@@ -60,4 +60,9 @@
     <string name="btn_df_ok">OK</string>
     <string name="btn_df_cancel">CANCEL</string>
 
+
+    <!-- Toast сообщения -->
+    <string name="toast_no_portfolio">There is no portfolio name!</string>
+
+
 </resources>
