@@ -31,14 +31,12 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle = null;
     private InfoFragment fragment = null;
     private NavigationView mDrawer;
-    public String str;
+    public String nameOfPortfolio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        str = "MyLog";
 
         // если экран пустой, то показываем Deal фрагмент
         if (getFragmentManager().findFragmentById(R.id.ll_main_activity) == null) {
@@ -160,6 +158,8 @@ public class MainActivity extends AppCompatActivity
         // Open portfolio
         else if (SUB_MENU_ITEM_ID < id || id < (SUB_MENU_ITEM_ID + 1000)) {
 
+            nameOfPortfolio = (String) item.getTitle();
+
             drawerLayout.closeDrawers();
 
             PortfolioFrarment portfolioFrarment = new PortfolioFrarment();
@@ -169,8 +169,6 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.ll_main_activity, portfolioFrarment)
                         .commit();
             }
-
-            portfolioFrarment.nameOfPortfolio = (String) item.getTitle();
         }
 
         else
@@ -272,5 +270,9 @@ public class MainActivity extends AppCompatActivity
         savePortfolioName(nameOfPortfolio);
 
         addItemsToDrawer(mDrawer);
+    }
+
+    String getNameOfPortfolio() {
+        return nameOfPortfolio;
     }
 }

@@ -22,18 +22,14 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
  * Created by maxim on 04.08.17.
  */
 
-public class PortfolioFrarment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>{
-
-    public String nameOfPortfolio;
+public class PortfolioFrarment extends Fragment {
+//        implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private RecyclerView mRecyclerView;
     private PortfolioAdapter mAdapter;
-    private Cursor [] mCursor = new Cursor[2];
-    private Loader<Cursor> loader = null;
+    private Cursor mCursor;
 
-    private static final int BUY_LOADER_ID = 12;
-    private static final int SELL_LOADER_ID = 13;
+    private static final int PORTFOLIO_LOADER_ID = 12;
 
     @Nullable
     @Override
@@ -42,109 +38,94 @@ public class PortfolioFrarment extends Fragment
 
         View rootView = inflater.inflate(R.layout.fragment_info, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_info);
+//        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_info);
+//
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+//
+//        mRecyclerView.setLayoutManager(layoutManager);
+//
+//        mRecyclerView.setHasFixedSize(true);
+//
+//        mAdapter = new PortfolioAdapter();
+//
+//        mRecyclerView.setAdapter(mAdapter);
+//
+//        getLoaderManager().initLoader(PORTFOLIO_LOADER_ID, null, this);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        mRecyclerView.setHasFixedSize(true);
-
-        mAdapter = new PortfolioAdapter();
-
-        mRecyclerView.setAdapter(mAdapter);
-
-        loader = getLoaderManager().initLoader(BUY_LOADER_ID, null, this);
-        loader = getLoaderManager().initLoader(SELL_LOADER_ID, null, this);
-        loader = null;
-
-        sendToAdapter();
+        String selection = ((MainActivity) getActivity()).getNameOfPortfolio();
+        Log.d(TAG, selection + " PortfolioFragment");
 
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        getLoaderManager().restartLoader(loader.getId(), null, this);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-
-//                String [] projection = {Contract.DealsEntry.COLUMN_TICKER,
-//                        "sum(" + Contract.DealsEntry.COLUMN_VOLUME + ")"};
+//    @Override
+//    public void onResume() {
+//        super.onResume();
 //
-//                String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = " + nameOfPortfolio;
+//        getLoaderManager().restartLoader(PORTFOLIO_LOADER_ID, null, this);
+//    }
 //
-//                String groupBy = Contract.DealsEntry.COLUMN_TICKER;
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 //
-//                return new CursorLoader(getContext(),
-//                        Contract.PortfolioEntry.CONTENT_URI,
-//                        projection,
-//                        selection,
-//                        null,
-//                        groupBy
-//                        );
-
-        return new PortfolioCursorLoader(getContext());
-    }
-
-    static class PortfolioCursorLoader extends CursorLoader{
-
-        public PortfolioCursorLoader(Context context) {
-            super(context);
-        }
-
-        @Override
-        public Cursor loadInBackground() {
-
-            String [] projection = {Contract.DealsEntry.COLUMN_TICKER,
-                    Contract.DealsEntry.COLUMN_VOLUME};
-
-//            String selection = PortfolioFrarment.nameOfPortfolio;
-
-            getContext().getContentResolver().query(
-
-            )
-
-            return super.loadInBackground();
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        switch (loader.getId()) {
-
-            case BUY_LOADER_ID:
-                mCursor[0] = data;
-                break;
-            case SELL_LOADER_ID:
-                mCursor[1] = data;
-                break;
-            default:
-                Log.d(TAG, "Unexpected loader id");
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-
-            case BUY_LOADER_ID:
-                mCursor[0] = null;
-                break;
-            case SELL_LOADER_ID:
-                mCursor[1] = null;
-                break;
-            default:
-                Log.d(TAG, "Unexpected loader id");
-        }
-    }
-
-    private void sendToAdapter() {
-        mAdapter.swapCursor(mCursor);
-    }
+//
+////                String [] projection = {Contract.DealsEntry.COLUMN_TICKER,
+////                        "sum(" + Contract.DealsEntry.COLUMN_VOLUME + ")"};
+////
+////                String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = " + nameOfPortfolio;
+////
+////                String groupBy = Contract.DealsEntry.COLUMN_TICKER;
+////
+////                return new CursorLoader(getContext(),
+////                        Contract.PortfolioEntry.CONTENT_URI,
+////                        projection,
+////                        selection,
+////                        null,
+////                        groupBy
+////                        );
+//
+//        return new PortfolioCursorLoader(getActivity());
+//    }
+//
+//    static class PortfolioCursorLoader extends CursorLoader{
+//
+//        Context context;
+//
+//        public PortfolioCursorLoader(Context context) {
+//
+//            super(context);
+//            this.context = context;
+//        }
+//
+//        @Override
+//        public Cursor loadInBackground() {
+//
+//            String [] projection = {Contract.DealsEntry.COLUMN_TICKER,
+//                    Contract.DealsEntry.COLUMN_VOLUME};
+//
+//            String selection = ((MainActivity) context).getNameOfPortfolio();
+//
+//            getContext().getContentResolver().query(
+//                    Contract.DealsEntry.CONTENT_URI, // TODO: 07.08.17 ввел не правильно изменить
+//                    projection,
+//                    selection,
+//                    null,
+//                    null
+//            );
+//
+//            return super.loadInBackground();
+//        }
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//
+//        mAdapter.swapCursor(mCursor);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//
+//        mAdapter.swapCursor(null);
+//    }
 }
