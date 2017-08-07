@@ -22,6 +22,7 @@ public class EnterPortfolioDialogFragment extends DialogFragment
     FragmentListener mListener;
     EditText editText;
 
+    // интерефейс реализуемый в MainActivity для взаимодействия активити и диалогфрагмента
     public interface FragmentListener {
         public void fragmentOnClickOKButton(String string);
     }

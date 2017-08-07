@@ -76,17 +76,11 @@ public class Contract {
         public static final String COLUMN_NOTE = "note";
     }
 
-    public static final class PortfolioEntry implements BaseColumns {
+    public static final class PortfolioEntry {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_PORTFOLIO)
                 .build();
-
-        public static final String TABLE_NAME = "portfolio";
-
-        public static final String COLUMN_TICKER = "ticker";
-
-        public static final String COLUMN_VOLUME = "volume";
     }
 
 }

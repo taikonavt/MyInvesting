@@ -31,13 +31,14 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle = null;
     private InfoFragment fragment = null;
     private NavigationView mDrawer;
-
-    private final static int ADD_BUTTON_ID = 25943;
+    public String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        str = "MyLog";
 
         // если экран пустой, то показываем Deal фрагмент
         if (getFragmentManager().findFragmentById(R.id.ll_main_activity) == null) {
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
                 try {
 
-                    // получаем Uri фрагмента. В зависимости от полученного uri вызываем тот или иной фрагмент
+                    // получаем Uri фрагмента. В зависимости от полученного uri вызываем ту или иную активити
                     Uri uri = fragment.getUri();
 
                     if (uri == Contract.DealsEntry.CONTENT_URI) {
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity
                         Intent intent = new Intent(this, AddInputActivity.class);
                         startActivity(intent);
                     } else throw new UnsupportedOperationException
-                            ("MainActivity.java, onOptionItemSelected, Unknown Uri");
+                            ("MainActivity.java, onOptionItemSelected(), Unknown Uri");
                 } catch (UnsupportedOperationException e) {
                     Log.d(TAG, e.toString());
                     e.printStackTrace();
@@ -129,33 +130,52 @@ public class MainActivity extends AppCompatActivity
     // выбор пунктов в drawer меню
     public void selectDrawerItem(MenuItem item) {
 
-        switch (item.getItemId()) {
+        int id = item.getItemId();
 
-            // Deals
-            case R.id.nav_deal_item:
-                drawerLayout.closeDrawers();
-                fragment = new InfoDealFragment();
-                showFragment();
-                break;
+        // Deals
+        if (id == R.id.nav_deal_item) {
 
-            // Inputs
-            case R.id.nav_input_item:
-                drawerLayout.closeDrawers();
-                fragment = new InfoInputFragment();
-                showFragment();
-                break;
+            drawerLayout.closeDrawers();
+            fragment = new InfoDealFragment();
+            showFragment();
+            return;
+        }
 
-            // Add new portfolio name
-            case ADD_BUTTON_ID: {
-                drawerLayout.closeDrawers();
-                DialogFragment dialogFragment = new EnterPortfolioDialogFragment();
-                dialogFragment.show(getFragmentManager(), "Enter name fragment");
-                break;
+        // Inputs
+        else if (id == R.id.nav_input_item) {
+
+            drawerLayout.closeDrawers();
+            fragment = new InfoInputFragment();
+            showFragment();
+        }
+
+        // Add new portfolio name
+        else if (id == ADD_BUTTON_ID) {
+
+            drawerLayout.closeDrawers();
+            DialogFragment dialogFragment = new EnterPortfolioDialogFragment();
+            dialogFragment.show(getFragmentManager(), "Enter name fragment");
+        }
+
+        // Open portfolio
+        else if (SUB_MENU_ITEM_ID < id || id < (SUB_MENU_ITEM_ID + 1000)) {
+
+            drawerLayout.closeDrawers();
+
+            PortfolioFrarment portfolioFrarment = new PortfolioFrarment();
+
+            if (!portfolioFrarment.isVisible()) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.ll_main_activity, portfolioFrarment)
+                        .commit();
             }
 
-            default:
-                Toast.makeText(this, "Неизвестная команда", Toast.LENGTH_LONG).show();
+            portfolioFrarment.nameOfPortfolio = (String) item.getTitle();
         }
+
+        else
+            Toast.makeText(this, item.getItemId() +
+                    getString(R.string.unknown_command), Toast.LENGTH_LONG).show();
     }
 
     private void showFragment() {
@@ -175,7 +195,7 @@ public class MainActivity extends AppCompatActivity
     private void addItemsToDrawer(NavigationView mDrawer) {
 
         int GROUP_ID = 1;
-        int SUBMENU_ID = 1834;
+        int SUBMENU_ID = 2;
 
         Menu menu = mDrawer.getMenu();
 
@@ -199,7 +219,7 @@ public class MainActivity extends AppCompatActivity
 
         for (int i = 0; i < length; i++) {
             subMenu
-                    .add(GROUP_ID, i+1, i+1, strings[i]);
+                    .add(GROUP_ID, i + SUB_MENU_ITEM_ID, i+1, strings[i]);
         }
     }
 

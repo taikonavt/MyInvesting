@@ -10,4 +10,6 @@ public class Const {
     public static final String TAG = "MyLog";
     public final static String KEY = "key";
     public final static String ARRAY_SIZE = "array_size";
+    public final static int SUB_MENU_ITEM_ID = 7695;
+    public final static int ADD_BUTTON_ID = 25943;
 }

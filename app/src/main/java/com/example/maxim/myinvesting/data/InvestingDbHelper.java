@@ -81,24 +81,12 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
                         ");";
 
         db.execSQL(SQL_CREATE_INPUT_TABLE);
-
-        final String SQL_CREATE_PORTFOLIO_TABLE =
-                "CREATE TABLE " + PortfolioEntry.TABLE_NAME + " (" +
-
-                        PortfolioEntry.COLUMN_TICKER + " STRING NOT NULL, " +
-
-                        PortfolioEntry.COLUMN_VOLUME + " INTEGER NOT NULL" +
-
-                        ");";
-
-        db.execSQL(SQL_CREATE_PORTFOLIO_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DealsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + InputEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE ID EXISTS " + PortfolioEntry.TABLE_NAME);
         onCreate(db);
     }
 }

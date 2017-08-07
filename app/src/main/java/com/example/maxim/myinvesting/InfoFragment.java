@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.maxim.myinvesting.data.Contract;
 
@@ -24,7 +23,7 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
  * Created by maxim on 14.06.17.
  */
 
-public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнать что будет если заменить на FragmetnActivity как написано в мануале на v4
+public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнать что будет если заменить на FragmentActivity как написано в мануале на v4
         implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private RecyclerView mRecyclerView;
@@ -34,7 +33,8 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_info, container, false);
 
@@ -49,7 +49,7 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
 
         mRecyclerView.setAdapter(mAdapter);
 
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(INFO_LOADER_ID, null, this);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {

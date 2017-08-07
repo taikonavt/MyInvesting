@@ -29,6 +29,8 @@ public class InvestingProvider extends ContentProvider{
     public static final int CODE_INPUT = 200;
     public static final int CODE_INPUT_WITH_ID = 201;
 
+    public static final int CODE_PORTFOLIO = 300;
+
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher() {
@@ -42,6 +44,8 @@ public class InvestingProvider extends ContentProvider{
 
         matcher.addURI(authority, Contract.PATH_INPUT, CODE_INPUT);
         matcher.addURI(authority, Contract.PATH_INPUT + "/#", CODE_INPUT_WITH_ID);
+
+        matcher.addURI(authority, Contract.PATH_PORTFOLIO, CODE_PORTFOLIO);
 
         return  matcher;
     }
@@ -91,6 +95,16 @@ public class InvestingProvider extends ContentProvider{
                         sortOrder
                         );
                 break;
+
+            case CODE_PORTFOLIO:
+                cursor = db.query(DealsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        sortOrder, // т.е. а ContentResolver нет Group by, использую этот параметр для передачи
+                        null,
+                        null
+                        );
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
