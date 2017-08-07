@@ -3,6 +3,7 @@ package com.example.maxim.myinvesting;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,15 @@ import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
 
+import static com.example.maxim.myinvesting.data.Const.TAG;
+
 /**
  * Created by maxim on 04.08.17.
  */
 
 public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.PortfolioViewHolder>{
 
-    private Cursor[] mCursor;
+    private Cursor mCursor;
 
     @Override
     public PortfolioAdapter.PortfolioViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -24,9 +27,9 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.item_portfolio;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmedietly = false;
+        boolean shouldAttachToParentImmediately = false;
 
-        View view = layoutInflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmedietly);
+        View view = layoutInflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
 
         PortfolioViewHolder viewHolder = new PortfolioViewHolder(view);
 
@@ -36,16 +39,16 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
     @Override
     public void onBindViewHolder(PortfolioAdapter.PortfolioViewHolder holder, int position) {
 
-        int idIndex = mCursor[0].getColumnIndex(Contract.DealsEntry._ID);
-        int tickerIndex = mCursor[0].getColumnIndex(Contract.DealsEntry.COLUMN_TICKER);
-        int volumeIndex = mCursor[0].getColumnIndex(Contract.DealsEntry.COLUMN_VOLUME);
+        int idIndex = mCursor.getColumnIndex(Contract.DealsEntry._ID);
+        int tickerIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_TICKER);
+        int volumeIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_VOLUME);
 
-        mCursor[0].moveToPosition(position);
+        mCursor.moveToPosition(position);
 
-        final int id = mCursor[0].getInt(idIndex);
-        String ticker = mCursor[0].getString(tickerIndex);
-        int volume = mCursor[0].getInt(volumeIndex) - mCursor[1].getInt(volumeIndex);
-
+        final int id = mCursor.getInt(idIndex);
+        String ticker = mCursor.getString(tickerIndex);
+        int volume = mCursor.getInt(volumeIndex);
+Log.d(TAG, ticker);
         holder.itemView.setTag(id);
 
         holder.bind(ticker, volume);
@@ -58,21 +61,21 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
             return 0;
         }
 
-        return mCursor[0].getCount();
+        return mCursor.getCount();
     }
 
     // Функция заменяет старый курсор на новый когда данные изменились
-    public Cursor[] swapCursor(Cursor[] c) {
+    public Cursor swapCursor(Cursor c) {
 
         // проверяем тот же ли это курсор, если да то возвращаемся - ничего не поменялось
-        if (mCursor[0] == c[0] && mCursor[1] == c[1]) {
+        if (mCursor == c) {
             return null;
         }
 
-        Cursor[] temp = mCursor;
+        Cursor temp = mCursor;
         this.mCursor = c; // установлен новое значение
 
-        if (c[0] != null) {
+        if (c != null) {
             this.notifyDataSetChanged();
         }
 
@@ -94,7 +97,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         void bind (String lTicker, int lVolume) {
 
             tvPortfolioTicker.setText(lTicker);
-            tvPortfolioVolume.setText(lVolume);
+            tvPortfolioVolume.setText(String.valueOf(lVolume));
         }
     }
 }

@@ -22,12 +22,11 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
  * Created by maxim on 04.08.17.
  */
 
-public class PortfolioFrarment extends Fragment {
-//        implements LoaderManager.LoaderCallbacks<Cursor>{
+public class PortfolioFrarment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private RecyclerView mRecyclerView;
     private PortfolioAdapter mAdapter;
-    private Cursor mCursor;
 
     private static final int PORTFOLIO_LOADER_ID = 12;
 
@@ -38,37 +37,34 @@ public class PortfolioFrarment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_info, container, false);
 
-//        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_info);
-//
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-//
-//        mRecyclerView.setLayoutManager(layoutManager);
-//
-//        mRecyclerView.setHasFixedSize(true);
-//
-//        mAdapter = new PortfolioAdapter();
-//
-//        mRecyclerView.setAdapter(mAdapter);
-//
-//        getLoaderManager().initLoader(PORTFOLIO_LOADER_ID, null, this);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_info);
 
-        String selection = ((MainActivity) getActivity()).getNameOfPortfolio();
-        Log.d(TAG, selection + " PortfolioFragment");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        mRecyclerView.setHasFixedSize(true);
+
+        mAdapter = new PortfolioAdapter();
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        getLoaderManager().initLoader(PORTFOLIO_LOADER_ID, null, this);
 
         return rootView;
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        getLoaderManager().restartLoader(PORTFOLIO_LOADER_ID, null, this);
-//    }
-//
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//
-//
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getLoaderManager().restartLoader(PORTFOLIO_LOADER_ID, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+
 ////                String [] projection = {Contract.DealsEntry.COLUMN_TICKER,
 ////                        "sum(" + Contract.DealsEntry.COLUMN_VOLUME + ")"};
 ////
@@ -85,8 +81,19 @@ public class PortfolioFrarment extends Fragment {
 ////                        );
 //
 //        return new PortfolioCursorLoader(getActivity());
-//    }
-//
+
+        String [] projection = {Contract.DealsEntry._ID,
+                Contract.DealsEntry.COLUMN_TICKER,
+                Contract.DealsEntry.COLUMN_VOLUME};
+
+        return new CursorLoader(getContext(),
+                Contract.DealsEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+    }
+
 //    static class PortfolioCursorLoader extends CursorLoader{
 //
 //        Context context;
@@ -116,16 +123,16 @@ public class PortfolioFrarment extends Fragment {
 //            return super.loadInBackground();
 //        }
 //    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//
-//        mAdapter.swapCursor(mCursor);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//
-//        mAdapter.swapCursor(null);
-//    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        mAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+        mAdapter.swapCursor(null);
+    }
 }
