@@ -2,6 +2,7 @@ package com.example.maxim.myinvesting;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -64,65 +65,73 @@ public class PortfolioFrarment extends Fragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-
-////                String [] projection = {Contract.DealsEntry.COLUMN_TICKER,
-////                        "sum(" + Contract.DealsEntry.COLUMN_VOLUME + ")"};
-////
-////                String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = " + nameOfPortfolio;
-////
-////                String groupBy = Contract.DealsEntry.COLUMN_TICKER;
-////
-////                return new CursorLoader(getContext(),
-////                        Contract.PortfolioEntry.CONTENT_URI,
-////                        projection,
-////                        selection,
-////                        null,
-////                        groupBy
-////                        );
+//        Uri uri = Contract.PortfolioEntry.CONTENT_URI.buildUpon()
+//                .appendPath(
+//                        Contract.DealsEntry.COLUMN_TICKER)
+//                .appendPath(
+//                        Contract.DealsEntry.COLUMN_TYPE)
+//                .build();
 //
-//        return new PortfolioCursorLoader(getActivity());
+//        // SELECT _ID, ticker, sum(volume) AS 'volume'
+//        String [] projection = {Contract.DealsEntry._ID,
+//                Contract.DealsEntry.COLUMN_TICKER,
+//                "sum (" + Contract.DealsEntry.COLUMN_VOLUME
+//                        + ") AS '" + Contract.DealsEntry.COLUMN_VOLUME + "'",
+//                Contract.DealsEntry.COLUMN_TYPE
+//        };
+//
+//        // WHERE portfolio = '5838194'
+//        String selection = "portfolio = " + ((MainActivity) getContext()).getNameOfPortfolio();
+//
+//        return new CursorLoader(getContext(),
+//                uri,
+//                projection,
+//                selection,
+//                null,
+//                null);
 
-        String [] projection = {Contract.DealsEntry._ID,
-                Contract.DealsEntry.COLUMN_TICKER,
-                Contract.DealsEntry.COLUMN_VOLUME};
 
-        return new CursorLoader(getContext(),
-                Contract.DealsEntry.CONTENT_URI,
-                projection,
-                null,
-                null,
-                null);
+        return new PortfolioCursorLoader(getActivity());
     }
 
-//    static class PortfolioCursorLoader extends CursorLoader{
-//
-//        Context context;
-//
-//        public PortfolioCursorLoader(Context context) {
-//
-//            super(context);
-//            this.context = context;
-//        }
-//
-//        @Override
-//        public Cursor loadInBackground() {
-//
-//            String [] projection = {Contract.DealsEntry.COLUMN_TICKER,
-//                    Contract.DealsEntry.COLUMN_VOLUME};
-//
-//            String selection = ((MainActivity) context).getNameOfPortfolio();
-//
-//            getContext().getContentResolver().query(
-//                    Contract.DealsEntry.CONTENT_URI, // TODO: 07.08.17 ввел не правильно изменить
-//                    projection,
-//                    selection,
-//                    null,
-//                    null
-//            );
-//
-//            return super.loadInBackground();
-//        }
-//    }
+    static class PortfolioCursorLoader extends CursorLoader{
+
+        Context context;
+
+        public PortfolioCursorLoader(Context context) {
+
+            super(context);
+            this.context = context;
+        }
+
+        @Override
+        public Cursor loadInBackground() {
+
+            Uri uri = Contract.PortfolioEntry.CONTENT_URI.buildUpon()
+                    .appendPath(
+                            Contract.DealsEntry.COLUMN_TICKER)
+                    .build();
+
+            // SELECT _ID, ticker, sum(volume) AS 'volume'
+            String [] projection = {Contract.DealsEntry._ID,
+                    Contract.DealsEntry.COLUMN_TICKER,
+                    "sum (" + Contract.DealsEntry.COLUMN_VOLUME
+                            + ") AS '" + Contract.DealsEntry.COLUMN_VOLUME + "'",
+            };
+
+            // WHERE portfolio = '5838194'
+            String selection = "portfolio = " + ((MainActivity) context).getNameOfPortfolio();
+
+            Cursor cursor = getContext().getContentResolver().query(
+                    uri,
+                    projection,
+                    selection,
+                    null,
+                    null);
+
+            return cursor;
+        }
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

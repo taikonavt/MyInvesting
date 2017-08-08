@@ -30,6 +30,7 @@ public class InvestingProvider extends ContentProvider{
     public static final int CODE_INPUT_WITH_ID = 201;
 
     public static final int CODE_PORTFOLIO = 300;
+    public static final int CODE_PORTFOLIO_WITH_TICKER = 301;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -46,6 +47,7 @@ public class InvestingProvider extends ContentProvider{
         matcher.addURI(authority, Contract.PATH_INPUT + "/#", CODE_INPUT_WITH_ID);
 
         matcher.addURI(authority, Contract.PATH_PORTFOLIO, CODE_PORTFOLIO);
+        matcher.addURI(authority, Contract.PATH_PORTFOLIO + "/*", CODE_PORTFOLIO_WITH_TICKER);
 
         return  matcher;
     }
@@ -96,15 +98,20 @@ public class InvestingProvider extends ContentProvider{
                         );
                 break;
 
-            case CODE_PORTFOLIO:
+            case CODE_PORTFOLIO_WITH_TICKER: {
+
+                String groupBy = uri.getPathSegments().get(1);
+
                 cursor = db.query(DealsEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
-                        sortOrder, // т.е. а ContentResolver нет Group by, использую этот параметр для передачи
+                        groupBy,
                         null,
                         null
-                        );
+                );
+                break;
+            }
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
