@@ -1,7 +1,6 @@
 package com.example.maxim.myinvesting;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
+import com.example.maxim.myinvesting.data.PortfolioItem;
+
+import java.util.ArrayList;
 
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
@@ -19,7 +21,7 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
 
 public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.PortfolioViewHolder>{
 
-    private Cursor mCursor;
+    private ArrayList<PortfolioItem> arrayList;
 
     @Override
     public PortfolioAdapter.PortfolioViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -39,43 +41,37 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
     @Override
     public void onBindViewHolder(PortfolioAdapter.PortfolioViewHolder holder, int position) {
 
-        int idIndex = mCursor.getColumnIndex(Contract.DealsEntry._ID);
-        int tickerIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_TICKER);
-        int volumeIndex = mCursor.getColumnIndex(Contract.DealsEntry.COLUMN_VOLUME);
+        PortfolioItem portfolioItem = arrayList.get(position);
 
-        mCursor.moveToPosition(position);
+        int id = portfolioItem.getId();
+        String ticker = portfolioItem.getTicker();
+        int volume = portfolioItem.getId();
 
-        final int id = mCursor.getInt(idIndex);
-        String ticker = mCursor.getString(tickerIndex);
-        int volume = mCursor.getInt(volumeIndex);
-Log.d(TAG, ticker);
         holder.itemView.setTag(id);
-
         holder.bind(ticker, volume);
     }
 
     @Override
     public int getItemCount() {
 
-        if (mCursor == null) {
+        if (arrayList == null)
             return 0;
-        }
 
-        return mCursor.getCount();
+        return arrayList.size();
     }
 
     // Функция заменяет старый курсор на новый когда данные изменились
-    public Cursor swapCursor(Cursor c) {
-
+    public ArrayList<PortfolioItem> swapArray(ArrayList<PortfolioItem> a) {
+Log.d(TAG, a + " swapArray");
         // проверяем тот же ли это курсор, если да то возвращаемся - ничего не поменялось
-        if (mCursor == c) {
+        if (arrayList == a) {
             return null;
         }
 
-        Cursor temp = mCursor;
-        this.mCursor = c; // установлен новое значение
+        ArrayList<PortfolioItem> temp = arrayList;
+        this.arrayList = a; // установлен новое значение
 
-        if (c != null) {
+        if (a != null) {
             this.notifyDataSetChanged();
         }
 
