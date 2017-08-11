@@ -45,7 +45,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
 
         int id = portfolioItem.getId();
         String ticker = portfolioItem.getTicker();
-        int volume = portfolioItem.getId();
+        int volume = portfolioItem.getVolume();
 
         holder.itemView.setTag(id);
         holder.bind(ticker, volume);

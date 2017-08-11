@@ -1,10 +1,14 @@
 package com.example.maxim.myinvesting.utilities;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
+import com.example.maxim.myinvesting.MainActivity;
+import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 
 import static com.example.maxim.myinvesting.data.Const.KEY_FOR_LOADER;
@@ -20,9 +24,12 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
 
 
     private String portfolio;
+    private Context mContext;
 
     public PortfolioLoader(Context context, Bundle bundle) {
         super(context);
+
+        mContext = context;
 
         portfolio = bundle.getString(KEY_FOR_LOADER);
     }
@@ -30,124 +37,146 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
     @Override
     public ArrayList<PortfolioItem> loadInBackground() {
 
-        ArrayList<PortfolioItem> linkedHashMap = new ArrayList<>();
+        Uri uri = Contract.PortfolioEntry.CONTENT_URI.buildUpon()
+                .appendPath(
+                        Contract.DealsEntry.COLUMN_TICKER)
+                .build();
 
-            PortfolioItem portfolioItem1 = new PortfolioItem(1, "SBER", 10);
-            PortfolioItem portfolioItem2 = new PortfolioItem(2, "MVID", 10);
-            PortfolioItem portfolioItem3 = new PortfolioItem(3, "MAGN", 10);
-            PortfolioItem portfolioItem4 = new PortfolioItem(4, "ALRS", 10);
-            PortfolioItem portfolioItem5 = new PortfolioItem(5, "ALFT", 10);
+        // SELECT ticker
+        String [] projection = {
+                Contract.DealsEntry.COLUMN_TICKER
+        };
 
-            linkedHashMap.add(portfolioItem1);
-            linkedHashMap.add(portfolioItem2);
-            linkedHashMap.add(portfolioItem3);
-            linkedHashMap.add(portfolioItem4);
-            linkedHashMap.add(portfolioItem5);
+        // WHERE portfolio = '5838194'
+        String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = "
+                + ((MainActivity) mContext).getNameOfPortfolio();
 
-Log.d(TAG, linkedHashMap.size() + " loadInBackground");
+        // ORDER BY ticker ASC
+        String orderBy = Contract.DealsEntry.COLUMN_TICKER + " ASC";
 
-            return linkedHashMap;
+        Cursor cursor = getContext().getContentResolver().query(
+                uri,
+                projection,
+                selection,
+                null,
+                orderBy);
+
+        ArrayList<PortfolioItem> arrayList;
+
+        if (cursor.moveToFirst()) {
+
+            int numOfRows = cursor.getCount();
+
+            arrayList = new ArrayList<>(numOfRows);
+
+            int tickerIndex = cursor.getColumnIndex(Contract.DealsEntry.COLUMN_TICKER);
+
+            int i = 0;
+
+            do {
+
+                String ticker = cursor.getString(tickerIndex);
+
+                int volume = getVolume(ticker);
+
+                PortfolioItem portfolioItem = new PortfolioItem(i, ticker, volume);
+                arrayList.add(portfolioItem);
+
+                i++;
+
+            } while (cursor.moveToNext());
+        } else throw
+                new NullPointerException("PortfolioLoader.loadInBackground(): cursor have 0 rows");
+
+        cursor.close();
+
+        return arrayList;
+    }
+
+    // Получение количества акций Ticker в портфеле
+    private int getVolume(String lTicker) {
+
+        int volumeBuy = 0;
+        int volumeSell = 0;
+        int volumeResult;
+
+            Uri uri = Contract.PortfolioEntry.CONTENT_URI.buildUpon()
+                    .appendPath(
+                            Contract.DealsEntry.COLUMN_TICKER) // GROUP BY ticker
+                    .build();
+
+            // SELECT ticker
+            String[] projection = {
+                    Contract.DealsEntry.COLUMN_TICKER,
+                    "sum (" + Contract.DealsEntry.COLUMN_VOLUME
+                            + ") AS '" + Contract.DealsEntry.COLUMN_VOLUME + "'"
+            };
+
+            // WHERE portfolio = '5838194' for cursorBuy
+            String selectionBuy = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
+                    ((MainActivity) mContext).getNameOfPortfolio() + "' AND " +
+                    Contract.DealsEntry.COLUMN_TICKER + " = '" + lTicker + "' AND " +
+                    Contract.DealsEntry.COLUMN_TYPE + " = 'Buy'";
+
+            Cursor cursorBuy = getContext().getContentResolver().query(
+                    uri,
+                    projection,
+                    selectionBuy,
+                    null,
+                    null);
+
+            if (cursorBuy.moveToFirst()) {
+
+                int volumeBuyIndex = cursorBuy.getColumnIndex(Contract.DealsEntry.COLUMN_VOLUME);
+                volumeBuy = cursorBuy.getInt(volumeBuyIndex);
+            }
+
+            cursorBuy.close();
+
+            // WHERE portfolio = '5838194' for cursorSell
+            String selectionSell = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
+                    ((MainActivity) mContext).getNameOfPortfolio() + "' AND " +
+                    Contract.DealsEntry.COLUMN_TICKER + " = '" + lTicker + "' AND " +
+                    Contract.DealsEntry.COLUMN_TYPE + " = 'Sell'";
+
+            Cursor cursorSell = getContext().getContentResolver().query(
+                    uri,
+                    projection,
+                    selectionSell,
+                    null,
+                    null);
+
+            if (cursorSell.moveToFirst()) {
+
+                int volumeSellIndex = cursorSell.getColumnIndex(Contract.DealsEntry.COLUMN_VOLUME);
+                volumeSell = cursorSell.getInt(volumeSellIndex);
+            }
+
+            cursorSell.close();
+
+            volumeResult = volumeBuy - volumeSell;
+
+        return volumeResult;
     }
 
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
         forceLoad();
-Log.d(TAG, "onStartLoading");
     }
 
     @Override
     protected void onStopLoading() {
         cancelLoad();
-Log.d(TAG, "onStopLoading");
     }
 
     @Override
     public void onCanceled(ArrayList<PortfolioItem> data) {
         super.onCanceled(data);
         onReleaseResources();
-Log.d(TAG, "onCanceled");
     }
 
     protected void onReleaseResources() {
 
     }
 }
-
-//    private String portfolio;
-//    private GetTask getTask;
-//
-//    public PortfolioLoader(Context context, Bundle bundle) {
-//        super(context);
-//
-//        portfolio = bundle.getString(KEY_FOR_LOADER);
-//    }
-//
-//    @Override
-//    protected void onStartLoading() {
-//        super.onStartLoading();
-//Log.d(TAG, "onStartLoading");
-//    }
-//
-//    @Override
-//    protected void onForceLoad() {
-//        super.onForceLoad();
-//Log.d(TAG, "onForceLoad");
-//        if (getTask != null)
-//            getTask.cancel(true);
-//
-//        getTask = new GetTask();
-//        getTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, portfolio);
-//    }
-//
-//    class GetTask extends AsyncTask<String, Void, LinkedHashMap<String, PortfolioItem>> {
-//
-//        @Override
-//        protected LinkedHashMap<String, PortfolioItem> doInBackground(String... params) {
-//
-//            LinkedHashMap<String, PortfolioItem> linkedHashMap = new LinkedHashMap<String, PortfolioItem>(5);
-//
-//            PortfolioItem portfolioItem1 = new PortfolioItem(1, "SBER", 10);
-//            PortfolioItem portfolioItem2 = new PortfolioItem(2, "MVID", 10);
-//            PortfolioItem portfolioItem3 = new PortfolioItem(3, "MAGN", 10);
-//            PortfolioItem portfolioItem4 = new PortfolioItem(4, "ALRS", 10);
-//            PortfolioItem portfolioItem5 = new PortfolioItem(5, "ALFT", 10);
-//
-//            linkedHashMap.put("SBER", portfolioItem1);
-//            linkedHashMap.put("MVID", portfolioItem2);
-//            linkedHashMap.put("MAGN", portfolioItem3);
-//            linkedHashMap.put("ALRS", portfolioItem4);
-//            linkedHashMap.put("ALFT", portfolioItem5);
-//Log.d(TAG, "AsyncTask");
-//            return linkedHashMap;
-//        }
-//    }
-//}
-
-
-
-
-//    private LinkedHashMap<String, PortfolioItem> readDB() {
-//
-//        Uri uri = Contract.PortfolioEntry.CONTENT_URI.buildUpon()
-//                .appendPath(
-//                        Contract.DealsEntry.COLUMN_TICKER)
-//                .build();
-//
-//        // SELECT _ID, ticker, sum(volume) AS 'volume'
-//        String [] projection = {Contract.DealsEntry._ID,
-//                Contract.DealsEntry.COLUMN_TICKER,
-//                "sum (" + Contract.DealsEntry.COLUMN_VOLUME
-//                        + ") AS '" + Contract.DealsEntry.COLUMN_VOLUME + "'",
-//        };
-//
-//        // WHERE portfolio = '5838194'
-//        String selection = "portfolio = " + ((MainActivity) context).getNameOfPortfolio();
-//
-//        Cursor cursor = getContext().getContentResolver().query(
-//                uri,
-//                projection,
-//                selection,
-//                null,
-//                null);
-//    }

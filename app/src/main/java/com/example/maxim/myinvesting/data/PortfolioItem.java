@@ -9,16 +9,16 @@ public class PortfolioItem {
     int id = 0;
     private String ticker = null; // Ввожу руками
     private String name = null; // Получить из интернета по тикеру
-    private int amount = 0; // Высчитываю из базы данных
+    private int volume = 0; // Высчитываю из базы данных
     private int price = 0; // Получить из интернета и умножить на константу
     private int cost = 0; // Посчитать amount*price
     private int profit = 0; // Доходность акции в процентах годовых
 
-    public PortfolioItem(int lID, String lTicker, int lAmount) {
+    public PortfolioItem(int lID, String lTicker, int lVolume) {
 
         id = lID;
         ticker = lTicker;
-        amount = lAmount;
+        volume = lVolume;
     }
 
     public String getTicker() {
@@ -29,8 +29,8 @@ public class PortfolioItem {
         return id;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getVolume() {
+        return volume;
     }
 
     public int getPrice() {

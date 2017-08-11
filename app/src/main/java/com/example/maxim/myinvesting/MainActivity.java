@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity
         addItemsToDrawer(mDrawer);
     }
 
-    String getNameOfPortfolio() {
+    public String getNameOfPortfolio() {
         return nameOfPortfolio;
     }
 }

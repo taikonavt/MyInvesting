@@ -108,7 +108,7 @@ public class InvestingProvider extends ContentProvider{
                         selectionArgs,
                         groupBy,
                         null,
-                        null
+                        sortOrder
                 );
                 break;
             }
