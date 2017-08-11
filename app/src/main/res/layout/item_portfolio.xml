@@ -1,33 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_item_portfolio_ticker"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:textAlignment="textStart"
-        android:textSize="@dimen/text_size_for_info_item"
-        tools:text="SBER"
-        android:padding="@dimen/padding_info_item"
-        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_item_portfolio_ticker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_info_item"
+            tools:text="SBER"
+            android:padding="@dimen/padding_portfolio_item"
+            android:layout_weight="4"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_portfolio_name"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:textSize="@dimen/small_text_size_for_info_item"
+            tools:text=" ПАО &quot;Сбербанк России&quot;"
+            android:padding="@dimen/padding_portfolio_item"
+            android:layout_weight="8"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_portfolio_volume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:layout_weight="6"
+            android:textSize="@dimen/text_size_for_info_item"
+            tools:text="160000"
+            android:padding="@dimen/padding_portfolio_item"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_portfolio_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:layout_weight="5"
+            android:textSize="@dimen/text_size_for_info_item"
+            tools:text="160.00"
+            android:padding="@dimen/padding_portfolio_item"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_portfolio_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:layout_weight="5"
+            android:textSize="@dimen/text_size_for_info_item"
+            tools:text="16000"
+            android:padding="@dimen/padding_portfolio_item"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_portfolio_profit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:layout_weight="5"
+            android:textSize="@dimen/text_size_for_info_item"
+            tools:text="-14.5%"
+            android:padding="@dimen/padding_portfolio_item"
+            />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBasket"
         />
-
-    <TextView
-        android:id="@+id/tv_item_portfolio_volume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:textAlignment="textStart"
-        android:layout_weight="8"
-        android:textSize="@dimen/text_size_for_info_item"
-        tools:text="160000"
-        android:padding="@dimen/padding_info_item"
-        />
-
-
 </LinearLayout>

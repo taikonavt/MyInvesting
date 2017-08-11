@@ -106,6 +106,7 @@ public class AddDealActivity extends AppCompatActivity {
 
             day = Integer.valueOf(eTDay.getText().toString());
 
+            // TODO: 11.08.17 Проверить работоспособность с числами с точкой
             String strPrice = eTPrice.getText().toString();
             if (strPrice.length() == 0)
                 throw new UnsupportedOperationException("Price не задан");

@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
 
+import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_CURRENCY;
+import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
@@ -134,9 +136,9 @@ public class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoV
             tvInfoItemTicker.setText(lTicker);
             tvInfoItemType.setText(lType);
             tvInfoItemDate.setText(lDate);
-            tvInfoItemPrice.setText(String.valueOf(lPrice));
+            tvInfoItemPrice.setText(String.valueOf(lPrice/MULTIPLIER_FOR_MONEY));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
-            tvInfoItemCost.setText(String.valueOf(lPrice * lVolume));
+            tvInfoItemCost.setText(String.valueOf(lPrice * lVolume/MULTIPLIER_FOR_MONEY));
             //tvInfoItemFee.setText(String.valueOf(lFee));
 
             switch (lType) {
