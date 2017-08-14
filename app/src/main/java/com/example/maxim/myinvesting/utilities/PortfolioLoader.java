@@ -10,7 +10,6 @@ import com.example.maxim.myinvesting.MainActivity;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 
-import static com.example.maxim.myinvesting.data.Const.KEY_FOR_LOADER;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 import java.util.ArrayList;
@@ -74,7 +73,9 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
 
                 int volume = getVolume(ticker);
 
-                PortfolioItem portfolioItem = new PortfolioItem(i, ticker, volume);
+                int price = getPrice(ticker);
+// TODO: 14.08.17 Проверить работоспособность
+                PortfolioItem portfolioItem = new PortfolioItem(i, ticker, volume, price);
                 arrayList.add(portfolioItem);
 
                 i++;
@@ -152,6 +153,11 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
             volumeResult = volumeBuy - volumeSell;
 
         return volumeResult;
+    }
+
+    private int getPrice(String lTicker) {
+
+        return NetworkUtils.getCurrentPrice(lTicker);
     }
 
     @Override

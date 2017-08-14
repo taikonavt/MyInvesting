@@ -14,11 +14,12 @@ public class PortfolioItem {
     private int cost = 0; // Посчитать amount*price
     private int profit = 0; // Доходность акции в процентах годовых
 
-    public PortfolioItem(int lID, String lTicker, int lVolume) {
+    public PortfolioItem(int lID, String lTicker, int lVolume, int lPrice) {
 
         id = lID;
         ticker = lTicker;
         volume = lVolume;
+        price = lPrice;
     }
 
     public String getTicker() {
