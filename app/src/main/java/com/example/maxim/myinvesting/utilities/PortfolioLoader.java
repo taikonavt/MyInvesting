@@ -3,7 +3,6 @@ package com.example.maxim.myinvesting.utilities;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
@@ -22,16 +21,12 @@ import java.util.ArrayList;
 
 public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
 
-
-    private String portfolio;
     private Context mContext;
 
-    public PortfolioLoader(Context context, Bundle bundle) {
+    public PortfolioLoader(Context context) {
         super(context);
 
         mContext = context;
-
-        portfolio = bundle.getString(KEY_FOR_LOADER);
     }
 
     @Override

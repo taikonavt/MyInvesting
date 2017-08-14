@@ -31,7 +31,6 @@ public class PortfolioFrarment extends Fragment
 
     private RecyclerView mRecyclerView;
     private PortfolioAdapter mAdapter;
-    private Bundle bundle;
 
     private static final int PORTFOLIO_LOADER_ID = 12;
 
@@ -51,15 +50,11 @@ public class PortfolioFrarment extends Fragment
         mRecyclerView.setHasFixedSize(true);
 
         mAdapter = new PortfolioAdapter();
-Log.d(TAG, "1 onCreateView");
+
         mRecyclerView.setAdapter(mAdapter);
 
-        // параметр для лоадера
-        bundle = new Bundle();
-        bundle.putString(KEY_FOR_LOADER, ((MainActivity) getActivity()).getNameOfPortfolio());
-Log.d(TAG, "2 onCreateView");
-        getLoaderManager().initLoader(PORTFOLIO_LOADER_ID, bundle, this);
-Log.d(TAG, "3 onCreateView");
+        getLoaderManager().initLoader(PORTFOLIO_LOADER_ID, null, this);
+
         return rootView;
     }
 
@@ -67,26 +62,26 @@ Log.d(TAG, "3 onCreateView");
     public void onResume() {
         super.onResume();
 
-        getLoaderManager().restartLoader(PORTFOLIO_LOADER_ID, bundle, this);
+        getLoaderManager().restartLoader(PORTFOLIO_LOADER_ID, null, this);
     }
 
     @Override
     public Loader<ArrayList<PortfolioItem>> onCreateLoader(int id, Bundle args) {
 
-        AsyncTaskLoader<ArrayList<PortfolioItem>> loader = new PortfolioLoader(getActivity(), args);
+        AsyncTaskLoader<ArrayList<PortfolioItem>> loader = new PortfolioLoader(getActivity());
 
         return loader;
     }
 
     @Override
     public void onLoadFinished(Loader<ArrayList<PortfolioItem>> loader, ArrayList<PortfolioItem> data) {
-Log.d(TAG, data.size() + " onLoadFinished");
+
         mAdapter.swapArray(data);
     }
 
     @Override
     public void onLoaderReset(Loader<ArrayList<PortfolioItem>> loader) {
-Log.d(TAG, " onLoadFinished");
+
         mAdapter.swapArray(null);
     }
 }
