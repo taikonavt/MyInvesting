@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.maxim.myinvesting.MainActivity;
 import com.example.maxim.myinvesting.data.Contract;
@@ -55,7 +56,7 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                 null,
                 orderBy);
 
-        ArrayList<PortfolioItem> arrayList;
+        ArrayList<PortfolioItem> arrayList = null;
 
         if (cursor.moveToFirst()) {
 
@@ -74,15 +75,19 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                 int volume = getVolume(ticker);
 
                 int price = getPrice(ticker);
-// TODO: 14.08.17 Проверить работоспособность
+
                 PortfolioItem portfolioItem = new PortfolioItem(i, ticker, volume, price);
                 arrayList.add(portfolioItem);
 
                 i++;
 
             } while (cursor.moveToNext());
-        } else throw
-                new NullPointerException("PortfolioLoader.loadInBackground(): cursor have 0 rows");
+        } else {
+            Log.d(TAG, "Portfolio have 0 items");
+//            Toast.makeText(mContext, "Portfolio have 0 items", Toast.LENGTH_LONG).show();
+        }
+//            throw
+//                new NullPointerException("PortfolioLoader.loadInBackground(): cursor have 0 rows");
 
         cursor.close();
 
@@ -180,4 +185,6 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
     protected void onReleaseResources() {
 
     }
+
+
 }

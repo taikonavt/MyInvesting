@@ -13,6 +13,7 @@ import com.example.maxim.myinvesting.data.PortfolioItem;
 
 import java.util.ArrayList;
 
+import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
@@ -46,9 +47,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         int id = portfolioItem.getId();
         String ticker = portfolioItem.getTicker();
         int volume = portfolioItem.getVolume();
+        int price = portfolioItem.getPrice();
 
         holder.itemView.setTag(id);
-        holder.bind(ticker, volume);
+        holder.bind(ticker, volume, price);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
 
     // Функция заменяет старый курсор на новый когда данные изменились
     public ArrayList<PortfolioItem> swapArray(ArrayList<PortfolioItem> a) {
-Log.d(TAG, a + " swapArray");
+
         // проверяем тот же ли это курсор, если да то возвращаемся - ничего не поменялось
         if (arrayList == a) {
             return null;
@@ -82,18 +84,24 @@ Log.d(TAG, a + " swapArray");
 
         TextView tvPortfolioTicker;
         TextView tvPortfolioVolume;
+        TextView tvPortfolioPrice;
+        TextView tvPortfolioCost;
 
         public PortfolioViewHolder(View itemView) {
             super(itemView);
 
             tvPortfolioTicker = (TextView) itemView.findViewById(R.id.tv_item_portfolio_ticker);
             tvPortfolioVolume = (TextView) itemView.findViewById(R.id.tv_item_portfolio_volume);
+            tvPortfolioPrice = (TextView) itemView.findViewById(R.id.tv_item_portfolio_price);
+            tvPortfolioCost = (TextView) itemView.findViewById(R.id.tv_item_portfolio_cost);
         }
 
-        void bind (String lTicker, int lVolume) {
+        void bind (String lTicker, int lVolume, float lPrice) {
 
             tvPortfolioTicker.setText(lTicker);
             tvPortfolioVolume.setText(String.valueOf(lVolume));
+            tvPortfolioPrice.setText(String.valueOf(lPrice/MULTIPLIER_FOR_MONEY));
+            tvPortfolioCost.setText(String.valueOf(lVolume * lPrice/MULTIPLIER_FOR_MONEY));
         }
     }
 }
