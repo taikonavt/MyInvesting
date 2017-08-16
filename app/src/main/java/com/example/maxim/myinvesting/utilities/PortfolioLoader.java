@@ -1,6 +1,7 @@
 package com.example.maxim.myinvesting.utilities;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
@@ -8,12 +9,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.MainActivity;
+import com.example.maxim.myinvesting.R;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by maxim on 09.08.17.
@@ -76,6 +80,10 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
 
                 int price = getPrice(ticker);
 
+                getInputs(((MainActivity) mContext).getNameOfPortfolio(),
+                        Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).
+                                getTimeInMillis());
+
                 PortfolioItem portfolioItem = new PortfolioItem(i, ticker, volume, price);
                 arrayList.add(portfolioItem);
 
@@ -86,8 +94,6 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
             Log.d(TAG, "Portfolio have 0 items");
 //            Toast.makeText(mContext, "Portfolio have 0 items", Toast.LENGTH_LONG).show();
         }
-//            throw
-//                new NullPointerException("PortfolioLoader.loadInBackground(): cursor have 0 rows");
 
         cursor.close();
 
@@ -163,6 +169,51 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
     private int getPrice(String lTicker) {
 
         return NetworkUtils.getCurrentPrice(lTicker);
+    }
+
+    // получение суммы всех вводов и выводов
+    private void getInputs(String lPortfolio, long lDate) {
+
+        // 1) Получаю сумму всех вводов
+        int amountInput = 0;
+
+        String [] strings = mContext.getResources().getStringArray(R.array.spinType_input_array);
+
+        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                .appendPath(Contract.PATH_INPUT)
+                .appendPath(Contract.PATH_SUM)
+                .build();
+
+        // SELECT portfolio, sum(amount) AS amount
+        String[] projection = {
+                Contract.InputEntry.COLUMN_PORTFOLIO,
+                "sum (" + Contract.InputEntry.COLUMN_AMOUNT + ") AS '" +
+                        Contract.InputEntry.COLUMN_AMOUNT + "'"
+        };
+
+        // WHERE portfolio = '5838199' AND date < 123 AND type = Input
+        String selection = Contract.InputEntry.COLUMN_PORTFOLIO + " = '" +
+                lPortfolio + "' AND " +
+                Contract.InputEntry.COLUMN_DATE + " < " + lDate + " AND " +
+                Contract.InputEntry.COLUMN_TYPE + " = '" + strings[0] + "'";
+
+        Cursor cursor = getContext().getContentResolver().query(
+                uri,
+                projection,
+                selection,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+
+            int index = cursor.getColumnIndex(Contract.InputEntry.COLUMN_AMOUNT);
+            amountInput = cursor.getInt(index);
+        }
+
+        cursor.close();
+
+        // 2) Получаю сумму всех покупок акций
+        int costOfBuy = 0;
     }
 
     @Override

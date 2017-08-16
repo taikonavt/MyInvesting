@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
 
+import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
@@ -55,7 +56,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         final int id = mCursor.getInt(idIndex);
         String type = mCursor.getString(typeIndex);
         long dateInMillis = mCursor.getLong(dateIndex);
-        int amount = mCursor.getInt(amountIndex);
+        long amount = mCursor.getLong(amountIndex);
         String currency = mCursor.getString(currencyIndex);
         int fee = mCursor.getInt(feeIndex);
         int portfolio = mCursor.getInt(portfoiloIndex);
@@ -121,14 +122,16 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
 
         void bind(String lType,
                   String lDate,
-                  int lAmount,
+                  long lAmount,
                   String lCurrency,
                   int lFee,
                   int lPortfolio,
                   String lNote) {
             tvInfoInputItemType.setText(lType);
             tvInfoInputItemDate.setText(lDate);
-            tvInfoInputItemAmount.setText(String.valueOf(lAmount) + " " + lCurrency);
+            tvInfoInputItemAmount.setText(
+                    String.valueOf(lAmount/MULTIPLIER_FOR_MONEY) +
+                    " " + lCurrency);
             tvInfoInputItemFee.setText("- " + String.valueOf(lFee) + " " + lCurrency);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
 

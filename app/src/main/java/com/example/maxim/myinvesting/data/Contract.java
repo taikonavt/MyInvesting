@@ -20,6 +20,8 @@ public class Contract {
 
     public static final String PATH_PORTFOLIO = "portfolio";
 
+    public static final String PATH_SUM = "type"; // используется при запросе к БД о получении всех вводов и сделок
+
 
     public static final class DealsEntry implements BaseColumns {
 

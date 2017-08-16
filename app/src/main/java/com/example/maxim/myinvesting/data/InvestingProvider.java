@@ -24,10 +24,11 @@ public class InvestingProvider extends ContentProvider{
 
     public static final int CODE_DEALS = 100;
     public static final int CODE_DEAL_WITH_ID = 101;
-    public static final int CODE_DEALS_WITH_DATE = 102; // todo пока не используется, убрать если не будет
+    public static final int CODE_DEALS_SUM = 102;
 
     public static final int CODE_INPUT = 200;
     public static final int CODE_INPUT_WITH_ID = 201;
+    public static final int CODE_INPUT_SUM = 202;
 
     public static final int CODE_PORTFOLIO = 300;
     public static final int CODE_PORTFOLIO_WITH_TICKER = 301;
@@ -41,10 +42,11 @@ public class InvestingProvider extends ContentProvider{
 
         matcher.addURI(authority, Contract.PATH_DEALS, CODE_DEALS);
         matcher.addURI(authority, Contract.PATH_DEALS + "/#", CODE_DEAL_WITH_ID);
-        matcher.addURI(authority, Contract.PATH_DEALS + "/#/#", CODE_DEALS_WITH_DATE);
+        matcher.addURI(authority, Contract.PATH_DEALS + "/" + Contract.PATH_SUM, CODE_DEALS_SUM);
 
         matcher.addURI(authority, Contract.PATH_INPUT, CODE_INPUT);
         matcher.addURI(authority, Contract.PATH_INPUT + "/#", CODE_INPUT_WITH_ID);
+        matcher.addURI(authority, Contract.PATH_INPUT + "/" + Contract.PATH_SUM, CODE_INPUT_SUM);
 
         matcher.addURI(authority, Contract.PATH_PORTFOLIO, CODE_PORTFOLIO);
         matcher.addURI(authority, Contract.PATH_PORTFOLIO + "/*", CODE_PORTFOLIO_WITH_TICKER);
@@ -83,9 +85,22 @@ public class InvestingProvider extends ContentProvider{
                         null,
                         sortOrder
                         );
-
-
                 break;
+
+            case CODE_DEALS_SUM: {
+
+                String groupBy = uri.getPathSegments().get(2);
+
+                cursor = db.query(DealsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        groupBy,
+                        null,
+                        null
+                );
+                break;
+            }
 
             case CODE_INPUT:
                 cursor = db.query(InputEntry.TABLE_NAME,
@@ -98,6 +113,21 @@ public class InvestingProvider extends ContentProvider{
                         );
                 break;
 
+            case CODE_INPUT_SUM: {
+
+                String groupBy = uri.getPathSegments().get(2);
+
+                cursor = db.query(InputEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        groupBy,
+                        null,
+                        null
+                        );
+                break;
+            }
+
             case CODE_PORTFOLIO_WITH_TICKER: {
 
                 String groupBy = uri.getPathSegments().get(1);
@@ -109,7 +139,7 @@ public class InvestingProvider extends ContentProvider{
                         groupBy,
                         null,
                         sortOrder
-                );
+                        );
                 break;
             }
 
