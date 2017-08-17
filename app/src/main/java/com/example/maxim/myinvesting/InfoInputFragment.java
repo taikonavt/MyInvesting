@@ -23,7 +23,7 @@ public class InfoInputFragment extends InfoFragment {
     // метод используется для доступа к экземпляру адаптера из суперкласса
     @Override
     public RecyclerView.Adapter getAdapter() {
-        Log.d(TAG, "InfoInputFragment.getAdapter");
+
         mAdapter = new InfoInputAdapter();
         return mAdapter;
     }
@@ -38,7 +38,7 @@ public class InfoInputFragment extends InfoFragment {
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // TODO: 15.04.17 Добавить возможность загрузки только сделок с определенным тикером
         // TODO: 15.04.17 Добавить возможность загрузки сделок после определенной даты
-        Log.d(TAG, "InfoInputFragment.onCreateLoader");
+
         String sortOrder = Contract.InputEntry.COLUMN_DATE + " ASC"; // ASC = по возрастанию
 
         return new CursorLoader(getContext(),

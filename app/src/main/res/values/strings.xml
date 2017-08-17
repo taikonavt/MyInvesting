@@ -24,11 +24,14 @@
     <string name="hint_tVPortfolio">Portfolio:</string>
     <string name="hint_eTPortfolio">123ABC</string>
 
+    <!-- от порядка следования зависит работа PortfolioLoader.getBuys() -->
     <string-array name="spinType_deal_array">
         <item>Sell</item>
         <item>Buy</item>
+        <item>Dividend</item>
     </string-array>
 
+    <!-- от порядка следования зависит работа PortfolioLoader.getInputs() -->
     <string-array name="spinType_input_array">
         <item>Input</item>
         <item>Output</item>

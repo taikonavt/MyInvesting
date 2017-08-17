@@ -84,6 +84,10 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                         Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).
                                 getTimeInMillis());
 
+                getBuys(((MainActivity) mContext).getNameOfPortfolio(),
+                        Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).
+                                getTimeInMillis());
+
                 PortfolioItem portfolioItem = new PortfolioItem(i, ticker, volume, price);
                 arrayList.add(portfolioItem);
 
@@ -171,10 +175,9 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
         return NetworkUtils.getCurrentPrice(lTicker);
     }
 
-    // получение суммы всех вводов и выводов
+    // получение суммы всех вводов
     private void getInputs(String lPortfolio, long lDate) {
 
-        // 1) Получаю сумму всех вводов
         int amountInput = 0;
 
         String [] strings = mContext.getResources().getStringArray(R.array.spinType_input_array);
@@ -184,14 +187,14 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                 .appendPath(Contract.PATH_SUM)
                 .build();
 
-        // SELECT portfolio, sum(amount) AS amount
+        // SELECT portfolio, sum(amount) AS 'amount'
         String[] projection = {
                 Contract.InputEntry.COLUMN_PORTFOLIO,
                 "sum (" + Contract.InputEntry.COLUMN_AMOUNT + ") AS '" +
                         Contract.InputEntry.COLUMN_AMOUNT + "'"
         };
 
-        // WHERE portfolio = '5838199' AND date < 123 AND type = Input
+        // WHERE portfolio = '5838199' AND date < 123 AND type = 'Input'
         String selection = Contract.InputEntry.COLUMN_PORTFOLIO + " = '" +
                 lPortfolio + "' AND " +
                 Contract.InputEntry.COLUMN_DATE + " < " + lDate + " AND " +
@@ -211,9 +214,49 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
         }
 
         cursor.close();
+    }
 
-        // 2) Получаю сумму всех покупок акций
-        int costOfBuy = 0;
+    // получение суммы всех покупок акций
+    private void getBuys(String lPortfolio, long lDate) {
+
+        int cost = 0;
+        final String COLUMN_COST = "cost";
+
+        String [] strings = mContext.getResources().getStringArray(R.array.spinType_deal_array);
+
+        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                .appendPath(Contract.PATH_DEALS)
+                .appendPath(Contract.PATH_SUM)
+                .build();
+Log.d(TAG, uri.toString() + " getBuys.uri");
+        // SELECT portfolio, sum(price * volume) AS 'cost'
+        String[] projection = {
+                Contract.DealsEntry.COLUMN_PORTFOLIO,
+                "sum (" + Contract.DealsEntry.COLUMN_PRICE + " * " +
+                        Contract.DealsEntry.COLUMN_VOLUME+ ") AS '" +
+                        COLUMN_COST + "'"
+        };
+Log.d(TAG, projection[0] + " " + projection[1] + " getBuys.projection");
+        // WHERE portfolio = '5838199' AND date < 123 AND type = Input
+        String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
+                lPortfolio + "' AND " +
+                Contract.DealsEntry.COLUMN_DATE + " < " + lDate + " AND " +
+                Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[1] + "'";
+Log.d(TAG, selection + " getBuys.selection");
+        Cursor cursor = getContext().getContentResolver().query(
+                uri,
+                projection,
+                selection,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+
+            int index = cursor.getColumnIndex(COLUMN_COST);
+            cost = cursor.getInt(index);
+        }
+Log.d(TAG, cost + " getBuys().cost");
+        cursor.close();
     }
 
     @Override
