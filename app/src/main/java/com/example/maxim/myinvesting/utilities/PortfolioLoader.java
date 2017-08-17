@@ -88,6 +88,10 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                         Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).
                                 getTimeInMillis());
 
+                getSells(((MainActivity) mContext).getNameOfPortfolio(),
+                        Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).
+                                getTimeInMillis());
+
                 PortfolioItem portfolioItem = new PortfolioItem(i, ticker, volume, price);
                 arrayList.add(portfolioItem);
 
@@ -219,7 +223,7 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
     // получение суммы всех покупок акций
     private void getBuys(String lPortfolio, long lDate) {
 
-        int cost = 0;
+        int costOfBuys = 0;
         final String COLUMN_COST = "cost";
 
         String [] strings = mContext.getResources().getStringArray(R.array.spinType_deal_array);
@@ -228,7 +232,7 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                 .appendPath(Contract.PATH_DEALS)
                 .appendPath(Contract.PATH_SUM)
                 .build();
-Log.d(TAG, uri.toString() + " getBuys.uri");
+//Log.d(TAG, uri.toString() + " getBuys.uri");
         // SELECT portfolio, sum(price * volume) AS 'cost'
         String[] projection = {
                 Contract.DealsEntry.COLUMN_PORTFOLIO,
@@ -236,13 +240,13 @@ Log.d(TAG, uri.toString() + " getBuys.uri");
                         Contract.DealsEntry.COLUMN_VOLUME+ ") AS '" +
                         COLUMN_COST + "'"
         };
-Log.d(TAG, projection[0] + " " + projection[1] + " getBuys.projection");
-        // WHERE portfolio = '5838199' AND date < 123 AND type = Input
+//Log.d(TAG, projection[0] + " " + projection[1] + " getBuys.projection");
+        // WHERE portfolio = '5838199' AND date < 123 AND type = 'Buy'
         String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
                 lPortfolio + "' AND " +
                 Contract.DealsEntry.COLUMN_DATE + " < " + lDate + " AND " +
                 Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[1] + "'";
-Log.d(TAG, selection + " getBuys.selection");
+//Log.d(TAG, selection + " getBuys.selection");
         Cursor cursor = getContext().getContentResolver().query(
                 uri,
                 projection,
@@ -253,11 +257,56 @@ Log.d(TAG, selection + " getBuys.selection");
         if (cursor.moveToFirst()) {
 
             int index = cursor.getColumnIndex(COLUMN_COST);
-            cost = cursor.getInt(index);
+            costOfBuys = cursor.getInt(index);
         }
-Log.d(TAG, cost + " getBuys().cost");
+//Log.d(TAG, costOfBuys + " getBuys().costOfBuys");
         cursor.close();
     }
+
+    // получение суммы всех продаж акций
+    private void getSells (String lPortfolio, long lDate) {
+
+        int costOfSells = 0;
+        final String COLUMN_COST = "cost";
+
+        String [] strings = mContext.getResources().getStringArray(R.array.spinType_deal_array);
+
+        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                .appendPath(Contract.PATH_DEALS)
+                .appendPath(Contract.PATH_SUM)
+                .build();
+Log.d(TAG, uri.toString() + " getSells.uri");
+        // SELECT portfolio, sum(price * volume) AS 'cost'
+        String[] projection = {
+                Contract.DealsEntry.COLUMN_PORTFOLIO,
+                "sum (" + Contract.DealsEntry.COLUMN_PRICE + " * " +
+                        Contract.DealsEntry.COLUMN_VOLUME+ ") AS '" +
+                        COLUMN_COST + "'"
+        };
+Log.d(TAG, projection[0] + " " + projection[1] + " getSells.projection");
+        // WHERE portfolio = '5838199' AND date < 123 AND type = 'Sell'
+        String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
+                lPortfolio + "' AND " +
+                Contract.DealsEntry.COLUMN_DATE + " < " + lDate + " AND " +
+                Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[0] + "'";
+Log.d(TAG, selection + " getSells.selection");
+        Cursor cursor = getContext().getContentResolver().query(
+                uri,
+                projection,
+                selection,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+
+            int index = cursor.getColumnIndex(COLUMN_COST);
+            costOfSells = cursor.getInt(index);
+        }
+Log.d(TAG, costOfSells + " getSells().costOfSells");
+        cursor.close();
+    }
+
+
 
     @Override
     protected void onStartLoading() {

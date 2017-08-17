@@ -90,7 +90,7 @@ public class InvestingProvider extends ContentProvider{
             case CODE_DEALS_SUM: {
 
                 String groupBy = uri.getPathSegments().get(1);
-Log.d(TAG, groupBy + " InvestingProvider.query()");
+
                 cursor = db.query(DealsEntry.TABLE_NAME,
                         projection,
                         selection,
