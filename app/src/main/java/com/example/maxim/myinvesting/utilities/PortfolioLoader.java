@@ -13,6 +13,7 @@ import com.example.maxim.myinvesting.R;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 
+import static com.example.maxim.myinvesting.data.Const.MILLIS_IN_DAY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 import java.util.ArrayList;
@@ -89,6 +90,14 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                                 getTimeInMillis());
 
                 getSells(((MainActivity) mContext).getNameOfPortfolio(),
+                        Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).
+                                getTimeInMillis());
+
+                getDividends(((MainActivity) mContext).getNameOfPortfolio(),
+                        Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).
+                                getTimeInMillis());
+
+                getAverageInvestment(((MainActivity) mContext).getNameOfPortfolio(),
                         Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).
                                 getTimeInMillis());
 
@@ -220,6 +229,47 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
         cursor.close();
     }
 
+    // получение суммы всех выводов
+    private void getOutputs(String lPortfolio, long lDate) {
+
+        int amountOutput = 0;
+
+        String [] strings = mContext.getResources().getStringArray(R.array.spinType_input_array);
+
+        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                .appendPath(Contract.PATH_INPUT)
+                .appendPath(Contract.PATH_SUM)
+                .build();
+
+        // SELECT portfolio, sum(amount) AS 'amount'
+        String[] projection = {
+                Contract.InputEntry.COLUMN_PORTFOLIO,
+                "sum (" + Contract.InputEntry.COLUMN_AMOUNT + ") AS '" +
+                        Contract.InputEntry.COLUMN_AMOUNT + "'"
+        };
+
+        // WHERE portfolio = '5838199' AND date < 123 AND type = 'Output'
+        String selection = Contract.InputEntry.COLUMN_PORTFOLIO + " = '" +
+                lPortfolio + "' AND " +
+                Contract.InputEntry.COLUMN_DATE + " < " + lDate + " AND " +
+                Contract.InputEntry.COLUMN_TYPE + " = '" + strings[1] + "'";
+
+        Cursor cursor = getContext().getContentResolver().query(
+                uri,
+                projection,
+                selection,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+
+            int index = cursor.getColumnIndex(Contract.InputEntry.COLUMN_AMOUNT);
+            amountOutput = cursor.getInt(index);
+        }
+
+        cursor.close();
+    }
+
     // получение суммы всех покупок акций
     private void getBuys(String lPortfolio, long lDate) {
 
@@ -232,7 +282,7 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                 .appendPath(Contract.PATH_DEALS)
                 .appendPath(Contract.PATH_SUM)
                 .build();
-//Log.d(TAG, uri.toString() + " getBuys.uri");
+
         // SELECT portfolio, sum(price * volume) AS 'cost'
         String[] projection = {
                 Contract.DealsEntry.COLUMN_PORTFOLIO,
@@ -240,13 +290,13 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                         Contract.DealsEntry.COLUMN_VOLUME+ ") AS '" +
                         COLUMN_COST + "'"
         };
-//Log.d(TAG, projection[0] + " " + projection[1] + " getBuys.projection");
+
         // WHERE portfolio = '5838199' AND date < 123 AND type = 'Buy'
         String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
                 lPortfolio + "' AND " +
                 Contract.DealsEntry.COLUMN_DATE + " < " + lDate + " AND " +
                 Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[1] + "'";
-//Log.d(TAG, selection + " getBuys.selection");
+
         Cursor cursor = getContext().getContentResolver().query(
                 uri,
                 projection,
@@ -259,7 +309,7 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
             int index = cursor.getColumnIndex(COLUMN_COST);
             costOfBuys = cursor.getInt(index);
         }
-//Log.d(TAG, costOfBuys + " getBuys().costOfBuys");
+
         cursor.close();
     }
 
@@ -275,7 +325,7 @@ public class PortfolioLoader extends AsyncTaskLoader<ArrayList<PortfolioItem>> {
                 .appendPath(Contract.PATH_DEALS)
                 .appendPath(Contract.PATH_SUM)
                 .build();
-Log.d(TAG, uri.toString() + " getSells.uri");
+
         // SELECT portfolio, sum(price * volume) AS 'cost'
         String[] projection = {
                 Contract.DealsEntry.COLUMN_PORTFOLIO,
@@ -283,13 +333,13 @@ Log.d(TAG, uri.toString() + " getSells.uri");
                         Contract.DealsEntry.COLUMN_VOLUME+ ") AS '" +
                         COLUMN_COST + "'"
         };
-Log.d(TAG, projection[0] + " " + projection[1] + " getSells.projection");
+
         // WHERE portfolio = '5838199' AND date < 123 AND type = 'Sell'
         String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
                 lPortfolio + "' AND " +
                 Contract.DealsEntry.COLUMN_DATE + " < " + lDate + " AND " +
                 Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[0] + "'";
-Log.d(TAG, selection + " getSells.selection");
+
         Cursor cursor = getContext().getContentResolver().query(
                 uri,
                 projection,
@@ -302,11 +352,198 @@ Log.d(TAG, selection + " getSells.selection");
             int index = cursor.getColumnIndex(COLUMN_COST);
             costOfSells = cursor.getInt(index);
         }
-Log.d(TAG, costOfSells + " getSells().costOfSells");
+
         cursor.close();
     }
 
+    // получение суммы всех дивидендов
+    private void getDividends (String lPortfolio, long lDate) {
 
+        int costOfDivs = 0;
+        final String COLUMN_COST = "cost";
+
+        String [] strings = mContext.getResources().getStringArray(R.array.spinType_deal_array);
+
+        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                .appendPath(Contract.PATH_DEALS)
+                .appendPath(Contract.PATH_SUM)
+                .build();
+
+        // SELECT portfolio, sum(price * volume) AS 'cost'
+        String[] projection = {
+                Contract.DealsEntry.COLUMN_PORTFOLIO,
+                "sum (" + Contract.DealsEntry.COLUMN_PRICE + " * " +
+                        Contract.DealsEntry.COLUMN_VOLUME+ ") AS '" +
+                        COLUMN_COST + "'"
+        };
+
+        // WHERE portfolio = '5838199' AND date < 123 AND type = 'Dividend'
+        String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
+                lPortfolio + "' AND " +
+                Contract.DealsEntry.COLUMN_DATE + " < " + lDate + " AND " +
+                Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[2] + "'";
+
+        Cursor cursor = getContext().getContentResolver().query(
+                uri,
+                projection,
+                selection,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+
+            int index = cursor.getColumnIndex(COLUMN_COST);
+            costOfDivs = cursor.getInt(index);
+        }
+
+        cursor.close();
+    }
+
+    // получаю средневзвешенную сумму инвестиций за период
+    private void getAverageInvestment(String lPortfolio, long lDate) {
+
+        // переменная для хранения текущего результата
+        long averageInvestment = 0;
+        // переменная для подсчета общего количества дней
+        int totalDays = 0;
+
+        // 1) делаю запрос к базе данных
+        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                .appendPath(Contract.PATH_INPUT)
+                .build();
+
+        // SELECT portfolio, type, amount, date
+        String[] projection = {
+                Contract.InputEntry.COLUMN_PORTFOLIO,
+                Contract.InputEntry.COLUMN_TYPE,
+                Contract.InputEntry.COLUMN_AMOUNT,
+                Contract.InputEntry.COLUMN_DATE
+        };
+
+        // WHERE portfolio = '5838199' AND date < 123
+        String selection = Contract.InputEntry.COLUMN_PORTFOLIO + " = '" +
+                lPortfolio + "' AND " +
+                Contract.InputEntry.COLUMN_DATE + " < " + lDate;
+
+        String sortOrder = Contract.InputEntry.COLUMN_DATE + " ASC";
+
+        Cursor cursor = getContext().getContentResolver().query(
+                uri,
+                projection,
+                selection,
+                null,
+                sortOrder);
+
+        // 2) читаю курсор
+        if (cursor.moveToFirst()) {
+
+            long previousTime = 0; // время начала подпериода
+
+            int dateIndex = cursor.getColumnIndex(Contract.InputEntry.COLUMN_DATE);
+            int typeIndex = cursor.getColumnIndex(Contract.InputEntry.COLUMN_TYPE);
+            int amountIndex = cursor.getColumnIndex(Contract.InputEntry.COLUMN_AMOUNT);
+
+            // переменная для хранения считанного значения количества Input
+            long tempAmount;
+
+            // тип операции (Input, Output)
+            String[] strings = mContext.getResources().getStringArray(R.array.spinType_input_array);
+
+            // 3) читаю первую строку курсора
+            // если тип = Input то amount берем со знаком "+"
+            if (cursor.getString(typeIndex).equals(strings[0])) {
+                tempAmount = cursor.getInt(amountIndex);
+            }
+            // если тип = Output то amount берем со знаком "-"
+            else if (cursor.getString(typeIndex).equals(strings[1])) {
+                tempAmount = - cursor.getInt(amountIndex);
+            // если тип = чему то другому, то пишем в лог
+            } else {
+                tempAmount = 0;
+                Log.d(TAG, cursor.getString(typeIndex) + "Не верный тип ввода");
+            }
+
+            // считываем начало периода из курсора
+            previousTime = cursor.getLong(dateIndex);
+
+            long amountForZeroCase = 0; // хранение количества ввода(вывода) в случае нулевого периода
+            long sumOfPreviousInputs = 0; // сумма всех предыдущих вводов
+
+            // 4) читаю значения со второй до предпоследней строки курсора
+            while (cursor.moveToNext()){
+
+                // конец подпериода
+                long tempTime = cursor.getLong(dateIndex);
+
+                // длительность подпериода
+                long tempPeriod = tempTime - previousTime;
+
+                // длительность подпериода в днях
+                int periodDays = (int) (tempPeriod / MILLIS_IN_DAY);
+
+                // общее количество дней расчитываемого периода
+                totalDays = totalDays + periodDays;
+
+                // TODO: 18.08.17 сделать решение для случая нескольких подпериодов = 0
+                // если подпериод = 0, то сохраняем вносимое количество до следующего цикла
+                if (periodDays == 0) {
+
+                    amountForZeroCase = tempAmount;
+
+                } else {
+
+                    // считаем сумму для подпериода
+                    sumOfPreviousInputs = sumOfPreviousInputs + tempAmount + amountForZeroCase;
+
+                    // умножаем сумму подпериода на длительность подпериода и прибавляем
+                    // к предыдущему результату инвестирования
+                    averageInvestment = averageInvestment + (periodDays * sumOfPreviousInputs);
+
+                    // обнуляем случай нулевого подпериода
+                    amountForZeroCase = 0;
+                }
+
+                if (cursor.getString(typeIndex).equals(strings[0])) {
+                    tempAmount = cursor.getInt(amountIndex);
+                }
+                else if (cursor.getString(typeIndex).equals(strings[1])) {
+
+                    tempAmount = - cursor.getInt(amountIndex);
+                } else {
+                    tempAmount = 0;
+                    Log.d(TAG, "Не верный тип ввода");
+                }
+
+                // задаю начало слудующего подпериода
+                previousTime = tempTime;
+            }
+
+            // 5) читаю последнюю строку курсора
+
+            // последний подпериод
+            long tempPeriod = lDate - previousTime;
+
+            int periodDays = (int) (tempPeriod / MILLIS_IN_DAY);
+            totalDays = totalDays + periodDays;
+
+            if (periodDays == 0) {
+
+                amountForZeroCase = tempAmount;
+
+            } else {
+
+                sumOfPreviousInputs = sumOfPreviousInputs + tempAmount + amountForZeroCase;
+
+                averageInvestment = averageInvestment + (periodDays * sumOfPreviousInputs);
+
+                amountForZeroCase = 0;
+            }
+
+            averageInvestment = averageInvestment / totalDays;
+        }
+
+        cursor.close();
+    }
 
     @Override
     protected void onStartLoading() {

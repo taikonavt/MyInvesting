@@ -103,10 +103,10 @@ public class AddInputActivity extends AppCompatActivity {
             if (strAmount.length() == 0)
                 throw new UnsupportedOperationException("Amount не задан");
             Float floatAmount = Float.valueOf(strAmount);
-Log.d(TAG, floatAmount + " onClick 1");
+
             //сумму ввода умножаю на 100 чтобы уйти от запятой
             amount = (long) (floatAmount * MULTIPLIER_FOR_CURRENCY);
-Log.d(TAG, amount + " onClick 2");
+
             // если amount и floatAmount не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
             if (amount != floatAmount * MULTIPLIER_FOR_CURRENCY) {
@@ -115,7 +115,7 @@ Log.d(TAG, amount + " onClick 2");
             // домножаю на 100, чтобы привести все деньги в программе
             // к одной разрядности 1 руб = 10000 ед.
             amount = (amount / MULTIPLIER_FOR_CURRENCY) * MULTIPLIER_FOR_MONEY;
-Log.d(TAG, amount + " onClick 3");
+
             String strFee = eTFee.getText().toString();
             Float floatFee = Float.valueOf(strFee);
             //сумму ввода умножаю на 100 чтобы уйти от запятой

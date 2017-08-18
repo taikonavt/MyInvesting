@@ -53,6 +53,7 @@ public class PortfolioFrarment extends Fragment
 
         mRecyclerView.setAdapter(mAdapter);
 
+        // TODO: 18.08.17 узнать почему лоадер вызывается два раза
         getLoaderManager().initLoader(PORTFOLIO_LOADER_ID, null, this);
 
         return rootView;

@@ -18,7 +18,9 @@ public class DateUtils {
 
         calendar = new GregorianCalendar(timeZone);
 
-        calendar.set(yy, mm, dd);
+        calendar.clear();
+
+        calendar.set(yy, mm, dd, 0, 0, 0);
 
         return calendar.getTimeInMillis();
     }

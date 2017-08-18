@@ -13,4 +13,5 @@ public class Const {
     public final static String ARRAY_SIZE = "array_size";
     public final static int SUB_MENU_ITEM_ID = 7695;
     public final static int ADD_BUTTON_ID = 25943;
+    public final static int MILLIS_IN_DAY = 86400000;
 }
