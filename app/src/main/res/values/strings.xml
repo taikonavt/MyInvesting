@@ -68,5 +68,13 @@
     <string name="toast_no_portfolio">There is no portfolio name!</string>
     <string name="unknown_command">Unknown command!</string>
 
+    <!-- fragment_portfolio.xml -->
+    <string name="txt_ticker">Ticker</string>
+    <string name="txt_name">Name</string>
+    <string name="txt_volume">Vol</string>
+    <string name="txt_price">Price</string>
+    <string name="txt_cost">Cost</string>
+    <string name="txt_profit">Profit</string>
+    <string name="txt_total">Total:</string>
 
 </resources>

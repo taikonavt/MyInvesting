@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/ll_header_fragment_portfolio"
+        android:background="@color/colorLightGray"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_info_item"
+            android:text="@string/txt_ticker" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:textSize="@dimen/small_text_size_for_info_item"
+            android:text="@string/txt_name"
+            android:padding="@dimen/padding_portfolio_item"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_info_item"
+            android:text="@string/txt_volume" />
+
+        <TextView
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_info_item"
+            android:text="@string/txt_price" />
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_info_item"
+            android:text="@string/txt_cost" />
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/small_text_size_for_info_item"
+            android:text="@string/txt_profit" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_portfolio_fragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/ll_header_fragment_portfolio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/divider_fragment_portfolio"
+        tools:layout_editor_absoluteX="0dp">
+    </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorBasket"
+        android:id="@+id/divider_fragment_portfolio"
+        app:layout_constraintBottom_toTopOf="@+id/ll_result_fragment_portfolio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ll_result_fragment_portfolio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorLightGray"
+        >
+
+        <TextView
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_info_item"
+            android:text="@string/txt_total"
+            />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/small_text_size_for_info_item"
+            tools:text="1000000" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/small_text_size_for_info_item"
+            tools:text="11.1%" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

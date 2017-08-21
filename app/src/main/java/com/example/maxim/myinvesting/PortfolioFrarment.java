@@ -39,9 +39,9 @@ public class PortfolioFrarment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_info, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_portfolio, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_info);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_portfolio_fragment);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
