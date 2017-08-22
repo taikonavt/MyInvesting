@@ -50,7 +50,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
             android:textAlignment="center"
-            android:textSize="@dimen/text_size_for_info_item"
+            android:textSize="@dimen/small_text_size_for_info_item"
             tools:text="160.00" />
 
         <TextView

@@ -12,13 +12,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.maxim.myinvesting.data.PortfolioData;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 import com.example.maxim.myinvesting.utilities.PortfolioLoader;
 import com.example.maxim.myinvesting.data.Contract;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 import static com.example.maxim.myinvesting.data.Const.KEY_FOR_LOADER;
 
@@ -27,10 +31,12 @@ import static com.example.maxim.myinvesting.data.Const.KEY_FOR_LOADER;
  */
 
 public class PortfolioFrarment extends Fragment
-        implements LoaderManager.LoaderCallbacks<ArrayList<PortfolioItem>>{
+        implements LoaderManager.LoaderCallbacks<PortfolioData>{
 
     private RecyclerView mRecyclerView;
     private PortfolioAdapter mAdapter;
+    private TextView tvCost;
+    private TextView tvProfit;
 
     private static final int PORTFOLIO_LOADER_ID = 12;
 
@@ -42,6 +48,8 @@ public class PortfolioFrarment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_portfolio, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_portfolio_fragment);
+        tvCost = (TextView) rootView.findViewById(R.id.tv_total_cost_fragment_portfolio);
+        tvProfit = (TextView) rootView.findViewById(R.id.tv_profitability_fragment_portfolio);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
@@ -53,7 +61,6 @@ public class PortfolioFrarment extends Fragment
 
         mRecyclerView.setAdapter(mAdapter);
 
-        // TODO: 18.08.17 узнать почему лоадер вызывается два раза
         getLoaderManager().initLoader(PORTFOLIO_LOADER_ID, null, this);
 
         return rootView;
@@ -67,21 +74,27 @@ public class PortfolioFrarment extends Fragment
     }
 
     @Override
-    public Loader<ArrayList<PortfolioItem>> onCreateLoader(int id, Bundle args) {
+    public Loader<PortfolioData> onCreateLoader(int id, Bundle args) {
 
-        AsyncTaskLoader<ArrayList<PortfolioItem>> loader = new PortfolioLoader(getActivity());
+        AsyncTaskLoader<PortfolioData> loader = new PortfolioLoader(getActivity());
 
         return loader;
     }
 
     @Override
-    public void onLoadFinished(Loader<ArrayList<PortfolioItem>> loader, ArrayList<PortfolioItem> data) {
+    public void onLoadFinished(Loader<PortfolioData> loader, PortfolioData data) {
 
-        mAdapter.swapArray(data);
+        tvCost.setText(String.valueOf(data.getCostOfPortfolio() / MULTIPLIER_FOR_MONEY));
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        String str = df.format(data.getProfitability()*100)  + "%";
+        tvProfit.setText(str);
+
+        mAdapter.swapArray(data.getPortfolioItems());
     }
 
     @Override
-    public void onLoaderReset(Loader<ArrayList<PortfolioItem>> loader) {
+    public void onLoaderReset(Loader<PortfolioData> loader) {
 
         mAdapter.swapArray(null);
     }
