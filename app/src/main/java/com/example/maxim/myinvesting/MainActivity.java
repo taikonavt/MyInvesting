@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,11 +33,18 @@ public class MainActivity extends AppCompatActivity
     private InfoFragment fragment = null;
     private NavigationView mDrawer;
     public String nameOfPortfolio;
+    private Toolbar toolbar;
+
+    private boolean showAddButton = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // устанавливаю новую toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // если экран пустой, то показываем Deal фрагмент
         if (getFragmentManager().findFragmentById(R.id.ll_main_activity) == null) {
@@ -74,6 +82,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.info_fragment_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        menu.setGroupVisible(R.id.add_group_info_fragment, showAddButton);
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -133,14 +149,20 @@ public class MainActivity extends AppCompatActivity
         // Deals
         if (id == R.id.nav_deal_item) {
 
+            showAddButton = true;
+            invalidateOptionsMenu();
+
             drawerLayout.closeDrawers();
             fragment = new InfoDealFragment();
             showFragment();
-            return;
+            return; // TODO: 22.08.17 проверить зачем здесь нужен ретурн
         }
 
         // Inputs
         else if (id == R.id.nav_input_item) {
+
+            showAddButton = true;
+            invalidateOptionsMenu();
 
             drawerLayout.closeDrawers();
             fragment = new InfoInputFragment();
@@ -157,6 +179,9 @@ public class MainActivity extends AppCompatActivity
 
         // Open portfolio
         else if (SUB_MENU_ITEM_ID < id || id < (SUB_MENU_ITEM_ID + 1000)) {
+
+            showAddButton = false;
+            invalidateOptionsMenu();
 
             nameOfPortfolio = (String) item.getTitle();
 
