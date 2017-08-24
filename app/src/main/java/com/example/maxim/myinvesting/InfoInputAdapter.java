@@ -2,14 +2,17 @@ package com.example.maxim.myinvesting;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
@@ -96,7 +99,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
     }
 
 
-    class InfoViewHolder extends RecyclerView.ViewHolder {
+    class InfoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvInfoInputItemType;
         TextView tvInfoInputItemDate;
@@ -106,6 +109,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         TextView tvInfoInputItemPortfolio;
         TextView tvInfoInputItemNote; // TODO: 16.05.17 Добавить Note для горизонт. экрана
         TableRow tableRowInput;
+        ImageButton deleteButton;
 
         public InfoViewHolder(View itemView) {
             super(itemView);
@@ -117,7 +121,9 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             tvInfoInputItemFee = (TextView) itemView.findViewById(R.id.tv_info_input_item_fee);
             tvInfoInputItemPortfolio = (TextView) itemView.findViewById(R.id.tv_info_input_item_portfolio);
             tableRowInput = (TableRow) itemView.findViewById(R.id.tr_info_input);
+            deleteButton = (ImageButton) itemView.findViewById(R.id.ib_input_delete);
 
+            deleteButton.setOnClickListener(this);
         }
 
         void bind(String lType,
@@ -148,6 +154,19 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                     tableRowInput.setBackgroundColor(0);
                     Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int id = (int) itemView.getTag();
+
+            String stringId = Integer.toString(id);
+
+            Uri uri = Contract.InputEntry.CONTENT_URI;;
+            uri = uri.buildUpon().appendPath(stringId).build();
+
+            itemView.getContext().getContentResolver().delete(uri, null, null);
         }
     }
 }
