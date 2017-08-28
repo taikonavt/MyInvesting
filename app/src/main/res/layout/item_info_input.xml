@@ -3,104 +3,123 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_item_info_input"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
     >
 
-    <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:stretchColumns="2"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
         >
 
-        <TableRow
-            android:id="@+id/tr_info_input"
+        <CheckBox
+            android:id="@+id/chb_item_info_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:clickable="false"
+            />
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:stretchColumns="2"
             >
 
-            <TextView
-                android:id="@+id/tv_info_input_item_type"
+            <TableRow
+                android:id="@+id/tr_info_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:textAlignment="textStart"
-                android:textSize="@dimen/text_size_for_info_item"
-                tools:text="Output"
-                android:padding="@dimen/padding_info_item"
-                android:layout_weight="2"
-                />
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                >
 
-            <TextView
-                android:id="@+id/tv_info_input_item_date"
+                <TextView
+                    android:id="@+id/tv_info_input_item_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/text_size_for_info_item"
+                    tools:text="Output"
+                    android:padding="@dimen/padding_info_item"
+                    android:layout_weight="2"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_info_input_item_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:textAlignment="textStart"
+                    android:layout_weight="8"
+                    android:textSize="@dimen/text_size_for_info_item"
+                    tools:text="01/02/17"
+                    android:padding="@dimen/padding_info_item"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_info_input_item_portfolio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center"
+                    android:textAlignment="center"
+                    android:layout_weight="6"
+                    android:padding="@dimen/padding_info_item"
+                    android:textSize="@dimen/small_text_size_for_info_item"
+                    tools:text="6611001" />
+<!--
+                <ImageButton
+                    android:id="@+id/ib_input_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_delete_black_24px"
+                    android:background="@null"
+                    android:tint="@color/colorBasket"
+                    android:layout_weight="1"
+                    />
+-->
+            </TableRow>
+
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:textAlignment="textStart"
-                android:layout_weight="8"
-                android:textSize="@dimen/text_size_for_info_item"
-                tools:text="01/02/17"
-                android:padding="@dimen/padding_info_item"
-                />
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
 
-            <TextView
-                android:id="@+id/tv_info_input_item_portfolio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center"
-                android:textAlignment="center"
-                android:layout_weight="6"
-                android:padding="@dimen/padding_info_item"
-                android:textSize="@dimen/small_text_size_for_info_item"
-                tools:text="6611001" />
+                <TextView
+                    android:id="@+id/tv_info_input_item_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/small_text_size_for_info_item"
+                    tools:text="10000 RUB"
+                    android:padding="@dimen/padding_info_item"
+                    android:layout_weight="1"
+                    />
 
-            <ImageButton
-                android:id="@+id/ib_input_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_delete_black_24px"
-                android:background="@null"
-                android:tint="@color/colorBasket"
-                android:layout_weight="1"
-                />
+                <TextView
+                    android:id="@+id/tv_info_input_item_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="@dimen/padding_info_item"
+                    android:layout_gravity="start"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/small_text_size_for_info_item"
+                    tools:text="1,00 RUB" />
 
-        </TableRow>
+            </TableRow>
+        </TableLayout>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal">
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_info_input_item_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:textAlignment="textStart"
-                android:textSize="@dimen/small_text_size_for_info_item"
-                tools:text="10000 RUB"
-                android:padding="@dimen/padding_info_item"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:id="@+id/tv_info_input_item_fee"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="@dimen/padding_info_item"
-                android:layout_gravity="start"
-                android:textAlignment="textStart"
-                android:textSize="@dimen/small_text_size_for_info_item"
-                tools:text="1,00 RUB" />
-
-        </TableRow>
-    </TableLayout>
 
     <ImageView
         android:layout_width="match_parent"

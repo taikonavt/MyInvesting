@@ -59,7 +59,9 @@
 
 
     <!-- enter_name_of_portfolio_dialog_fragment.xml -->
+    <!-- confirm_deletion.xml -->
     <string name="et_df_hint">Enter name of portfolio</string>
+    <string name="tv_confirm_hint">Are you sure?</string>
     <string name="btn_df_ok">OK</string>
     <string name="btn_df_cancel">CANCEL</string>
 
@@ -79,5 +81,11 @@
 
 
     <string name="percent">%</string>
+
+
+    <!-- InfoInputAdapter.java -->
+    <string name="checked_act_mode">Checked&#160;</string>
+    <string name="items_act_mode">&#160;items</string>
+
 
 </resources>

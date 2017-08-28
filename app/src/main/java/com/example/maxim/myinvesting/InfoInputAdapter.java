@@ -2,20 +2,31 @@ package com.example.maxim.myinvesting;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
+
+import java.util.ArrayList;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
@@ -24,19 +35,89 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
  * Created by maxim on 16.05.17.
  */
 
-public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.InfoViewHolder>{
+public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.InfoViewHolder> {
+
+    private Context mContext;
 
     private Cursor mCursor;
+
+    private ActionMode mActionMode;
+    InfoInputFragment fragment;
+
+    private boolean multiSelect = false;
+    private ArrayList<Integer> selectedItems = new ArrayList<Integer>();
+
+    InfoInputAdapter(InfoInputFragment fragment) {
+
+        this.fragment = fragment;
+    }
+
+    private ActionMode.Callback actionModeCallbacks = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+            multiSelect = true;
+
+            mode.getMenuInflater().inflate(R.menu.action_mode_menu, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
+            mode.setTitle(mContext.getString(R.string.checked_act_mode) +
+                selectedItems.size() + mContext.getString(R.string.items_act_mode));
+
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
+            for (Integer intItem : selectedItems) {
+
+                String stringId = Integer.toString(intItem);
+
+                Uri uri = Contract.InputEntry.CONTENT_URI;
+
+                uri = uri.buildUpon().appendPath(stringId).build();
+
+                mContext.getContentResolver().delete(uri, null, null);
+            }
+
+            mode.finish();
+
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+
+            multiSelect = false;
+
+            mActionMode = null;
+
+            selectedItems.clear();
+
+            fragment.setInActionMode(false);
+
+            notifyDataSetChanged();
+        }
+    };
 
     @Override
     public InfoInputAdapter.InfoViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        Context context = viewGroup.getContext();
+        mActionMode = null;
+
+        mContext = viewGroup.getContext();
         int layoutIdForListItem = R.layout.item_info_input;
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+
         InfoInputAdapter.InfoViewHolder viewHolder = new InfoInputAdapter.InfoViewHolder(view);
 
         return viewHolder;
@@ -69,7 +150,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
 
         String dateNormal = DateUtils.getNormalTimeForMoscow(dateInMillis);
 
-        holder.bind(type, dateNormal, amount, currency, fee, portfolio, note);
+        holder.bind(id, type, dateNormal, amount, currency, fee, portfolio, note);
 
         // TODO: 15.04.17 do rotation: when vert - few piece of info, when horiz - all info is seen
     }
@@ -99,8 +180,9 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
     }
 
 
-    class InfoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class InfoViewHolder extends RecyclerView.ViewHolder {
 
+        LinearLayout llInfoInputItem;
         TextView tvInfoInputItemType;
         TextView tvInfoInputItemDate;
         TextView tvInfoInputItemAmount;
@@ -109,11 +191,12 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         TextView tvInfoInputItemPortfolio;
         TextView tvInfoInputItemNote; // TODO: 16.05.17 Добавить Note для горизонт. экрана
         TableRow tableRowInput;
-        ImageButton deleteButton;
+        CheckBox checkBox;
 
         public InfoViewHolder(View itemView) {
             super(itemView);
 
+            llInfoInputItem = (LinearLayout) itemView.findViewById(R.id.ll_item_info_input);
             tvInfoInputItemType = (TextView) itemView.findViewById(R.id.tv_info_input_item_type);
             tvInfoInputItemDate = (TextView) itemView.findViewById(R.id.tv_info_input_item_date);
             tvInfoInputItemAmount = (TextView) itemView.findViewById(R.id.tv_info_input_item_amount);
@@ -121,18 +204,32 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             tvInfoInputItemFee = (TextView) itemView.findViewById(R.id.tv_info_input_item_fee);
             tvInfoInputItemPortfolio = (TextView) itemView.findViewById(R.id.tv_info_input_item_portfolio);
             tableRowInput = (TableRow) itemView.findViewById(R.id.tr_info_input);
-            deleteButton = (ImageButton) itemView.findViewById(R.id.ib_input_delete);
-
-            deleteButton.setOnClickListener(this);
+            checkBox = (CheckBox) itemView.findViewById(R.id.chb_item_info_input);
         }
 
-        void bind(String lType,
+        void bind(final Integer id,
+                  String lType,
                   String lDate,
                   long lAmount,
                   String lCurrency,
                   int lFee,
                   int lPortfolio,
                   String lNote) {
+
+            if (selectedItems.contains(id)) {
+
+                llInfoInputItem.setBackgroundColor(Color.LTGRAY);
+
+                checkBox.setChecked(true);
+
+            } else {
+
+                llInfoInputItem.setBackgroundColor(ResourcesCompat.
+                        getColor(mContext.getResources(), android.R.color.background_light, null));
+
+                checkBox.setChecked(false);
+            }
+
             tvInfoInputItemType.setText(lType);
             tvInfoInputItemDate.setText(lDate);
             tvInfoInputItemAmount.setText(
@@ -140,6 +237,10 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                     " " + lCurrency);
             tvInfoInputItemFee.setText("- " + String.valueOf(lFee) + " " + lCurrency);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
+
+            if (fragment.inActionMode)
+                checkBox.setVisibility(View.VISIBLE);
+            else checkBox.setVisibility(View.GONE);
 
             switch (lType) {
                 case "Output": tableRowInput.setBackgroundColor(ContextCompat.getColor(
@@ -154,19 +255,83 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                     tableRowInput.setBackgroundColor(0);
                     Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
             }
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    mContext = v.getContext();
+
+                    if (mActionMode != null) {
+
+                        selectItem(id);
+
+                        return false;
+                    }
+
+                    fragment.setInActionMode(true);
+                    fragment.notifyAdapter();
+
+                    mActionMode = ((AppCompatActivity) mContext).
+                            startSupportActionMode(actionModeCallbacks);
+
+                    selectItem(id);
+
+                    return true;
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectItem(id);
+                }
+            });
         }
 
-        @Override
-        public void onClick(View v) {
+        void selectItem(Integer item) {
 
-            int id = (int) itemView.getTag();
+            if (multiSelect) {
+                if (selectedItems.contains(item)) {
 
-            String stringId = Integer.toString(id);
+                    selectedItems.remove(item);
 
-            Uri uri = Contract.InputEntry.CONTENT_URI;;
-            uri = uri.buildUpon().appendPath(stringId).build();
+                    mActionMode.invalidate();
 
-            itemView.getContext().getContentResolver().delete(uri, null, null);
+                    llInfoInputItem.setBackgroundColor(ResourcesCompat.
+                            getColor(mContext.getResources(), android.R.color.background_light, null));
+
+                    checkBox.setChecked(false);
+                } else {
+
+                    selectedItems.add(item);
+
+                    mActionMode.invalidate();
+
+                    llInfoInputItem.setBackgroundColor(Color.LTGRAY);
+
+                    checkBox.setChecked(true);
+                }
+            }
         }
+
+//        @Override
+//        public void onClick(View v) {
+//
+//            Activity activity = (Activity) (itemView.getContext());
+//            FragmentManager fm = activity.getFragmentManager();
+//
+//            DialogFragment dialogFragment = new ConfirmDeletion();
+//
+//            dialogFragment.show(fm, "Confirmation dialog");
+//
+//        }
+    }
+
+    public interface AdapterInterface {
+
+        void notifyAdapter();
+
+        void setInActionMode(boolean inActionMode);
     }
 }

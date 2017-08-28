@@ -17,15 +17,18 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
  * Created by maxim on 20.06.17.
  */
 
-public class InfoInputFragment extends InfoFragment {
+public class InfoInputFragment extends InfoFragment
+                                implements InfoInputAdapter.AdapterInterface {
 
     private InfoInputAdapter mAdapter;
+
+    boolean inActionMode = false;
 
     // метод используется для доступа к экземпляру адаптера из суперкласса
     @Override
     public RecyclerView.Adapter getAdapter() {
 
-        mAdapter = new InfoInputAdapter();
+        mAdapter = new InfoInputAdapter(this);
         return mAdapter;
     }
 
@@ -58,5 +61,15 @@ public class InfoInputFragment extends InfoFragment {
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void notifyAdapter() {
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setInActionMode(boolean inActionMode) {
+        this.inActionMode = inActionMode;
     }
 }

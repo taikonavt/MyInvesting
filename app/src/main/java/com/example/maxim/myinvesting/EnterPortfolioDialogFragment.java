@@ -19,12 +19,12 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
 public class EnterPortfolioDialogFragment extends DialogFragment
                                     implements View.OnClickListener {
 
-    FragmentListener mListener;
-    EditText editText;
+    private FragmentListener mListener;
+    private EditText editText;
 
     // интерефейс реализуемый в MainActivity для взаимодействия активити и диалогфрагмента
     public interface FragmentListener {
-        public void fragmentOnClickOKButton(String string);
+        void fragmentOnClickOKButton(String string);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

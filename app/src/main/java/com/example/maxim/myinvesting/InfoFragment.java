@@ -53,31 +53,6 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
 
         getLoaderManager().initLoader(INFO_LOADER_ID, null, this);
 
-//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-//                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//
-//            @Override
-//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-//                                  RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-//
-//                int id = (int) viewHolder.itemView.getTag();
-//
-//                String stringId = Integer.toString(id);
-//                Uri uri = getUri();
-//                uri = uri.buildUpon().appendPath(stringId).build();
-//
-//                getContext().getContentResolver().delete(uri, null, null);
-//
-//                getLoaderManager().restartLoader(INFO_LOADER_ID,
-//                        null, InfoFragment.this);
-//            }
-//        }).attachToRecyclerView(mRecyclerView);
-
         return rootView;
     }
 

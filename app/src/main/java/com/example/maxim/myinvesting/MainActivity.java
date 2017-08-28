@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(null);
     }
 
     @Override
@@ -180,6 +181,7 @@ public class MainActivity extends AppCompatActivity
         // Open portfolio
         else if (SUB_MENU_ITEM_ID < id || id < (SUB_MENU_ITEM_ID + 1000)) {
 
+            // скрываю кнопку "Add" в Toolbar, т.к. она не нужна
             showAddButton = false;
             invalidateOptionsMenu();
 
