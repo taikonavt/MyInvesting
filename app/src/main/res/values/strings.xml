@@ -60,6 +60,7 @@
 
     <!-- enter_name_of_portfolio_dialog_fragment.xml -->
     <!-- confirm_deletion.xml -->
+    <string name="title_deletion">Deletion</string>
     <string name="et_df_hint">Enter name of portfolio</string>
     <string name="tv_confirm_hint">Are you sure?</string>
     <string name="btn_df_ok">OK</string>

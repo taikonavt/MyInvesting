@@ -1,12 +1,17 @@
 package com.example.maxim.myinvesting;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
@@ -75,16 +80,41 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
-            for (Integer intItem : selectedItems) {
+            final ArrayList<Integer> tempSelectedItems = new ArrayList<>(selectedItems);
 
-                String stringId = Integer.toString(intItem);
+            AlertDialog diaBox = new AlertDialog.Builder(mContext)
+                    .setTitle(mContext.getResources().getString(R.string.title_deletion))
+                    .setMessage(mContext.getResources().getString(R.string.tv_confirm_hint))
+                    .setPositiveButton(mContext.getResources().getString(R.string.btn_df_ok),
+                            new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                Uri uri = Contract.InputEntry.CONTENT_URI;
+                            for (Integer intItem : tempSelectedItems) {
 
-                uri = uri.buildUpon().appendPath(stringId).build();
+                                String stringId = Integer.toString(intItem);
 
-                mContext.getContentResolver().delete(uri, null, null);
-            }
+                                Uri uri = Contract.InputEntry.CONTENT_URI;
+
+                                uri = uri.buildUpon().appendPath(stringId).build();
+
+                                mContext.getContentResolver().delete(uri, null, null);
+                            }
+
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(mContext.getResources().getString(R.string.btn_df_cancel),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                }
+                            })
+                    .create();
+
+            diaBox.show();
 
             mode.finish();
 
@@ -235,7 +265,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             tvInfoInputItemAmount.setText(
                     String.valueOf(lAmount/MULTIPLIER_FOR_MONEY) +
                     " " + lCurrency);
-            tvInfoInputItemFee.setText("- " + String.valueOf(lFee) + " " + lCurrency);
+            tvInfoInputItemFee.setText("- " + String.valueOf(lFee/MULTIPLIER_FOR_MONEY) + " " + lCurrency);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
 
             if (fragment.inActionMode)
@@ -314,18 +344,6 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                 }
             }
         }
-
-//        @Override
-//        public void onClick(View v) {
-//
-//            Activity activity = (Activity) (itemView.getContext());
-//            FragmentManager fm = activity.getFragmentManager();
-//
-//            DialogFragment dialogFragment = new ConfirmDeletion();
-//
-//            dialogFragment.show(fm, "Confirmation dialog");
-//
-//        }
     }
 
     public interface AdapterInterface {
