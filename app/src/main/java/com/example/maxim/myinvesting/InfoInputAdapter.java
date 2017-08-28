@@ -1,8 +1,5 @@
 package com.example.maxim.myinvesting;
 
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -10,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -22,11 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
@@ -47,19 +41,26 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
     private Cursor mCursor;
 
     private ActionMode mActionMode;
-    InfoInputFragment fragment;
+    private InfoInputFragment fragment; // используется для доступа к dataNotify
 
-    private boolean multiSelect = false;
-    private ArrayList<Integer> selectedItems = new ArrayList<Integer>();
+    private boolean multiSelect = false; // состояние "в ActionMode". Используется при выборе items
+    private ArrayList<Integer> selectedItems = new ArrayList<Integer>(); // id выбранных для удалелния элементов
 
     InfoInputAdapter(InfoInputFragment fragment) {
 
         this.fragment = fragment;
     }
 
+    // actionMode для удаления строк
     private ActionMode.Callback actionModeCallbacks = new ActionMode.Callback() {
+
+        // вызывается при создании ActionMode
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+            // установка состояния "in ActionMode" во фрагменте
+            // испольлзуется для обновления адаптера и показа checkboxes
+            fragment.setInActionMode(true);
 
             multiSelect = true;
 
@@ -68,18 +69,23 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             return true;
         }
 
+        // используется для взаимодействия с ActionMode во время работы
+        // для сработки метода нужно вызвать myActionMode.invalidate();
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 
+            // устанавливаю количество выбранных для удаления элементов
             mode.setTitle(mContext.getString(R.string.checked_act_mode) +
                 selectedItems.size() + mContext.getString(R.string.items_act_mode));
 
             return true;
         }
 
+        // нажатия на кнопку (в данном случае удаления)
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
+            // копирую список удаляемых элементов для передачи в АлертДиалог
             final ArrayList<Integer> tempSelectedItems = new ArrayList<>(selectedItems);
 
             AlertDialog diaBox = new AlertDialog.Builder(mContext)
@@ -94,7 +100,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
 
                                 String stringId = Integer.toString(intItem);
 
-                                Uri uri = Contract.InputEntry.CONTENT_URI;
+                                Uri uri = fragment.getUri();
 
                                 uri = uri.buildUpon().appendPath(stringId).build();
 
@@ -121,6 +127,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             return true;
         }
 
+        // срабатывает при закрытии ActionMode
         @Override
         public void onDestroyActionMode(ActionMode mode) {
 
@@ -185,6 +192,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         // TODO: 15.04.17 do rotation: when vert - few piece of info, when horiz - all info is seen
     }
 
+    // возвращает количество создаваемых элементов
     @Override
     public int getItemCount() {
         if (mCursor == null) {
@@ -223,7 +231,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         TableRow tableRowInput;
         CheckBox checkBox;
 
-        public InfoViewHolder(View itemView) {
+        InfoViewHolder(View itemView) {
             super(itemView);
 
             llInfoInputItem = (LinearLayout) itemView.findViewById(R.id.ll_item_info_input);
@@ -246,6 +254,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                   int lPortfolio,
                   String lNote) {
 
+            // если список содержит id то помечаю item как отмеченный
             if (selectedItems.contains(id)) {
 
                 llInfoInputItem.setBackgroundColor(Color.LTGRAY);
@@ -268,10 +277,12 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             tvInfoInputItemFee.setText("- " + String.valueOf(lFee/MULTIPLIER_FOR_MONEY) + " " + lCurrency);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
 
+            // если не в режиме "ActionMode" то скрываю checkboxes
             if (fragment.inActionMode)
                 checkBox.setVisibility(View.VISIBLE);
             else checkBox.setVisibility(View.GONE);
 
+            // если ввод то обозначаю item зеленым, если вывод то красным
             switch (lType) {
                 case "Output": tableRowInput.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorSell));
@@ -286,12 +297,14 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                     Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
             }
 
+            // вход в режим "ActionMode" при долгом нажатии
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
 
                     mContext = v.getContext();
 
+                    // если ActionMode уже запущен, то выхожу
                     if (mActionMode != null) {
 
                         selectItem(id);
@@ -299,11 +312,12 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                         return false;
                     }
 
-                    fragment.setInActionMode(true);
-                    fragment.notifyAdapter();
-
+                    // старт ActionMode
                     mActionMode = ((AppCompatActivity) mContext).
                             startSupportActionMode(actionModeCallbacks);
+
+                    // оповещаю адаптер через фрагмент для показа checkboxes
+                    fragment.notifyAdapter();
 
                     selectItem(id);
 
@@ -319,6 +333,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             });
         }
 
+        // помещаю item в  список выбранных для удаления
         void selectItem(Integer item) {
 
             if (multiSelect) {
@@ -346,7 +361,8 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         }
     }
 
-    public interface AdapterInterface {
+    // интерфейс, реализуемый в InfoInputFragment для обновления адаптера
+    interface AdapterInterface {
 
         void notifyAdapter();
 

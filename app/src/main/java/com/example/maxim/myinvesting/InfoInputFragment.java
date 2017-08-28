@@ -68,6 +68,7 @@ public class InfoInputFragment extends InfoFragment
         mAdapter.notifyDataSetChanged();
     }
 
+    // показывает адаптеру что список в режиме ActionMode и нужно включить checkboxes
     @Override
     public void setInActionMode(boolean inActionMode) {
         this.inActionMode = inActionMode;

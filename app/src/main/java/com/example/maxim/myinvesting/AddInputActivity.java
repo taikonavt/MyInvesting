@@ -157,9 +157,7 @@ public class AddInputActivity extends AppCompatActivity {
         contentValues.put(Contract.InputEntry.COLUMN_PORTFOLIO, portfolio);
         contentValues.put(Contract.InputEntry.COLUMN_NOTE, note);
 
-        Uri uri = getContentResolver().insert(Contract.InputEntry.CONTENT_URI, contentValues);
-
-        Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
+        getContentResolver().insert(Contract.InputEntry.CONTENT_URI, contentValues);
     }
 
     // получаю имена существующих портфелей из SharedPreferences
