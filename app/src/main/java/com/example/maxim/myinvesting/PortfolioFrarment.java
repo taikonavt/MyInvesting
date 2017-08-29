@@ -51,6 +51,9 @@ public class PortfolioFrarment extends Fragment
         tvCost = (TextView) rootView.findViewById(R.id.tv_total_cost_fragment_portfolio);
         tvProfit = (TextView) rootView.findViewById(R.id.tv_profitability_fragment_portfolio);
 
+        ((MainActivity) getContext()).getSupportActionBar().setTitle(
+                ((MainActivity) getContext()).getNameOfPortfolio());
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         mRecyclerView.setLayoutManager(layoutManager);

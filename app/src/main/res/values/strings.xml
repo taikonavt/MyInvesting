@@ -24,14 +24,14 @@
     <string name="hint_tVPortfolio">Portfolio:</string>
     <string name="hint_eTPortfolio">123ABC</string>
 
-    <!-- от порядка следования зависит работа PortfolioLoader -->
+    <!-- от порядка следования зависит работа PortfolioLoader.java -->
     <string-array name="spinType_deal_array">
         <item>Sell</item>
         <item>Buy</item>
         <item>Dividend</item>
     </string-array>
 
-    <!-- от порядка следования зависит работа PortfolioLoader -->
+    <!-- от порядка следования зависит работа PortfolioLoader.java -->
     <string-array name="spinType_input_array">
         <item>Input</item>
         <item>Output</item>
@@ -51,11 +51,13 @@
     <string name="hint_tVNote">Note</string>
 
 
-    <!-- activity_info_deal -->
+    <!-- activity_info_deal.xml -->
     <string name="hint_btnAdd">Add new deals</string>
 
-    <!-- InfoFragment.class -->
+    <!-- InfoFragment.java -->
     <string name="add">Add</string>
+    <string name="info_fragment_deals">Deals</string>
+    <string name="info_fragment_inputs">Inputs</string>
 
 
     <!-- enter_name_of_portfolio_dialog_fragment.xml -->

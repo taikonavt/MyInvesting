@@ -9,10 +9,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -47,6 +45,13 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
 
         mRecyclerView.setHasFixedSize(true);
 
+        if (getUri() == Contract.DealsEntry.CONTENT_URI)
+            ((MainActivity) getContext()).getSupportActionBar().
+                    setTitle(getString(R.string.info_fragment_deals));
+        if (getUri() == Contract.InputEntry.CONTENT_URI)
+            ((MainActivity) getContext()).getSupportActionBar().
+                    setTitle(getString(R.string.info_fragment_inputs));
+
         mAdapter = getAdapter();
 
         mRecyclerView.setAdapter(mAdapter);
@@ -61,6 +66,13 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
         super.onResume();
 
         getLoaderManager().restartLoader(INFO_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        ((MainActivity) getContext()).getSupportActionBar().setTitle(null);
     }
 
     @Override
