@@ -229,7 +229,7 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
         TextView tvInfoItemVolume;
         TextView tvInfoItemCost;
         //TextView tvInfoItemFee;
-        TableRow tableRowInfo;
+        LinearLayout llRowInfo;
         CheckBox checkBox;
 
         InfoViewHolder(View itemView) {
@@ -244,7 +244,7 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             tvInfoItemVolume = (TextView) itemView.findViewById(R.id.tv_info_item_volume);
             tvInfoItemCost = (TextView) itemView.findViewById(R.id.tv_info_item_cost);
             //tvInfoItemFee = (TextView) itemView.findViewById(R.id.tv_info_item_fee);
-            tableRowInfo = (TableRow) itemView.findViewById(R.id.tr_info_deal);
+            llRowInfo = (LinearLayout) itemView.findViewById(R.id.tr_info_deal);
             checkBox = (CheckBox) itemView.findViewById(R.id.chb_item_info_deal);
         }
 
@@ -287,11 +287,11 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             else checkBox.setVisibility(View.GONE);
 
             switch (lType) {
-                case "Sell": tableRowInfo.setBackgroundColor(ContextCompat.getColor(
+                case "Sell": llRowInfo.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorSell));
                     break;
 
-                case "Buy": tableRowInfo.setBackgroundColor(ContextCompat.getColor(
+                case "Buy": llRowInfo.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorBuy));
                     break;
 

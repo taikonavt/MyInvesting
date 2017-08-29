@@ -9,6 +9,7 @@
     <dimen name="small_text_size_for_info_item">14sp</dimen>
     <dimen name="padding_info_item">8dp</dimen>
     <dimen name="padding_portfolio_item">4dp</dimen>
+    <dimen name="padding_info_deal_item">4dp</dimen>
 
     <!-- text size for dialog fragment hints -->
     <dimen name="text_size_for_dialog_hints">18sp</dimen>
