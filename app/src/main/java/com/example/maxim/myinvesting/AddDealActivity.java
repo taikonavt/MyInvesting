@@ -167,9 +167,7 @@ public class AddDealActivity extends AppCompatActivity {
         contentValues.put(Contract.DealsEntry.COLUMN_VOLUME, volume);
         contentValues.put(Contract.DealsEntry.COLUMN_FEE, fee);
 
-        Uri uri = getContentResolver().insert(Contract.DealsEntry.CONTENT_URI, contentValues);
-
-        Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
+        getContentResolver().insert(Contract.DealsEntry.CONTENT_URI, contentValues);
     }
 
     public String[] readPortfoliosNames() {

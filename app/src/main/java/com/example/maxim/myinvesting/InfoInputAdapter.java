@@ -146,8 +146,6 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
     @Override
     public InfoInputAdapter.InfoViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        mActionMode = null;
-
         mContext = viewGroup.getContext();
         int layoutIdForListItem = R.layout.item_info_input;
         LayoutInflater inflater = LayoutInflater.from(mContext);

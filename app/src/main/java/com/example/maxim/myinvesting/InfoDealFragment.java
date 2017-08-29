@@ -17,15 +17,18 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
  * Created by maxim on 15.06.17.
  */
 
-public class InfoDealFragment extends InfoFragment {
+public class InfoDealFragment extends InfoFragment
+                                implements InfoDealAdapter.AdapterInterface {
 
     private InfoDealAdapter mAdapter;
+
+    boolean inActionMode = false;
 
     // метод используется для доступа к экземпляру адаптера из суперкласса
     @Override
     public RecyclerView.Adapter getAdapter() {
 
-        mAdapter = new InfoDealAdapter();
+        mAdapter = new InfoDealAdapter(this);
         return mAdapter;
     }
 
@@ -59,5 +62,16 @@ public class InfoDealFragment extends InfoFragment {
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void notifyAdapter() {
+        mAdapter.notifyDataSetChanged();
+    }
+
+    // показывает адаптеру что список в режиме ActionMode и нужно включить checkboxes
+    @Override
+    public void setInActionMode(boolean inActionMode) {
+        this.inActionMode = inActionMode;
     }
 }
