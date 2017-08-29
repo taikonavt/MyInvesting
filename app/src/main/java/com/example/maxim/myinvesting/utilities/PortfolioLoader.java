@@ -145,7 +145,8 @@ public class PortfolioLoader extends AsyncTaskLoader<PortfolioData> {
         // средневзвешенные инвестиции за все время
         AverageInvestment averageInvestment =
                 new AverageInvestment(data.getName(), data.getUntilDateInMillis());
-
+Log.d(TAG, averageInvestment.getTotalDays() + " " + averageInvestment.getAverageInvestment() +
+PortfolioLoader.class.getSimpleName());
         // длительность существования портфеля
         data.setPeriodInDays(averageInvestment.getTotalDays());
 
@@ -154,8 +155,8 @@ public class PortfolioLoader extends AsyncTaskLoader<PortfolioData> {
         // считаю доходность: D = (1 + dS / V)^365/T -1;
         try {
             profitability = (pow((1 + ((double) netProfit / averageInvestment.getAverageInvestment())),
-                    (DAYS_IN_YEAR / averageInvestment.getTotalDays())) - 1);
-
+                    ((double) DAYS_IN_YEAR / averageInvestment.getTotalDays())) - 1);
+Log.d(TAG, profitability + " " + PortfolioLoader.class.getSimpleName());
         } catch (ArithmeticException e) {
             // если в знаменателе 0, то пишу в лог. Доходность остается = 0
             Log.d(TAG, "Ошибка в вычислениях " + PortfolioLoader.class.getSimpleName());
