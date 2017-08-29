@@ -226,7 +226,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
         TextView tvInfoInputItemFee;
         TextView tvInfoInputItemPortfolio;
         TextView tvInfoInputItemNote; // TODO: 16.05.17 Добавить Note для горизонт. экрана
-        TableRow tableRowInput;
+        LinearLayout llRowInput;
         CheckBox checkBox;
 
         InfoViewHolder(View itemView) {
@@ -235,11 +235,13 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             llInfoInputItem = (LinearLayout) itemView.findViewById(R.id.ll_item_info_input);
             tvInfoInputItemType = (TextView) itemView.findViewById(R.id.tv_info_input_item_type);
             tvInfoInputItemDate = (TextView) itemView.findViewById(R.id.tv_info_input_item_date);
-            tvInfoInputItemAmount = (TextView) itemView.findViewById(R.id.tv_info_input_item_amount);
+            tvInfoInputItemAmount = (TextView) itemView.
+                    findViewById(R.id.tv_info_input_item_amount);
             //tvInfoInputItemCurrency = (TextView) itemView.findViewById(R.id.tv_info_input_item_currency);
             tvInfoInputItemFee = (TextView) itemView.findViewById(R.id.tv_info_input_item_fee);
-            tvInfoInputItemPortfolio = (TextView) itemView.findViewById(R.id.tv_info_input_item_portfolio);
-            tableRowInput = (TableRow) itemView.findViewById(R.id.tr_info_input);
+            tvInfoInputItemPortfolio = (TextView) itemView.
+                    findViewById(R.id.tv_info_input_item_portfolio);
+            llRowInput = (LinearLayout) itemView.findViewById(R.id.ll_item_info_input_row);
             checkBox = (CheckBox) itemView.findViewById(R.id.chb_item_info_input);
         }
 
@@ -272,7 +274,8 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             tvInfoInputItemAmount.setText(
                     String.valueOf(lAmount/MULTIPLIER_FOR_MONEY) +
                     " " + lCurrency);
-            tvInfoInputItemFee.setText("- " + String.valueOf(lFee/MULTIPLIER_FOR_MONEY) + " " + lCurrency);
+            tvInfoInputItemFee.setText("- " + String.valueOf(lFee/MULTIPLIER_FOR_MONEY) +
+                    " " + lCurrency);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
 
             // если не в режиме "ActionMode" то скрываю checkboxes
@@ -282,16 +285,16 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
 
             // если ввод то обозначаю item зеленым, если вывод то красным
             switch (lType) {
-                case "Output": tableRowInput.setBackgroundColor(ContextCompat.getColor(
+                case "Output": llRowInput.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorSell));
                     break;
 
-                case "Input": tableRowInput.setBackgroundColor(ContextCompat.getColor(
+                case "Input": llRowInput.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorBuy));
                     break;
 
                 default:
-                    tableRowInput.setBackgroundColor(0);
+                    llRowInput.setBackgroundColor(0);
                     Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
             }
 
@@ -342,7 +345,8 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                     mActionMode.invalidate();
 
                     llInfoInputItem.setBackgroundColor(ResourcesCompat.
-                            getColor(mContext.getResources(), android.R.color.background_light, null));
+                            getColor(mContext.getResources(),
+                                    android.R.color.background_light, null));
 
                     checkBox.setChecked(false);
                 } else {

@@ -10,8 +10,8 @@
     >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
 
@@ -24,6 +24,82 @@
             android:clickable="false"
             />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:id="@+id/ll_item_info_input_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_info_input_item_type"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/text_size_for_info_item"
+                    tools:text="Output"
+                    android:padding="@dimen/padding_info_item"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_info_input_item_date"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/text_size_for_info_item"
+                    tools:text="01/02/17"
+                    android:padding="@dimen/padding_info_item"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_info_input_item_portfolio"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center"
+                    android:textAlignment="center"
+                    android:padding="@dimen/padding_info_item"
+                    android:textSize="@dimen/small_text_size_for_info_item"
+                    tools:text="6611001" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_info_input_item_amount"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/small_text_size_for_info_item"
+                    tools:text="10000 RUB"
+                    android:padding="@dimen/padding_info_item"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_info_input_item_fee"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_info_item"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/small_text_size_for_info_item"
+                    tools:text="-1,00 RUB" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!--
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -106,7 +182,7 @@
 
             </TableRow>
         </TableLayout>
-
+-->
     </LinearLayout>
 
 
