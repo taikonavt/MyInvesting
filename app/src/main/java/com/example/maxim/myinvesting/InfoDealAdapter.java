@@ -295,6 +295,9 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                         itemView.getContext(), R.color.colorBuy));
                     break;
 
+                case "Dividend": llRowInfo.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorDiv));
+
                 default: Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
 
             }

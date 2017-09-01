@@ -12,14 +12,15 @@ public class PortfolioItem {
     private int volume = 0; // Высчитываю из базы данных
     private int price = 0; // Получить из интернета и умножить на константу
     private int cost = 0; // Посчитать amount*price
-    private int profit = 0; // Доходность акции в процентах годовых
+    private double profit = 0; // Доходность акции в процентах годовых
 
-    public PortfolioItem(int lID, String lTicker, int lVolume, int lPrice) {
+    public PortfolioItem(int lID, String lTicker, int lVolume, int lPrice, double lProfit) {
 
         id = lID;
         ticker = lTicker;
         volume = lVolume;
         price = lPrice;
+        profit = lProfit;
     }
 
     public String getTicker() {
@@ -42,7 +43,7 @@ public class PortfolioItem {
         return cost;
     }
 
-    public int getProfit() {
+    public double getProfit() {
         return profit;
     }
 }

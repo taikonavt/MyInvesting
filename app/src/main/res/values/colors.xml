@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorSell">#FFED6E6A</color>
     <color name="colorBuy">#FFA0FC9B</color>
+    <color name="colorDiv">#FF69BDFD</color>
     <color name="colorBasket">#FF595959</color>
     <color name="colorLightGray">#FFCFCFCF</color>
     <color name="colorForMainBackground">#FFFF</color>

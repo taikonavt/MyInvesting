@@ -15,12 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.PortfolioData;
-import com.example.maxim.myinvesting.data.PortfolioItem;
 import com.example.maxim.myinvesting.utilities.PortfolioLoader;
-import com.example.maxim.myinvesting.data.Contract;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
@@ -73,13 +70,18 @@ public class PortfolioFrarment extends Fragment
     public void onResume() {
         super.onResume();
 
-        getLoaderManager().restartLoader(PORTFOLIO_LOADER_ID, null, this);
+//        getLoaderManager().restartLoader(PORTFOLIO_LOADER_ID, null, this);
     }
 
     @Override
     public Loader<PortfolioData> onCreateLoader(int id, Bundle args) {
 
-        AsyncTaskLoader<PortfolioData> loader = new PortfolioLoader(getActivity());
+
+        AsyncTaskLoader<PortfolioData> loader = null;
+
+        if (id == PORTFOLIO_LOADER_ID) {
+            loader = new PortfolioLoader(getActivity());
+        }
 
         return loader;
     }

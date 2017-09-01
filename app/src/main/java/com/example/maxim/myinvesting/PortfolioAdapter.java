@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
@@ -48,9 +49,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         String ticker = portfolioItem.getTicker();
         int volume = portfolioItem.getVolume();
         int price = portfolioItem.getPrice();
+        double profit = portfolioItem.getProfit();
 
         holder.itemView.setTag(id);
-        holder.bind(ticker, volume, price);
+        holder.bind(ticker, volume, price, profit);
     }
 
     @Override
@@ -86,6 +88,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         TextView tvPortfolioVolume;
         TextView tvPortfolioPrice;
         TextView tvPortfolioCost;
+        TextView tvPortfolioProfit;
 
         public PortfolioViewHolder(View itemView) {
             super(itemView);
@@ -94,14 +97,19 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
             tvPortfolioVolume = (TextView) itemView.findViewById(R.id.tv_item_portfolio_volume);
             tvPortfolioPrice = (TextView) itemView.findViewById(R.id.tv_item_portfolio_price);
             tvPortfolioCost = (TextView) itemView.findViewById(R.id.tv_item_portfolio_cost);
+            tvPortfolioProfit = (TextView) itemView.findViewById(R.id.tv_item_portfolio_profit);
         }
 
-        void bind (String lTicker, int lVolume, float lPrice) {
+        void bind (String lTicker, int lVolume, float lPrice, double lProfit) {
 
             tvPortfolioTicker.setText(lTicker);
             tvPortfolioVolume.setText(String.valueOf(lVolume));
             tvPortfolioPrice.setText(String.valueOf(lPrice/MULTIPLIER_FOR_MONEY));
             tvPortfolioCost.setText(String.valueOf(lVolume * lPrice/MULTIPLIER_FOR_MONEY));
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            String str = df.format(lProfit * 100)  + "%";
+            tvPortfolioProfit.setText(str);
         }
     }
 }
