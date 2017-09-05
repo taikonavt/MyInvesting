@@ -16,7 +16,6 @@ import java.net.URL;
 import java.util.Scanner;
 
 import static com.example.maxim.myinvesting.data.Const.*;
-import static com.example.maxim.myinvesting.data.Contract.*;
 
 /**
  * Created by maxim on 14.08.17.
@@ -24,9 +23,18 @@ import static com.example.maxim.myinvesting.data.Contract.*;
 
 public class NetworkUtils {
 
-    public int getCurrentPrice (String ticker) {
+    private static final String MOEX_BASE_URI =
+            "https://iss.moex.com/iss/engines/stock/markets/shares/boards/tqbr/securities/";
 
-        URL url = buildUrl(ticker, DateUtils.getYesterdayDate());
+    private static final String PARAM_JSON = ".json";
+
+    private static String PARAM_FROM = "from";
+
+    private static String PARAM_LIMIT = "limit";
+
+    int getCurrentPrice (String ticker) {
+
+        URL url = buildUrlForCurrentPrice(ticker);
 
         String results = null;
 
@@ -72,12 +80,9 @@ public class NetworkUtils {
         }
     }
 
-    public static URL buildUrl(String ticker, String date) {
-Log.d(TAG, date + " buildUrl() " + NetworkUtils.class.getSimpleName());
-        Uri builtUri = Uri.parse(MOEX_BASE_URI + ticker + PARAM_JSON).buildUpon()
-                .appendQueryParameter(PARAM_FROM, date)
-                .appendQueryParameter(PARAM_LIMIT, "1")
-                .build();
+    public static URL buildUrlForCurrentPrice(String ticker) {
+
+        Uri builtUri = Uri.parse(MOEX_BASE_URI + ticker + PARAM_JSON);
 
         URL url = null;
         try {
@@ -91,21 +96,19 @@ Log.d(TAG, date + " buildUrl() " + NetworkUtils.class.getSimpleName());
 
     public double getPrice(String historyJsonString) {
 
-        final String DATA = "data";
-
         double price = 0;
 
         try {
 
             JSONObject JsonObject = new JSONObject(historyJsonString);
 
-            JSONObject historyJson = JsonObject.getJSONObject("history");
+            JSONObject marketdataJson = JsonObject.getJSONObject("marketdata");
 
-            JSONArray dataJson = historyJson.getJSONArray(DATA);
+            JSONArray dataJson = marketdataJson.getJSONArray("data");
 
             JSONArray dataJsonDay = dataJson.getJSONArray(0);
 
-            price = dataJsonDay.getDouble(11);
+            price = dataJsonDay.getDouble(12);
 
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage(), e);
