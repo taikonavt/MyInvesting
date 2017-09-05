@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:onClick="onPortfolioItemClick"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +16,7 @@
 
         <TextView
             android:id="@+id/tv_item_portfolio_ticker"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/tv_item_portfolio_ticker"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
@@ -22,20 +25,8 @@
             tools:text="SBER" />
 
         <TextView
-            android:id="@+id/tv_item_portfolio_name"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:textAlignment="center"
-            android:textSize="@dimen/small_text_size_for_info_item"
-            tools:text=" ПАО &quot;Сбербанк России&quot;"
-            android:padding="@dimen/padding_portfolio_item"
-            android:visibility="gone"
-            />
-
-        <TextView
             android:id="@+id/tv_item_portfolio_volume"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/tv_item_portfolio_volume"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
@@ -45,33 +36,23 @@
 
         <TextView
             android:id="@+id/tv_item_portfolio_price"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/tv_item_portfolio_price"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
             android:textAlignment="center"
-            android:textSize="@dimen/small_text_size_for_info_item"
+            android:textSize="@dimen/text_size_for_info_item"
             tools:text="160.00" />
 
         <TextView
             android:id="@+id/tv_item_portfolio_cost"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/tv_item_portfolio_cost"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
             android:textAlignment="center"
-            android:textSize="@dimen/small_text_size_for_info_item"
+            android:textSize="@dimen/text_size_for_info_item"
             tools:text="160000" />
-
-        <TextView
-            android:id="@+id/tv_item_portfolio_profit"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:padding="@dimen/padding_portfolio_item"
-            android:textAlignment="center"
-            android:textSize="@dimen/small_text_size_for_info_item"
-            tools:text="-14.5%" />
 
     </LinearLayout>
 

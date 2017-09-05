@@ -49,10 +49,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         String ticker = portfolioItem.getTicker();
         int volume = portfolioItem.getVolume();
         int price = portfolioItem.getPrice();
-        double profit = portfolioItem.getProfit();
+//        double profit = portfolioItem.getProfit();
 
         holder.itemView.setTag(id);
-        holder.bind(ticker, volume, price, profit);
+        holder.bind(ticker, volume, price);
     }
 
     @Override
@@ -97,19 +97,20 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
             tvPortfolioVolume = (TextView) itemView.findViewById(R.id.tv_item_portfolio_volume);
             tvPortfolioPrice = (TextView) itemView.findViewById(R.id.tv_item_portfolio_price);
             tvPortfolioCost = (TextView) itemView.findViewById(R.id.tv_item_portfolio_cost);
-            tvPortfolioProfit = (TextView) itemView.findViewById(R.id.tv_item_portfolio_profit);
         }
 
-        void bind (String lTicker, int lVolume, float lPrice, double lProfit) {
+        void bind (String lTicker, int lVolume, float lPrice) {
 
             tvPortfolioTicker.setText(lTicker);
             tvPortfolioVolume.setText(String.valueOf(lVolume));
             tvPortfolioPrice.setText(String.valueOf(lPrice/MULTIPLIER_FOR_MONEY));
             tvPortfolioCost.setText(String.valueOf(lVolume * lPrice/MULTIPLIER_FOR_MONEY));
 
-            DecimalFormat df = new DecimalFormat("#.##");
-            String str = df.format(lProfit * 100)  + "%";
-            tvPortfolioProfit.setText(str);
+            // установка доходности
+            // TODO: 05.09.17 удалить
+//            DecimalFormat df = new DecimalFormat("#.##");
+//            String str = df.format(lProfit * 100)  + "%";
+//            tvPortfolioProfit.setText(str);
         }
     }
 }

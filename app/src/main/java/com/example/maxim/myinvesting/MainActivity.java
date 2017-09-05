@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity
         // Inputs
         else if (id == R.id.nav_input_item) {
 
+            // показывает кнопку add (+) вверху экрана
             showAddButton = true;
             invalidateOptionsMenu();
 
@@ -301,5 +304,24 @@ public class MainActivity extends AppCompatActivity
 
     public String getNameOfPortfolio() {
         return nameOfPortfolio;
+    }
+
+    // обработка нажатия на пункт portfolioFragment
+    public void onPortfolioItemClick(View view) {
+
+        TextView tv = (TextView) view.findViewById(R.id.tv_item_portfolio_ticker);
+
+        String string = tv.getText().toString();
+
+Log.d(TAG, string + " onPortfolioItemClick() " + MainActivity.class.getSimpleName());
+
+        TickerFragment tickerFragment = new TickerFragment();
+
+        if (!tickerFragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.ll_main_activity, tickerFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 }

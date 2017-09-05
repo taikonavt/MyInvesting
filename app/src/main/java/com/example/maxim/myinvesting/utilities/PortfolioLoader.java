@@ -666,7 +666,7 @@ public class PortfolioLoader extends AsyncTaskLoader<PortfolioData> {
         }
     }
 
-
+    // TODO: 05.09.17 Удалить если не понадобиться
     private double getProfitOfShare(String lPortfolio, long untilDate, String lTicker, long lCost) {
 
         long netProfit = lCost - getBuysOfTicker(lPortfolio, lTicker, untilDate) +

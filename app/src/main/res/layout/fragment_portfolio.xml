@@ -18,7 +18,7 @@
         tools:layout_editor_absoluteX="8dp">
 
         <TextView
-            android:layout_width="60dp"
+            android:layout_width="@dimen/tv_item_portfolio_ticker"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
@@ -27,18 +27,7 @@
             android:text="@string/txt_ticker" />
 
         <TextView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:textAlignment="center"
-            android:textSize="@dimen/small_text_size_for_info_item"
-            android:text="@string/txt_name"
-            android:padding="@dimen/padding_portfolio_item"
-            android:visibility="gone"
-            />
-
-        <TextView
-            android:layout_width="70dp"
+            android:layout_width="@dimen/tv_item_portfolio_volume"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
@@ -47,7 +36,7 @@
             android:text="@string/txt_volume" />
 
         <TextView
-            android:layout_width="65dp"
+            android:layout_width="@dimen/tv_item_portfolio_price"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
@@ -56,22 +45,13 @@
             android:text="@string/txt_price" />
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="@dimen/tv_item_portfolio_cost"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="@dimen/padding_portfolio_item"
             android:textAlignment="center"
             android:textSize="@dimen/text_size_for_info_item"
             android:text="@string/txt_cost" />
-
-        <TextView
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:padding="@dimen/padding_portfolio_item"
-            android:textAlignment="center"
-            android:textSize="@dimen/small_text_size_for_info_item"
-            android:text="@string/txt_profit" />
 
     </LinearLayout>
 
@@ -83,7 +63,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/divider_fragment_portfolio"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="0dp"
+        >
     </android.support.v7.widget.RecyclerView>
 
     <ImageView
