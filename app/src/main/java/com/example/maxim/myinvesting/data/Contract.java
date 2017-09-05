@@ -22,6 +22,14 @@ public class Contract {
 
     public static final String PATH_SUM = "type"; // используется при запросе к БД о получении всех вводов и сделок
 
+    public static final String MOEX_BASE_URI =
+            "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/TQBR/securities/";
+
+    public static final String PARAM_JSON = ".json";
+
+    public static final String PARAM_FROM = "from";
+
+    public static final String PARAM_LIMIT = "limit";
 
     public static final class DealsEntry implements BaseColumns {
 

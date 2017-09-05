@@ -38,7 +38,7 @@ public class PortfolioLoader extends AsyncTaskLoader<PortfolioData> {
 
     @Override
     public PortfolioData loadInBackground() {
-// TODO: 22.08.17  выяснить почему запускается два раза
+
         PortfolioData portfolioData = new PortfolioData(
                         ((MainActivity) mContext).getNameOfPortfolio(),
                         Calendar.getInstance().getTimeInMillis());
@@ -265,7 +265,9 @@ public class PortfolioLoader extends AsyncTaskLoader<PortfolioData> {
 
     private int getPrice(String lTicker) {
 
-        return NetworkUtils.getCurrentPrice(lTicker);
+        NetworkUtils networkUtils = new NetworkUtils();
+
+        return networkUtils.getCurrentPrice(lTicker);
     }
 
     // получение суммы всех вводов
@@ -681,9 +683,6 @@ public class PortfolioLoader extends AsyncTaskLoader<PortfolioData> {
             profitability = (pow((1 + ((double) netProfit / investment.getAverageInvestment())),
                     ((double) DAYS_IN_YEAR / investment.getTotalDays())) - 1);
 
-Log.d(TAG, netProfit + " " + investment.getAverageInvestment() + " " + investment.getTotalDays()
-+ " getProfitOfShare()" + PortfolioLoader.class.getSimpleName());
-
         } catch (ArithmeticException e) {
             // если в знаменателе 0, то пишу в лог. Доходность остается = 0
             Log.d(TAG, "Ошибка в вычислениях " + PortfolioLoader.class.getSimpleName());
@@ -948,8 +947,7 @@ Log.d(TAG, netProfit + " " + investment.getAverageInvestment() + " " + investmen
                         // умножаем сумму подпериода на длительность подпериода и прибавляем
                         // к предыдущему результату инвестирования
                         averageInvestment = averageInvestment + (periodDays * sumOfPreviousInputs);
-//Log.d(TAG, periodDays + " " + sumOfPreviousInputs + " AverageInvestmentOfTicker() " + PortfolioLoader.class.getSimpleName());
-                        // обнуляем случай нулевого подпериода
+
                         amountForZeroCase = 0;
                     }
 
@@ -993,7 +991,7 @@ Log.d(TAG, netProfit + " " + investment.getAverageInvestment() + " " + investmen
                     }
 
                     averageInvestment = averageInvestment + (periodDays * sumOfPreviousInputs);
-//Log.d(TAG, periodDays + " " + sumOfPreviousInputs + " AverageInvestmentOfTicker() " + PortfolioLoader.class.getSimpleName());
+
                     amountForZeroCase = 0;
                 }
 
