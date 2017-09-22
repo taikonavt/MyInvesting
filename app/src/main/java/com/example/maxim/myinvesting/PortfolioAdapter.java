@@ -48,11 +48,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         int id = portfolioItem.getId();
         String ticker = portfolioItem.getTicker();
         int volume = portfolioItem.getVolume();
-        int price = portfolioItem.getPrice();
 //        double profit = portfolioItem.getProfit();
 
         holder.itemView.setTag(id);
-        holder.bind(ticker, volume, price);
+        holder.bind(ticker, volume, portfolioItem);
     }
 
     @Override
@@ -99,18 +98,11 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
             tvPortfolioCost = (TextView) itemView.findViewById(R.id.tv_item_portfolio_cost);
         }
 
-        void bind (String lTicker, int lVolume, float lPrice) {
-
+        void bind (String lTicker, int lVolume, PortfolioItem portfolioItem) {
+Log.d(TAG, "bind(); " + PortfolioAdapter.class.getSimpleName());
             tvPortfolioTicker.setText(lTicker);
             tvPortfolioVolume.setText(String.valueOf(lVolume));
-            tvPortfolioPrice.setText(String.valueOf(lPrice/MULTIPLIER_FOR_MONEY));
-            tvPortfolioCost.setText(String.valueOf(lVolume * lPrice/MULTIPLIER_FOR_MONEY));
-
-            // установка доходности
-            // TODO: 05.09.17 удалить
-//            DecimalFormat df = new DecimalFormat("#.##");
-//            String str = df.format(lProfit * 100)  + "%";
-//            tvPortfolioProfit.setText(str);
+            portfolioItem.getPriceAndCost(tvPortfolioPrice, tvPortfolioCost);
         }
     }
 }

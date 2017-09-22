@@ -1,6 +1,7 @@
 package com.example.maxim.myinvesting.utilities;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,87 +35,102 @@ public class NetworkUtils {
 
     int getCurrentPrice (String ticker) {
 
-        URL url = buildUrlForCurrentPrice(ticker);
+        MyTask myTask = new MyTask();
 
-        String results = null;
+        myTask.execute(ticker);
 
-        try {
-            results = NetworkUtils.getResponseFromHttpUrl(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        double price;
-
-        if (results == null)
-            price = 0;
-        else
-            price = getPrice(results);
-
-        return ((int) price * MULTIPLIER_FOR_MONEY);
+        return 0;
     }
 
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
 
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
-        try {
+    class MyTask extends AsyncTask<String, Void, Integer> {
 
-            InputStream in = urlConnection.getInputStream();
+        @Override
+        protected Integer doInBackground(String... params) {
 
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
+            URL url = buildUrlForCurrentPrice(params[0]);
 
-            boolean hasInput = scanner.hasNext();
-            if (hasInput) {
+            String results = null;
 
-                String string = scanner.next();
-
-                return string;
-            } else {
-
-                return null;
+            try {
+                results = getResponseFromHttpUrl(url);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } finally {
-            urlConnection.disconnect();
-        }
-    }
 
-    public static URL buildUrlForCurrentPrice(String ticker) {
+            double price;
 
-        Uri builtUri = Uri.parse(MOEX_BASE_URI + ticker + PARAM_JSON);
+            if (results == null)
+                price = 0;
+            else
+                price = getPrice(results);
 
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            return ((int) price * MULTIPLIER_FOR_MONEY);
         }
 
-        return url;
-    }
+        String getResponseFromHttpUrl(URL url) throws IOException {
 
-    public double getPrice(String historyJsonString) {
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
-        double price = 0;
+            try {
 
-        try {
+                InputStream in = urlConnection.getInputStream();
 
-            JSONObject JsonObject = new JSONObject(historyJsonString);
+                Scanner scanner = new Scanner(in);
+                scanner.useDelimiter("\\A");
 
-            JSONObject marketdataJson = JsonObject.getJSONObject("marketdata");
+                boolean hasInput = scanner.hasNext();
+                if (hasInput) {
 
-            JSONArray dataJson = marketdataJson.getJSONArray("data");
+                    String string = scanner.next();
 
-            JSONArray dataJsonDay = dataJson.getJSONArray(0);
+                    return string;
+                } else {
 
-            price = dataJsonDay.getDouble(12);
-
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
-            e.printStackTrace();
+                    return null;
+                }
+            } finally {
+                urlConnection.disconnect();
+            }
         }
 
-        return price;
+        URL buildUrlForCurrentPrice(String ticker) {
+
+            Uri builtUri = Uri.parse(MOEX_BASE_URI + ticker + PARAM_JSON);
+
+            URL url = null;
+            try {
+                url = new URL(builtUri.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            return url;
+        }
+
+        double getPrice(String historyJsonString) {
+
+            double price = 0;
+
+            try {
+
+                JSONObject JsonObject = new JSONObject(historyJsonString);
+
+                JSONObject marketdataJson = JsonObject.getJSONObject("marketdata");
+
+                JSONArray dataJson = marketdataJson.getJSONArray("data");
+
+                JSONArray dataJsonDay = dataJson.getJSONArray(0);
+
+                price = dataJsonDay.getDouble(12);
+
+            } catch (JSONException e) {
+                Log.e(TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
+
+            return price;
+        }
     }
 }
