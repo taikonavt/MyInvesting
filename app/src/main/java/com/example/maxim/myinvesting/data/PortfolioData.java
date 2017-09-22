@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.maxim.myinvesting.MainActivity;
 import com.example.maxim.myinvesting.R;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -49,6 +51,9 @@ public class PortfolioData {
     private long untilDateInMillis = 0;
 
     private int periodInDays = 0;
+
+    private TextView tvProfitability;
+    private TextView tvCostOfPortfolio;
 
 
 // Получаю контекст для определения имени портфеля и даты до которой считается портфель
@@ -92,17 +97,13 @@ public class PortfolioData {
         return portfolioItems;
     }
 
-    public long getCostOfPortfolio() {
+    public void setProfitAndCostOfPortfolio(TextView tvProfitability, TextView tvCostOfPortfolio) {
+
+        this.tvProfitability = tvProfitability;
+        this.tvCostOfPortfolio = tvCostOfPortfolio;
 
         TotalTask totalTask = new TotalTask();
         totalTask.execute();
-
-        return costOfPortfolio;
-    }
-
-    public double getProfitability() {
-
-        return mProfitability;
     }
 
     public long getUntilDateInMillis() {
@@ -183,7 +184,6 @@ public class PortfolioData {
 
             mProfitability = profitability;
         }
-
 
         // получение суммы всех вводов
         private long getInputs() {
@@ -406,7 +406,6 @@ public class PortfolioData {
             return costOfDivs;
         }
 
-
         // класс для хранения и вычисления средневзвешенных инвестиций и
         // длительности существования портфеля
         private class AverageInvestment {
@@ -579,6 +578,17 @@ public class PortfolioData {
 
                 return totalDays;
             }
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            tvCostOfPortfolio.setText(String.valueOf(costOfPortfolio / MULTIPLIER_FOR_MONEY));
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            String str = df.format(mProfitability * 100)  + "%";
+            tvProfitability.setText(str);
         }
     }
 

@@ -92,11 +92,7 @@ public class PortfolioFrarment extends Fragment
     @Override
     public void onLoadFinished(Loader<PortfolioData> loader, PortfolioData data) {
 
-        tvCost.setText(String.valueOf(data.getCostOfPortfolio() / MULTIPLIER_FOR_MONEY));
-
-        DecimalFormat df = new DecimalFormat("#.##");
-        String str = df.format(data.getProfitability()*100)  + "%";
-        tvProfit.setText(str);
+        data.setProfitAndCostOfPortfolio(tvProfit, tvCost);
 
         mAdapter.swapArray(data.getPortfolioItems());
     }
