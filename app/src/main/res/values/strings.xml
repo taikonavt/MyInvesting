@@ -91,4 +91,11 @@
     <string name="items_act_mode">&#160;items</string>
 
 
+    <!-- fragment_ticker.xml -->
+    <string name="tv_fragment_ticker_price">Price</string>
+    <string name="tv_fragment_ticker_volume">Volume</string>
+    <string name="tv_fragment_ticker_date">Date</string>
+    <string name="tv_fragment_ticker_profit">Profit/Period</string>
+
+
 </resources>

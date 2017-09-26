@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_name_ticker_fragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/padding_name_fragment_ticker"
+        android:textSize="@dimen/text_size_for_name_fragment_ticker"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:hint="Сбербанк России"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_header_fragment_ticker"
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_ticker_fragment"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/colorLightGray"
+        >
+
+    <TextView
+        android:layout_width="@dimen/tv_item_ticker_volume"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:padding="@dimen/padding_ticker_item"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_for_ticker_item"
+        android:text="@string/tv_fragment_ticker_volume"
+        />
+
+    <TextView
+        android:layout_width="@dimen/tv_item_ticker_price"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:padding="@dimen/padding_ticker_item"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_for_ticker_item"
+        android:text="@string/tv_fragment_ticker_price"
+        />
+
+    <TextView
+        android:layout_width="@dimen/tv_item_ticker_date"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:padding="@dimen/padding_ticker_item"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_for_ticker_item"
+        android:text="@string/tv_fragment_ticker_date"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:padding="@dimen/padding_ticker_item"
+        android:textAlignment="center"
+        android:text="@string/tv_fragment_ticker_profit"
+        />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_ticker_fragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/ll_header_fragment_ticker"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/divider_fragment_ticker"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorBasket"
+        android:id="@+id/divider_fragment_ticker"
+        app:layout_constraintBottom_toTopOf="@+id/ll_result_fragment_ticker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ll_result_fragment_ticker"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/colorLightGray"
+        >
+
+        <TextView
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_info_item"
+            android:text="@string/txt_total"
+            />
+
+        <TextView
+            android:id="@+id/tv_total_profit_fragment_ticker"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_portfolio_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/small_text_size_for_info_item"
+            tools:text="1000000" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

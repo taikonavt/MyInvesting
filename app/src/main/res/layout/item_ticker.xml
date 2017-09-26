@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/tv_item_ticker_volume_buy"
+            android:layout_width="@dimen/tv_item_ticker_volume"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_ticker_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            tools:text="160000"
+            android:background="@color/colorBuy"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_ticker_price_buy"
+            android:layout_width="@dimen/tv_item_ticker_price"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_ticker_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            tools:text="160.00"
+            android:background="@color/colorBuy"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_ticker_date_buy"
+            android:layout_width="@dimen/tv_item_ticker_date"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_ticker_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            tools:text="12/12/45"
+            android:background="@color/colorBuy"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_ticker_profit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_ticker_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            tools:text="16000" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="@dimen/tv_item_ticker_free_space"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:visibility="invisible"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            android:background="@color/colorSell"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_ticker_volume_sell"
+            android:layout_width="@dimen/tv_item_ticker_volume"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_ticker_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            tools:text="160000"
+            android:background="@color/colorSell"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_ticker_price_sell"
+            android:layout_width="@dimen/tv_item_ticker_price"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_ticker_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            tools:text="160.00"
+            android:background="@color/colorSell"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_ticker_date_sell"
+            android:layout_width="@dimen/tv_item_ticker_date"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_ticker_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            tools:text="12/12/45"
+            android:background="@color/colorSell"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_ticker_period"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/padding_ticker_item"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_for_ticker_item"
+            tools:text="160" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBasket"
+        />
+
+</LinearLayout>
+
