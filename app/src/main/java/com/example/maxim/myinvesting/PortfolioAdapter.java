@@ -25,10 +25,12 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
 
     private ArrayList<PortfolioItem> arrayList;
 
+    Context context;
+
     @Override
     public PortfolioAdapter.PortfolioViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        Context context = viewGroup.getContext();
+        context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.item_portfolio;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
@@ -46,12 +48,9 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         PortfolioItem portfolioItem = arrayList.get(position);
 
         int id = portfolioItem.getId();
-        String ticker = portfolioItem.getTicker();
-        int volume = portfolioItem.getVolume();
-//        double profit = portfolioItem.getProfit();
 
         holder.itemView.setTag(id);
-        holder.bind(ticker, volume, portfolioItem);
+        holder.bind(portfolioItem);
     }
 
     @Override
@@ -87,7 +86,6 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         TextView tvPortfolioVolume;
         TextView tvPortfolioPrice;
         TextView tvPortfolioCost;
-        TextView tvPortfolioProfit;
 
         public PortfolioViewHolder(View itemView) {
             super(itemView);
@@ -98,11 +96,18 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
             tvPortfolioCost = (TextView) itemView.findViewById(R.id.tv_item_portfolio_cost);
         }
 
-        void bind (String lTicker, int lVolume, PortfolioItem portfolioItem) {
-Log.d(TAG, "bind(); " + PortfolioAdapter.class.getSimpleName());
-            tvPortfolioTicker.setText(lTicker);
-            tvPortfolioVolume.setText(String.valueOf(lVolume));
+        void bind (final PortfolioItem portfolioItem) {
+
+            tvPortfolioTicker.setText(portfolioItem.getTicker());
+            tvPortfolioVolume.setText(String.valueOf(portfolioItem.getVolume()));
             portfolioItem.getPriceAndCost(tvPortfolioPrice, tvPortfolioCost);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity) context).onPortfolioItemClick(portfolioItem);
+                }
+            });
         }
     }
 }

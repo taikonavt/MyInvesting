@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
@@ -39,6 +40,9 @@ public class PortfolioItem {
     private TextView priceTV;
     private boolean priceTVAndCostTVAreGot = false;
 
+    private TextView nameTV;
+    private boolean nameIsGot = false;
+
     public PortfolioItem(int lID, String lTicker, int lVolume) {
 
         id = lID;
@@ -46,19 +50,9 @@ public class PortfolioItem {
         volume = lVolume;
     }
 
-//    public PortfolioItem (int lID, String lTicker, int lVolume, int lPrice) {
-//
-//        id = lID;
-//        ticker = lTicker;
-//        volume = lVolume;
-//
-//        price = lPrice;
-//
-//        priceIsReady = true;
-//    }
-
     public void setName(String name) {
         this.name = name;
+        nameIsGot = true;
     }
 
     void setLotSize(int lotSize) {
@@ -84,6 +78,14 @@ public class PortfolioItem {
 
     public int getVolume() {
         return volume;
+    }
+
+    public void getName(TextView textView) {
+
+        nameTV = textView;
+
+        SetNameTask setNameTask = new SetNameTask();
+        setNameTask.execute();
     }
 
     public long getCost() {
@@ -120,6 +122,32 @@ public class PortfolioItem {
 
             priceTV.setText(String.valueOf((float) price/MULTIPLIER_FOR_MONEY));
             costTV.setText(String.valueOf((float) volume*price/MULTIPLIER_FOR_MONEY));
+        }
+    }
+
+
+    class SetNameTask extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                if (!nameIsGot) {
+                    Thread.sleep(200);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            nameTV.setText(name);
         }
     }
 }

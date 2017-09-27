@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:hint="Сбербанк России"
+        android:hint="@string/tv_fragment_ticker_name"
         />
 
     <LinearLayout

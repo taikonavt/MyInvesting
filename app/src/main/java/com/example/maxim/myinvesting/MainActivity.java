@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
+import com.example.maxim.myinvesting.data.PortfolioItem;
 
 import static com.example.maxim.myinvesting.data.Const.*;
 
@@ -285,7 +286,7 @@ public class MainActivity extends AppCompatActivity
 
         editor.commit();
 
-        // TODO: 02.08.17 Удаляет все preferences. Удалить когда будет не нужно
+        // TODO: 02.08.17 Удаляет все preferences с именами портфелей. Удалить когда будет не нужно
 //        sharedPreferences = getPreferences(MODE_PRIVATE);
 //        editor = sharedPreferences.edit();
 //        editor.clear();
@@ -307,15 +308,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     // обработка нажатия на пункт portfolioFragment
-    public void onPortfolioItemClick(View view) {
-
-        TextView tv = (TextView) view.findViewById(R.id.tv_item_portfolio_ticker);
-
-        String string = tv.getText().toString();
-
-Log.d(TAG, string + " onPortfolioItemClick() " + MainActivity.class.getSimpleName());
+    public void onPortfolioItemClick(PortfolioItem portfolioItem) {
+        // TODO: 26.09.17 NEXT send portfolioItem to ticker fragment
 
         TickerFragment tickerFragment = new TickerFragment();
+
+        tickerFragment.putPortfolioItem(portfolioItem);
 
         if (!tickerFragment.isVisible()) {
             getSupportFragmentManager().beginTransaction()

@@ -96,6 +96,7 @@
     <string name="tv_fragment_ticker_volume">Volume</string>
     <string name="tv_fragment_ticker_date">Date</string>
     <string name="tv_fragment_ticker_profit">Profit/Period</string>
+    <string name="tv_fragment_ticker_name">Loading &#8230; </string>
 
 
 </resources>
