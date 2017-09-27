@@ -3,6 +3,8 @@ package com.example.maxim.myinvesting.data;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -38,6 +40,8 @@ public class PortfolioItem {
 
     private TextView costTV;
     private TextView priceTV;
+    private ProgressBar costPB;
+    private ProgressBar pricePB;
     private boolean priceTVAndCostTVAreGot = false;
 
     private TextView nameTV;
@@ -92,10 +96,13 @@ public class PortfolioItem {
         return price * volume;
     }
 
-    public void getPriceAndCost(TextView priceTV, TextView costTV) {
+    public void getPriceAndCost(TextView priceTV, TextView costTV,
+                                ProgressBar pricePB, ProgressBar costPB) {
 
         this.priceTV = priceTV;
         this.costTV = costTV;
+        this.pricePB = pricePB;
+        this.costPB = costPB;
 
         priceTVAndCostTVAreGot = true;
     }
@@ -122,6 +129,12 @@ public class PortfolioItem {
 
             priceTV.setText(String.valueOf((float) price/MULTIPLIER_FOR_MONEY));
             costTV.setText(String.valueOf((float) volume*price/MULTIPLIER_FOR_MONEY));
+
+            pricePB.setVisibility(View.GONE);
+            costPB.setVisibility(View.GONE);
+
+            priceTV.setVisibility(View.VISIBLE);
+            costTV.setVisibility(View.VISIBLE);
         }
     }
 

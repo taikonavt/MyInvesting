@@ -42,7 +42,16 @@
             android:padding="@dimen/padding_portfolio_item"
             android:textAlignment="center"
             android:textSize="@dimen/text_size_for_info_item"
-            tools:text="160.00" />
+            tools:text="160.00"
+            android:visibility="gone"
+            />
+
+        <ProgressBar
+            android:id="@+id/pb_item_portfolio_price"
+            android:layout_width="@dimen/tv_item_portfolio_price"
+            android:layout_height="@dimen/pb_item_portfolio_height"
+            android:layout_gravity="center_vertical|center_horizontal"
+            />
 
         <TextView
             android:id="@+id/tv_item_portfolio_cost"
@@ -52,7 +61,16 @@
             android:padding="@dimen/padding_portfolio_item"
             android:textAlignment="center"
             android:textSize="@dimen/text_size_for_info_item"
-            tools:text="160000" />
+            tools:text="160000"
+            android:visibility="gone"
+            />
+
+        <ProgressBar
+            android:id="@+id/pb_item_portfolio_cost"
+            android:layout_width="@dimen/tv_item_portfolio_cost"
+            android:layout_height="@dimen/pb_item_portfolio_height"
+            android:layout_gravity="center_vertical|center_horizontal"
+            />
 
     </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
@@ -86,6 +87,8 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         TextView tvPortfolioVolume;
         TextView tvPortfolioPrice;
         TextView tvPortfolioCost;
+        ProgressBar pbPortfolioPrice;
+        ProgressBar pbPortfolioCost;
 
         public PortfolioViewHolder(View itemView) {
             super(itemView);
@@ -94,13 +97,16 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
             tvPortfolioVolume = (TextView) itemView.findViewById(R.id.tv_item_portfolio_volume);
             tvPortfolioPrice = (TextView) itemView.findViewById(R.id.tv_item_portfolio_price);
             tvPortfolioCost = (TextView) itemView.findViewById(R.id.tv_item_portfolio_cost);
+            pbPortfolioPrice = (ProgressBar) itemView.findViewById(R.id.pb_item_portfolio_price);
+            pbPortfolioCost = (ProgressBar) itemView.findViewById(R.id.pb_item_portfolio_cost);
         }
 
         void bind (final PortfolioItem portfolioItem) {
 
             tvPortfolioTicker.setText(portfolioItem.getTicker());
             tvPortfolioVolume.setText(String.valueOf(portfolioItem.getVolume()));
-            portfolioItem.getPriceAndCost(tvPortfolioPrice, tvPortfolioCost);
+            portfolioItem.getPriceAndCost(tvPortfolioPrice, tvPortfolioCost,
+                            pbPortfolioPrice, pbPortfolioCost);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
