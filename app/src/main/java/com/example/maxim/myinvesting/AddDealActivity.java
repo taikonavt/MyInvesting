@@ -140,6 +140,8 @@ public class AddDealActivity extends AppCompatActivity {
                 throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
             fee = Integer.valueOf(eTFee.getText().toString());
 
+            // TODO: 17.10.17 Добавить тост о том что введена сделака
+
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Дата указана не верно", Toast.LENGTH_LONG).show();
             Log.d(TAG, e.toString());

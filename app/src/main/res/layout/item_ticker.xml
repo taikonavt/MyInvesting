@@ -51,6 +51,12 @@
             />
 
         <TextView
+            android:layout_width="@dimen/tv_item_ticker_free_space"
+            android:layout_height="match_parent"
+            android:background="@color/colorBuy"
+            />
+
+        <TextView
             android:id="@+id/tv_item_ticker_profit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,11 +76,7 @@
 
         <TextView
             android:layout_width="@dimen/tv_item_ticker_free_space"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:visibility="invisible"
-            android:textSize="@dimen/text_size_for_ticker_item"
-            android:background="@color/colorSell"
+            android:layout_height="match_parent"
             />
 
         <TextView

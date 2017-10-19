@@ -52,8 +52,8 @@ public class PortfolioData {
 
     private int periodInDays = 0;
 
-    private TextView tvProfitability;
-    private TextView tvCostOfPortfolio;
+    private TextView tvProfitability = null;
+    private TextView tvCostOfPortfolio = null;
 
 
 // Получаю контекст для определения имени портфеля и даты до которой считается портфель
@@ -109,7 +109,6 @@ public class PortfolioData {
     public long getUntilDateInMillis() {
         return untilDateInMillis;
     }
-
 
 
     class TotalTask extends AsyncTask<Void, Void, Void> {
@@ -615,6 +614,7 @@ public class PortfolioData {
             return null;
         }
 
+        // TODO: 17.10.17 вылетает если нет подключения. Исправить
         String getResponseFromHttpUrl(URL url) throws IOException {
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

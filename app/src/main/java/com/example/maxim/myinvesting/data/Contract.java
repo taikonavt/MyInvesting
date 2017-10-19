@@ -22,6 +22,8 @@ public class Contract {
 
     public static final String PATH_SUM = "type"; // используется при запросе к БД о получении всех вводов и сделок
 
+    public static final String PATH_DATE_PRICE = "group_by_date_and_price";
+
     public static final class DealsEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()

@@ -48,40 +48,52 @@ public class DateUtils {
                 Integer.toString(yy).substring(2)); // убираю первый две цифры от года
     }
 
-    // возвращает текущее время в виде гггг-мм-дд
-    public static String getYesterdayDate() {
+    public static long getCurrentDateForMoscowInMillis() {
+
+        GregorianCalendar calendar;
 
         TimeZone timeZone = TimeZone.getTimeZone("Europe/Moscow");
 
-        Calendar calendar = GregorianCalendar.getInstance(timeZone);
+        calendar= new GregorianCalendar(timeZone);
 
-        calendar.add(Calendar.DATE, -1);
-
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
-        if (dayOfWeek == Calendar.SUNDAY)
-            calendar.add(Calendar.DATE, -2);
-
-        if (dayOfWeek == Calendar.SATURDAY)
-            calendar.add(Calendar.DATE, -1);
-
-        String yyyy = Integer.toString(calendar.get(Calendar.YEAR));
-
-        int mmInt = calendar.get(Calendar.MONTH) + 1;
-
-        String mm;
-        if (mmInt < 10)
-            mm = "0" + mmInt;
-        else mm = Integer.toString(mmInt);
-
-        int ddInt = calendar.get(Calendar.DATE);
-
-        String dd;
-        if (ddInt < 10)
-            dd = "0" + ddInt;
-        else
-            dd = Integer.toString(ddInt);
-
-        return yyyy + "-" + mm + "-" + dd;
+        return calendar.getTimeInMillis();
     }
+
+    // TODO: 29.09.17 удалить если не понадобиться
+//    // возвращает текущее время в виде гггг-мм-дд
+//    public static String getYesterdayDate() {
+//
+//        TimeZone timeZone = TimeZone.getTimeZone("Europe/Moscow");
+//
+//        Calendar calendar = GregorianCalendar.getInstance(timeZone);
+//
+//        calendar.add(Calendar.DATE, -1);
+//
+//        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+//
+//        if (dayOfWeek == Calendar.SUNDAY)
+//            calendar.add(Calendar.DATE, -2);
+//
+//        if (dayOfWeek == Calendar.SATURDAY)
+//            calendar.add(Calendar.DATE, -1);
+//
+//        String yyyy = Integer.toString(calendar.get(Calendar.YEAR));
+//
+//        int mmInt = calendar.get(Calendar.MONTH) + 1;
+//
+//        String mm;
+//        if (mmInt < 10)
+//            mm = "0" + mmInt;
+//        else mm = Integer.toString(mmInt);
+//
+//        int ddInt = calendar.get(Calendar.DATE);
+//
+//        String dd;
+//        if (ddInt < 10)
+//            dd = "0" + ddInt;
+//        else
+//            dd = Integer.toString(ddInt);
+//
+//        return yyyy + "-" + mm + "-" + dd;
+//    }
 }

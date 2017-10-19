@@ -38,8 +38,8 @@ public class PortfolioItem {
     private int price = 0; // Получить из интернета и умножить на константу
     boolean priceIsReady = false;
 
-    private TextView costTV;
-    private TextView priceTV;
+    private TextView costTV = null;
+    private TextView priceTV = null;
     private ProgressBar costPB;
     private ProgressBar pricePB;
     private boolean priceTVAndCostTVAreGot = false;

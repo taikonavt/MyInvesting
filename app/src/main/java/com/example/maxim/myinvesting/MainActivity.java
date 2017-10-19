@@ -309,7 +309,6 @@ public class MainActivity extends AppCompatActivity
 
     // обработка нажатия на пункт portfolioFragment
     public void onPortfolioItemClick(PortfolioItem portfolioItem) {
-        // TODO: 26.09.17 NEXT send portfolioItem to ticker fragment
 
         TickerFragment tickerFragment = new TickerFragment();
 

@@ -25,6 +25,7 @@ public class InvestingProvider extends ContentProvider{
     public static final int CODE_DEALS = 100;
     public static final int CODE_DEAL_WITH_ID = 101;
     public static final int CODE_DEALS_SUM = 102;
+    public static final int CODE_DEALS_DATE_PRICE = 103;
 
     public static final int CODE_INPUT = 200;
     public static final int CODE_INPUT_WITH_ID = 201;
@@ -43,6 +44,8 @@ public class InvestingProvider extends ContentProvider{
         matcher.addURI(authority, Contract.PATH_DEALS, CODE_DEALS);
         matcher.addURI(authority, Contract.PATH_DEALS + "/#", CODE_DEAL_WITH_ID);
         matcher.addURI(authority, Contract.PATH_DEALS + "/" + Contract.PATH_SUM, CODE_DEALS_SUM);
+        matcher.addURI(authority, Contract.PATH_DEALS + "/" +
+                Contract.PATH_DATE_PRICE, CODE_DEALS_DATE_PRICE);
 
         matcher.addURI(authority, Contract.PATH_INPUT, CODE_INPUT);
         matcher.addURI(authority, Contract.PATH_INPUT + "/#", CODE_INPUT_WITH_ID);
@@ -90,6 +93,21 @@ public class InvestingProvider extends ContentProvider{
             case CODE_DEALS_SUM: {
 
                 String groupBy = uri.getPathSegments().get(1);
+
+                cursor = db.query(DealsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        groupBy,
+                        null,
+                        null
+                );
+                break;
+            }
+
+            case CODE_DEALS_DATE_PRICE: {
+
+                String groupBy = "date, price";
 
                 cursor = db.query(DealsEntry.TABLE_NAME,
                         projection,
