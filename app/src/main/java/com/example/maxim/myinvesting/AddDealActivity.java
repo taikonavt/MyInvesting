@@ -100,21 +100,21 @@ public class AddDealActivity extends AppCompatActivity {
                 year = year + 1900;
             } else year = year + 2000;
 
-            // TODO: 19.07.17 Проверить работоспособность при постом поле, ввести исключения
             month = Integer.valueOf(eTMonth.getText().toString());
             month = month - 1; // перевожу в значения константы Calendar.MONTH
 
             day = Integer.valueOf(eTDay.getText().toString());
 
-            // TODO: 11.08.17 Проверить работоспособность с числами с точкой
             String strPrice = eTPrice.getText().toString();
             if (strPrice.length() == 0)
                 throw new UnsupportedOperationException("Price не задан");
 
             Float floatPrice = Float.valueOf(strPrice);
+
             //цену акции умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
             // т.к. на бирже акций меньше 0,0001 нет
             price = (int) (floatPrice * MULTIPLIER_FOR_MONEY);
+
             // если price и floatprice не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
             if (price != floatPrice * MULTIPLIER_FOR_MONEY) {
@@ -139,8 +139,6 @@ public class AddDealActivity extends AppCompatActivity {
             if (fee != floatFee * MULTIPLIER_FOR_MONEY)
                 throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
             fee = Integer.valueOf(eTFee.getText().toString());
-
-            // TODO: 17.10.17 Добавить тост о том что введена сделака
 
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Дата указана не верно", Toast.LENGTH_LONG).show();
@@ -176,9 +174,11 @@ public class AddDealActivity extends AppCompatActivity {
 
         if (Long.parseLong(string) >= 0) {
 
-            Toast.makeText(this, getResources().getString(R.string.db_got_item), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getString(R.string.db_got_item),
+                    Toast.LENGTH_LONG).show();
         } else
-            Toast.makeText(this, getResources().getString(R.string.db_have_not_got_item), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getString(R.string.db_have_not_got_item),
+                    Toast.LENGTH_LONG).show();
     }
 
     public String[] readPortfoliosNames() {

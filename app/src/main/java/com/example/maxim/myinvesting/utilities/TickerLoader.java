@@ -32,7 +32,7 @@ public class TickerLoader extends AsyncTaskLoader<ArrayList<TickerItem>> {
 
     @Override
     public ArrayList<TickerItem> loadInBackground() {
-
+// TODO: 20.10.17 Добавить дивиденды в список (? подумать нужно ли)
         Cursor cursorBuy = getCursor("Buy");
 
         Cursor cursorSell = getCursor("Sell");
@@ -106,8 +106,6 @@ public class TickerLoader extends AsyncTaskLoader<ArrayList<TickerItem>> {
 
                     // на следующий этап отправляю 0
                     volumeTemp = 0;
-
-Log.d(TAG, "volT=0, buyFlag=true, sellFlag=false");
                 }
 
                 // на предыдущем этапе был прочитан только сел курсор

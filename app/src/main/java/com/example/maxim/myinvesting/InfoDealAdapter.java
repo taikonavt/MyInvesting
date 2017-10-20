@@ -261,10 +261,9 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             tvInfoItemTicker.setText(lTicker);
             tvInfoItemType.setText(lType);
             tvInfoItemDate.setText(lDate);
-            // TODO: 13.10.17 проверить "не пропадает ли точка после запятой?"
-            tvInfoItemPrice.setText(String.valueOf(lPrice/MULTIPLIER_FOR_MONEY));
+            tvInfoItemPrice.setText(String.valueOf( (float) lPrice/MULTIPLIER_FOR_MONEY));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
-            tvInfoItemCost.setText(String.valueOf(lPrice * lVolume/MULTIPLIER_FOR_MONEY));
+            tvInfoItemCost.setText(String.valueOf((float) lPrice * lVolume/MULTIPLIER_FOR_MONEY));
             //tvInfoItemFee.setText(String.valueOf(lFee));
 
             // если список содержит id то помечаю item как отмеченный

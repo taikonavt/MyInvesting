@@ -137,8 +137,6 @@ public class PortfolioLoader extends AsyncTaskLoader<PortfolioData> {
             } while (cursor.moveToNext());
         } else {
             Log.d(TAG, "Portfolio have 0 items");
-            // TODO: 06.09.17 Подумать: может сделать тост?
-//            Toast.makeText(mContext, "Portfolio have 0 items", Toast.LENGTH_LONG).show();
         }
 
         cursor.close();
