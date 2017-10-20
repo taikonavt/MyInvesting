@@ -228,7 +228,6 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
         TextView tvInfoItemPrice;
         TextView tvInfoItemVolume;
         TextView tvInfoItemCost;
-        //TextView tvInfoItemFee;
         LinearLayout llRowInfo;
         CheckBox checkBox;
 
@@ -243,7 +242,6 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             tvInfoItemPrice = (TextView) itemView.findViewById(R.id.tv_info_item_price);
             tvInfoItemVolume = (TextView) itemView.findViewById(R.id.tv_info_item_volume);
             tvInfoItemCost = (TextView) itemView.findViewById(R.id.tv_info_item_cost);
-            //tvInfoItemFee = (TextView) itemView.findViewById(R.id.tv_info_item_fee);
             llRowInfo = (LinearLayout) itemView.findViewById(R.id.tr_info_deal);
             checkBox = (CheckBox) itemView.findViewById(R.id.chb_item_info_deal);
         }
@@ -263,8 +261,6 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             tvInfoItemDate.setText(lDate);
             tvInfoItemPrice.setText(String.valueOf( (float) lPrice/MULTIPLIER_FOR_MONEY));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
-            tvInfoItemCost.setText(String.valueOf((float) lPrice * lVolume/MULTIPLIER_FOR_MONEY));
-            //tvInfoItemFee.setText(String.valueOf(lFee));
 
             // если список содержит id то помечаю item как отмеченный
             if (selectedItems.contains(id)) {
@@ -287,19 +283,32 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             else checkBox.setVisibility(View.GONE);
 
             switch (lType) {
-                case "Sell": llRowInfo.setBackgroundColor(ContextCompat.getColor(
-                        itemView.getContext(), R.color.colorSell));
-                    break;
+                case "Sell": {
+                    llRowInfo.setBackgroundColor(ContextCompat.getColor(
+                            itemView.getContext(), R.color.colorSell));
 
-                case "Buy": llRowInfo.setBackgroundColor(ContextCompat.getColor(
-                        itemView.getContext(), R.color.colorBuy));
-                    break;
+                    String string = "+" + String.valueOf((
+                            (float) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
 
+                    tvInfoItemCost.setText(string);
+
+                    break;
+                }
+                case "Buy": {
+                    llRowInfo.setBackgroundColor(ContextCompat.getColor(
+                            itemView.getContext(), R.color.colorBuy));
+
+                    String string = "-" + String.valueOf((
+                            (float) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY) + lFee);
+
+                    tvInfoItemCost.setText(string);
+
+                    break;
+                }
                 case "Dividend": llRowInfo.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorDiv));
 
                 default: Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
-
             }
 
             // вход в режим "ActionMode" при долгом нажатии

@@ -271,9 +271,6 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
 
             tvInfoInputItemType.setText(lType);
             tvInfoInputItemDate.setText(lDate);
-            tvInfoInputItemAmount.setText(
-                    String.valueOf(lAmount/MULTIPLIER_FOR_MONEY) +
-                    " " + lCurrency);
             tvInfoInputItemFee.setText("- " + String.valueOf(lFee/MULTIPLIER_FOR_MONEY) +
                     " " + lCurrency);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
@@ -285,14 +282,28 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
 
             // если ввод то обозначаю item зеленым, если вывод то красным
             switch (lType) {
-                case "Output": llRowInput.setBackgroundColor(ContextCompat.getColor(
-                        itemView.getContext(), R.color.colorSell));
-                    break;
+                case "Output": {
+                    llRowInput.setBackgroundColor(ContextCompat.getColor(
+                            itemView.getContext(), R.color.colorSell));
 
-                case "Input": llRowInput.setBackgroundColor(ContextCompat.getColor(
-                        itemView.getContext(), R.color.colorBuy));
-                    break;
+                    String string = "-" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
+                            " " + lCurrency;
 
+                    tvInfoInputItemAmount.setText(string);
+
+                    break;
+                }
+                case "Input": {
+                    llRowInput.setBackgroundColor(ContextCompat.getColor(
+                            itemView.getContext(), R.color.colorBuy));
+
+                    String string = "+" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
+                            " " + lCurrency;
+
+                    tvInfoInputItemAmount.setText(string);
+
+                    break;
+                }
                 default:
                     llRowInput.setBackgroundColor(0);
                     Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
