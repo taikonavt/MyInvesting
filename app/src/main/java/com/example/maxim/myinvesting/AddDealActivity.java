@@ -132,13 +132,14 @@ public class AddDealActivity extends AppCompatActivity {
                 throw new UnsupportedOperationException("Fee не задан");
 
             Float floatFee = Float.valueOf(strFee);
+
             //коммисию умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
             // и привожу к int. если есть значение после запятой оно будет отброшено
             fee = (int) (floatFee * MULTIPLIER_FOR_MONEY);
+
             // если price и floatprice не равны значит разрядность цены слишком мала
             if (fee != floatFee * MULTIPLIER_FOR_MONEY)
                 throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
-            fee = Integer.valueOf(eTFee.getText().toString());
 
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Дата указана не верно", Toast.LENGTH_LONG).show();

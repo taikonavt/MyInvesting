@@ -42,8 +42,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.5" />
 
         <TextView
@@ -72,8 +70,6 @@
             android:inputType="textCapCharacters"
             android:hint="@string/hint_eTTicker"
             app:layout_constraintTop_toBottomOf="@+id/spinnerPortfolio"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginLeft="0dp"
             app:layout_constraintLeft_toLeftOf="@+id/spinnerPortfolio" />
@@ -215,8 +211,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@+id/eTDay"
-            android:layout_marginLeft="0dp"
-            android:layout_marginStart="0dp"
             app:layout_constraintLeft_toLeftOf="@+id/eTDay"
             android:entries="@array/spinType_deal_array"
             />
@@ -247,13 +241,10 @@
             android:ems="5"
             android:inputType="numberDecimal"
             android:layout_marginTop="24dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="@+id/spinnerType"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/spinnerType" />
 
         <TextView
@@ -282,13 +273,10 @@
             android:ems="5"
             android:inputType="number"
             android:layout_marginTop="24dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="@+id/eTPrice"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/eTPrice" />
 
         <TextView
@@ -317,14 +305,12 @@
             android:ems="5"
             android:inputType="numberDecimal"
             android:layout_marginTop="24dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintTop_toBottomOf="@+id/eTVolume" />
+            app:layout_constraintTop_toBottomOf="@+id/eTVolume"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="@+id/eTVolume"
+            app:layout_constraintHorizontal_bias="0.0" />
 
         <Button
             android:layout_width="wrap_content"
