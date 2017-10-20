@@ -96,13 +96,13 @@ public class TickerLoader extends AsyncTaskLoader<ArrayList<TickerItem>> {
                     priceBuy = cursorBuy.getLong(priceIndexBuy);
                     dateBuy = cursorBuy.getLong(dateIndexBuy);
 
-                    volumeSell = 0;
-                    priceSell = 0;
+//                    volumeSell = 0;
+//                    priceSell = 0;
                     dateSell = DateUtils.getCurrentDateForMoscowInMillis();
 
-                    // устанавливаю в массив объем бай как есть, объем сэл - 0
+                    // устанавливаю в массив объем бай как есть, объем сэл = объем бай
                     arrayList.add(new TickerItem(volumeBuy, priceBuy, dateBuy,
-                            volumeSell, priceSell, dateSell));
+                            volumeBuy, priceBuy, dateSell));
 
                     // на следующий этап отправляю 0
                     volumeTemp = 0;
@@ -114,16 +114,16 @@ Log.d(TAG, "volT=0, buyFlag=true, sellFlag=false");
                 // вариант: 1. vb=10, vb=10; 2. vs=10
                 else if (!cursorBuyFlag && cursorSellFlag) {
 
-                    volumeBuy = 0;
-                    priceBuy = 0;
+//                    volumeBuy = 0;
+//                    priceBuy = 0;
                     dateBuy = DateUtils.getCurrentDateForMoscowInMillis();
 
                     volumeSell = cursorSell.getInt(volumeIndexSell);
                     priceSell = cursorSell.getLong(priceIndexSell);
                     dateSell = cursorSell.getLong(dateIndexSell);
 
-                    // выбираю меньшее значение и устанавливаю его в объем сэл и бай
-                    arrayList.add(new TickerItem(volumeBuy, priceBuy, dateBuy,
+                    // устанавливаю в массив объем сэл как есть, объем бай = объем сэл
+                    arrayList.add(new TickerItem(volumeSell, priceSell, dateBuy,
                             volumeSell, priceSell, dateSell));
 
                     // на следующий этап отправляю 0
@@ -156,17 +156,16 @@ Log.d(TAG, "volT=0, buyFlag=true, sellFlag=false");
                             volumeSell, priceSell, dateSell);
 
                     volumeTemp = volumeBuy - volumeSell;
-
                 }
                 // если курсора сэл нет
                 else {
-                    volumeSell = 0;
-                    priceSell = 0;
+//                    volumeSell = 0;
+//                    priceSell = 0;
                     dateSell = DateUtils.getCurrentDateForMoscowInMillis();
 
                     // если больше строк нет, то не нужно выбирать меньшее значение, а ставить как есть
                     arrayList.add(new TickerItem(volumeBuy, priceBuy, dateBuy,
-                            volumeSell, priceSell, dateSell));
+                            volumeBuy, priceBuy, dateSell));
 
                     // на следующий этап отправляю 0
                     volumeTemp = 0;
@@ -197,12 +196,12 @@ Log.d(TAG, "volT=0, buyFlag=true, sellFlag=false");
                     volumeTemp = volumeBuy - volumeSell;
 
                 } else {
-                    volumeBuy = 0;
-                    priceBuy = 0;
+//                    volumeBuy = 0;
+//                    priceBuy = 0;
                     dateBuy = DateUtils.getCurrentDateForMoscowInMillis();
 
                     // если больше строк нет, то не нужно выбирать меньшее значение, а ставить как есть
-                    arrayList.add(new TickerItem(volumeBuy, priceBuy, dateBuy,
+                    arrayList.add(new TickerItem(volumeSell, priceSell, dateBuy,
                             volumeSell, priceSell, dateSell));
 
                     // на следующий этап отправляю 0

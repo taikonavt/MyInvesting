@@ -1,8 +1,5 @@
 package com.example.maxim.myinvesting;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,17 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.maxim.myinvesting.data.Contract;
-import com.example.maxim.myinvesting.data.PortfolioData;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 import com.example.maxim.myinvesting.data.TickerItem;
 import com.example.maxim.myinvesting.utilities.TickerLoader;
-import com.example.maxim.myinvesting.utilities.PortfolioLoader;
 
 import java.util.ArrayList;
 
-import static com.example.maxim.myinvesting.data.Const.MILLIS_IN_DAY;
-import static com.example.maxim.myinvesting.data.Const.TAG;
+import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
+
 
 /**
  * Created by maxim on 05.09.17.
@@ -45,6 +39,8 @@ public class TickerFragment extends Fragment implements LoaderManager.LoaderCall
 
     int TICKER_LOADER_ID = 5;
 
+    TextView tvTotalProfit;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -53,7 +49,11 @@ public class TickerFragment extends Fragment implements LoaderManager.LoaderCall
         View rootView = inflater.inflate(R.layout.fragmant_ticker, container, false);
 
         TextView tvName = (TextView) rootView.findViewById(R.id.tv_name_ticker_fragment);
+
+        // отправляю textview в метод portfolioItem для установки полного имени акции
         portfolioItem.getName(tvName);
+
+        tvTotalProfit = (TextView) rootView.findViewById(R.id.tv_total_profit_fragment_ticker);
 
         nameOfPortfolio = ((MainActivity) getContext()).getNameOfPortfolio();
 
@@ -74,6 +74,7 @@ public class TickerFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
+    // получаю portfolioItem через MainActivity из PortfolioFragment
     public void putPortfolioItem(PortfolioItem portfolioItem) {
 
         this.portfolioItem = portfolioItem;
@@ -95,6 +96,14 @@ public class TickerFragment extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<ArrayList<TickerItem>> loader, ArrayList<TickerItem> data) {
 
         mAdapter.swapArray(data);
+
+        long totalProfit = 0;
+        for (TickerItem tickerItem : data) {
+
+            totalProfit = totalProfit + tickerItem.getProfit();
+        }
+
+        tvTotalProfit.setText(String.valueOf(totalProfit / MULTIPLIER_FOR_MONEY));
     }
 
     @Override
