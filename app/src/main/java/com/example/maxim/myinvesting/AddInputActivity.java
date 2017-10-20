@@ -157,7 +157,16 @@ public class AddInputActivity extends AppCompatActivity {
         contentValues.put(Contract.InputEntry.COLUMN_PORTFOLIO, portfolio);
         contentValues.put(Contract.InputEntry.COLUMN_NOTE, note);
 
-        getContentResolver().insert(Contract.InputEntry.CONTENT_URI, contentValues);
+        Uri uri = getContentResolver().insert(Contract.InputEntry.CONTENT_URI, contentValues);
+
+        // сообщение о вставке транзакции в базу данных
+        String string = uri.getPathSegments().get(1);
+
+        if (Long.parseLong(string) >= 0) {
+
+            Toast.makeText(this, getResources().getString(R.string.db_got_item), Toast.LENGTH_LONG).show();
+        } else
+            Toast.makeText(this, getResources().getString(R.string.db_have_not_got_item), Toast.LENGTH_LONG).show();
     }
 
     // получаю имена существующих портфелей из SharedPreferences

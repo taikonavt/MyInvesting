@@ -169,7 +169,16 @@ public class AddDealActivity extends AppCompatActivity {
         contentValues.put(Contract.DealsEntry.COLUMN_VOLUME, volume);
         contentValues.put(Contract.DealsEntry.COLUMN_FEE, fee);
 
-        getContentResolver().insert(Contract.DealsEntry.CONTENT_URI, contentValues);
+        Uri uri = getContentResolver().insert(Contract.DealsEntry.CONTENT_URI, contentValues);
+
+        // сообщение о вставке транзакции в базу данных
+        String string = uri.getPathSegments().get(1);
+
+        if (Long.parseLong(string) >= 0) {
+
+            Toast.makeText(this, getResources().getString(R.string.db_got_item), Toast.LENGTH_LONG).show();
+        } else
+            Toast.makeText(this, getResources().getString(R.string.db_have_not_got_item), Toast.LENGTH_LONG).show();
     }
 
     public String[] readPortfoliosNames() {

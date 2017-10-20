@@ -14,6 +14,11 @@
     <string name="drawer_open"> Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    <!-- AddDealActivity.java -->
+    <!-- AddInputActivity.java -->
+    <string name="db_got_item">Got it!</string>
+    <string name="db_have_not_got_item">Sorry, error happened!</string>
+
 
     <!-- Hints -->
     <!-- activity_add_deal.xml -->
