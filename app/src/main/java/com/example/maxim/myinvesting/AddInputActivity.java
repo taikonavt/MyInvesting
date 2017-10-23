@@ -117,14 +117,20 @@ public class AddInputActivity extends AppCompatActivity {
             amount = (amount / MULTIPLIER_FOR_CURRENCY) * MULTIPLIER_FOR_MONEY;
 
             String strFee = eTFee.getText().toString();
+            if (strFee.length() == 0)
+                throw new UnsupportedOperationException("Fee не задан");
+
             Float floatFee = Float.valueOf(strFee);
+
             //сумму ввода умножаю на 100 чтобы уйти от запятой
-            fee = (int) (floatFee * MULTIPLIER_FOR_CURRENCY); // todo исправить ошибку с пустым полем
+            fee = (int) (floatFee * MULTIPLIER_FOR_CURRENCY);
+
             // если fee и floatFee не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
             if (fee != floatFee * MULTIPLIER_FOR_CURRENCY) {
                 throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
             }
+
             // домножаю на 100, чтобы привести все деньги в программе
             // к одной разрядности 1 руб = 10000 ед.
             fee = fee * MULTIPLIER_FOR_MONEY / MULTIPLIER_FOR_CURRENCY;

@@ -126,20 +126,24 @@ public class AddDealActivity extends AppCompatActivity {
                 throw new UnsupportedOperationException("Volume не задан");
             volume = Integer.valueOf(strVolume);
 
-            // TODO: 19.07.17 изменить 10000 на 100, т.к. комиссия не может быть меньше копейки
             String strFee = eTFee.getText().toString();
             if (strFee.length() == 0)
                 throw new UnsupportedOperationException("Fee не задан");
 
             Float floatFee = Float.valueOf(strFee);
 
-            //коммисию умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
-            // и привожу к int. если есть значение после запятой оно будет отброшено
-            fee = (int) (floatFee * MULTIPLIER_FOR_MONEY);
+            //сумму ввода умножаю на 100 чтобы уйти от запятой
+            fee = (int) (floatFee * MULTIPLIER_FOR_CURRENCY);
 
-            // если price и floatprice не равны значит разрядность цены слишком мала
-            if (fee != floatFee * MULTIPLIER_FOR_MONEY)
+            // если fee и floatFee не равны значит разрядность цены слишком мала
+            //  и часть после запятой будет отброшена
+            if (fee != floatFee * MULTIPLIER_FOR_CURRENCY) {
                 throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
+            }
+
+            // домножаю на 100, чтобы привести все деньги в программе
+            // к одной разрядности 1 руб = 10000 ед.
+            fee = fee * MULTIPLIER_FOR_MONEY / MULTIPLIER_FOR_CURRENCY;
 
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Дата указана не верно", Toast.LENGTH_LONG).show();
