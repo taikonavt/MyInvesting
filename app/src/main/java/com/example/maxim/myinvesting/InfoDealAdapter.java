@@ -298,8 +298,8 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                     llRowInfo.setBackgroundColor(ContextCompat.getColor(
                             itemView.getContext(), R.color.colorBuy));
 
-                    String string = "-" + String.valueOf((
-                            (float) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY) + lFee);
+                    String string = "-" + String.valueOf(
+                            (float) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
 
                     tvInfoItemCost.setText(string);
 

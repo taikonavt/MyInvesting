@@ -144,7 +144,7 @@ public class PortfolioData {
 
             // вычисляю и устанавливаю в массив количество свободных денег
             int freeMoney = (int) (getInputs() - getBuys() +
-                    getSells() + getDividends() - getOutputs());
+                    getSells() + getDividends() - getOutputs() - getFees());
 
             int size = portfolioItems.size();
 
@@ -196,11 +196,13 @@ public class PortfolioData {
                     .appendPath(Contract.PATH_SUM)
                     .build();
 
-            // SELECT portfolio, sum(amount) AS 'amount'
+            // SELECT portfolio, sum(amount) AS 'amount', sum(fee) AS 'fee'
             String[] projection = {
                     Contract.InputEntry.COLUMN_PORTFOLIO,
-                    "sum (" + Contract.InputEntry.COLUMN_AMOUNT + ") AS '" +
-                            Contract.InputEntry.COLUMN_AMOUNT + "'"
+                            "sum (" + Contract.InputEntry.COLUMN_AMOUNT + ") AS '" +
+                            Contract.InputEntry.COLUMN_AMOUNT +
+                            "', sum(" + Contract.InputEntry.COLUMN_FEE + ") AS '" +
+                            Contract.InputEntry.COLUMN_FEE + "'"
             };
 
             // WHERE portfolio = '5838199' AND date < 123 AND type = 'Input'
@@ -216,10 +218,12 @@ public class PortfolioData {
                     null,
                     null);
 
+            int indexAmount = cursor.getColumnIndex(Contract.InputEntry.COLUMN_AMOUNT);
+            int indexFee = cursor.getColumnIndex(Contract.InputEntry.COLUMN_FEE);
+
             if (cursor.moveToFirst()) {
 
-                int index = cursor.getColumnIndex(Contract.InputEntry.COLUMN_AMOUNT);
-                amountInput = cursor.getLong(index);
+                amountInput = cursor.getLong(indexAmount) - cursor.getLong(indexFee);
             }
 
             cursor.close();
@@ -243,7 +247,9 @@ public class PortfolioData {
             String[] projection = {
                     Contract.InputEntry.COLUMN_PORTFOLIO,
                     "sum (" + Contract.InputEntry.COLUMN_AMOUNT + ") AS '" +
-                            Contract.InputEntry.COLUMN_AMOUNT + "'"
+                            Contract.InputEntry.COLUMN_AMOUNT +
+                            "', sum(" + Contract.InputEntry.COLUMN_FEE + ") AS '" +
+                            Contract.InputEntry.COLUMN_FEE + "'"
             };
 
             // WHERE portfolio = '5838199' AND date < 123 AND type = 'Output'
@@ -259,10 +265,12 @@ public class PortfolioData {
                     null,
                     null);
 
+            int indexAmount = cursor.getColumnIndex(Contract.InputEntry.COLUMN_AMOUNT);
+            int indexFee = cursor.getColumnIndex(Contract.InputEntry.COLUMN_FEE);
+
             if (cursor.moveToFirst()) {
 
-                int index = cursor.getColumnIndex(Contract.InputEntry.COLUMN_AMOUNT);
-                amountOutput = cursor.getLong(index);
+                amountOutput = cursor.getLong(indexAmount) + cursor.getLong(indexFee);
             }
 
             cursor.close();
@@ -404,6 +412,46 @@ public class PortfolioData {
 
             return costOfDivs;
         }
+
+        private long getFees() {
+
+            long costOfFees = 0;
+
+            // GROUP BY "portfolio"
+            Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                    .appendPath(Contract.PATH_DEALS)
+                    .appendPath(Contract.PATH_FEES)
+                    .build();
+
+            // SELECT sum (fee) AS 'fee'
+            String[] projection = {
+                    "sum(" + Contract.DealsEntry.COLUMN_FEE + ") AS '" +
+                            Contract.DealsEntry.COLUMN_FEE + "'"
+            };
+
+            // WHERE portfolio = '5838199' AND date < 123
+            String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '" +
+                    name + "' AND " +
+                    Contract.DealsEntry.COLUMN_DATE + " < " + untilDateInMillis;
+
+            Cursor cursor = mContext.getContentResolver().query(
+                    uri,
+                    projection,
+                    selection,
+                    null,
+                    null);
+
+            if (cursor.moveToFirst()) {
+
+                int index = cursor.getColumnIndex(Contract.DealsEntry.COLUMN_FEE);
+                costOfFees = cursor.getLong(index);
+            }
+
+            cursor.close();
+
+            return costOfFees;
+        }
+
 
         // класс для хранения и вычисления средневзвешенных инвестиций и
         // длительности существования портфеля
@@ -696,17 +744,11 @@ public class PortfolioData {
 
                     int price = (int) (tickerDynamicDataJson.getDouble(12) * MULTIPLIER_FOR_MONEY);
 
-Log.d(TAG, i + " " + price + "getPriceFromJson();" + PortfolioData.class.getSimpleName());
-
                     JSONArray tickerStaticDataJson = staticDataJson.getJSONArray(i);
 
                     int lotSize = tickerStaticDataJson.getInt(4);
 
-Log.d(TAG, lotSize + " lotsize getPriceFromJson();" + PortfolioData.class.getSimpleName());
-
                     String nameOfSec = tickerStaticDataJson.getString(9);
-
-Log.d(TAG, nameOfSec + " nameOfSec getPriceFromJson();" + PortfolioData.class.getSimpleName());
 
                     setItemsInfo(ticker, price, lotSize, nameOfSec);
                 }
@@ -718,8 +760,6 @@ Log.d(TAG, nameOfSec + " nameOfSec getPriceFromJson();" + PortfolioData.class.ge
         }
 
         private void setItemsInfo(String ticker, int price, int lotSize, String nameOfSec) {
-
-Log.d(TAG, "setItemsInfo(); " + PortfolioData.class.getSimpleName());
 
             for (PortfolioItem portfolioItem : portfolioItems) {
 
