@@ -81,6 +81,8 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
                         ");";
 
         db.execSQL(SQL_CREATE_INPUT_TABLE);
+
+
     }
 
     @Override

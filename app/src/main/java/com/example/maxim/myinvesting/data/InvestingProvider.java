@@ -248,6 +248,20 @@ public class InvestingProvider extends ContentProvider{
 
         switch (match) {
 
+            case CODE_PORTFOLIO:
+
+                rowDeleted = 0;
+
+                int dealsRowDeleted = db.delete(DealsEntry.TABLE_NAME,
+                        DealsEntry.COLUMN_PORTFOLIO + "=?", selectionArgs);
+
+                int inputRowDeleted = db.delete(InputEntry.TABLE_NAME,
+                        InputEntry.COLUMN_PORTFOLIO + "=?", selectionArgs);
+
+                rowDeleted = dealsRowDeleted + inputRowDeleted;
+
+                break;
+
             case CODE_DEAL_WITH_ID:
 
                 id = uri.getPathSegments().get(1);

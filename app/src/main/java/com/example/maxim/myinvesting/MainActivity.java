@@ -1,6 +1,7 @@
 package com.example.maxim.myinvesting;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
 
     private boolean showAddButton = true;
+    private boolean showDeleteButton = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         menu.setGroupVisible(R.id.add_group_info_fragment, showAddButton);
+        menu.setGroupVisible(R.id.delete_group_portfolio_fragment, showDeleteButton);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -140,6 +144,52 @@ public class MainActivity extends AppCompatActivity
                     Log.d(TAG, e.toString());
                     e.printStackTrace();
                 }
+
+                break;
+
+            case R.id.delete_portfolio_fragment: {
+
+                AlertDialog diaBox = new AlertDialog.Builder(this)
+                        .setTitle(getResources().getString(R.string.title_deletion))
+                        .setMessage(getResources().getString(R.string.tv_confirm_hint))
+                        .setPositiveButton(getResources().getString(R.string.btn_df_ok),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                                                .appendPath(Contract.PATH_PORTFOLIO)
+                                                .build();
+
+                                        String selectionArgs [] = {getNameOfPortfolio()};
+
+                                        getContentResolver().delete(uri, null, selectionArgs);
+
+                                        fragment = null;
+
+                                        showFragment();
+
+                                        showAddButton = true;
+                                        showDeleteButton = false;
+
+                                        invalidateOptionsMenu();
+
+                                        dialog.dismiss();
+                                    }
+                                })
+                        .setNegativeButton(getResources().getString(R.string.btn_df_cancel),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        dialog.dismiss();
+                                    }
+                                })
+                        .create();
+
+                diaBox.show();
+            }
+            break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -154,6 +204,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_deal_item) {
 
             showAddButton = true;
+            showDeleteButton = false;
             invalidateOptionsMenu();
 
             drawerLayout.closeDrawers();
@@ -167,6 +218,7 @@ public class MainActivity extends AppCompatActivity
 
             // показывает кнопку add (+) вверху экрана
             showAddButton = true;
+            showDeleteButton = false;
             invalidateOptionsMenu();
 
             drawerLayout.closeDrawers();
@@ -187,6 +239,7 @@ public class MainActivity extends AppCompatActivity
 
             // скрываю кнопку "Add" в Toolbar, т.к. она не нужна
             showAddButton = false;
+            showDeleteButton = true;
             invalidateOptionsMenu();
 
             nameOfPortfolio = (String) item.getTitle();

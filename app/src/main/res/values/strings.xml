@@ -88,6 +88,10 @@
     <string name="txt_total">Total:</string>
 
 
+    <!-- PortfolioFrarment.java -->
+    <string name="delete">Delete</string>
+
+
     <string name="percent">%</string>
 
 
