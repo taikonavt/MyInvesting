@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -38,10 +40,12 @@ public class MainActivity extends AppCompatActivity
 
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
-    private InfoFragment fragment = null;
     private NavigationView mDrawer;
     public String nameOfPortfolio;
     private Toolbar toolbar;
+
+    private InfoFragment fragment = null;
+    private final String FRAGMENT_KEY = "key";
 
     private boolean showAddButton = true;
     private boolean showDeleteButton = false;
@@ -55,10 +59,18 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // если экран пустой, то показываем Deal фрагмент
-        if (getFragmentManager().findFragmentById(R.id.ll_main_activity) == null) {
+        if (savedInstanceState != null) {
+
+            Fragment saveFragment = getSupportFragmentManager().getFragment(savedInstanceState,
+                    FRAGMENT_KEY);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.ll_main_activity, saveFragment)
+                    .commit();
+
+        } else
             showFragment();
-        }
+
 
         mDrawer = (NavigationView) findViewById(R.id.drawer);
 
@@ -86,6 +98,22 @@ public class MainActivity extends AppCompatActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(null);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Fragment saveFragment = getSupportFragmentManager().findFragmentById(R.id.ll_main_activity);
+
+        if (saveFragment != null) {
+            getSupportFragmentManager().putFragment(outState, FRAGMENT_KEY, saveFragment);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
