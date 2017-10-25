@@ -1,24 +1,10 @@
 package com.example.maxim.myinvesting.data;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
@@ -38,8 +24,8 @@ public class PortfolioItem {
     private int price = 0; // Получить из интернета и умножить на константу
     boolean priceIsReady = false;
 
-    private TextView costTV = null;
-    private TextView priceTV = null;
+    private TextView costTV;
+    private TextView priceTV;
     private ProgressBar costPB;
     private ProgressBar pricePB;
     private boolean priceTVAndCostTVAreGot = false;
@@ -107,15 +93,19 @@ public class PortfolioItem {
         priceTVAndCostTVAreGot = true;
     }
 
-    class SetPriceAndCostTask extends AsyncTask<Void, Void, Void> {
+    private class SetPriceAndCostTask extends AsyncTask<Void, Void, Void> {
+
+        final int TIME_TO_SLEEP = 200;
 
         @Override
         protected Void doInBackground(Void... params) {
 
             try {
                 if (!priceTVAndCostTVAreGot) {
-                    Thread.sleep(200);
+
+                    Thread.sleep(TIME_TO_SLEEP);
                 }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -127,27 +117,47 @@ public class PortfolioItem {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            priceTV.setText(String.valueOf((float) price/MULTIPLIER_FOR_MONEY));
-            costTV.setText(String.valueOf((float) volume*price/MULTIPLIER_FOR_MONEY));
+            if (priceTV != null && costTV != null &&
+                    pricePB != null && costPB != null) {
 
-            pricePB.setVisibility(View.GONE);
-            costPB.setVisibility(View.GONE);
+                priceTV.setText(String.valueOf((float) price / MULTIPLIER_FOR_MONEY));
+                costTV.setText(String.valueOf((float) volume * price / MULTIPLIER_FOR_MONEY));
 
-            priceTV.setVisibility(View.VISIBLE);
-            costTV.setVisibility(View.VISIBLE);
+                pricePB.setVisibility(View.GONE);
+                costPB.setVisibility(View.GONE);
+
+                priceTV.setVisibility(View.VISIBLE);
+                costTV.setVisibility(View.VISIBLE);
+
+            }
         }
     }
 
 
-    class SetNameTask extends AsyncTask<Void, Void, Void> {
+    private class SetNameTask extends AsyncTask<Void, Void, Void> {
 
+        private final int TEN_SECOND = 50;
+        final int TIME_TO_SLEEP = 200;
+        private boolean noNetwork = false;
 
         @Override
         protected Void doInBackground(Void... params) {
 
+            int i = 0;
+
             try {
                 if (!nameIsGot) {
-                    Thread.sleep(200);
+
+                    Log.d(TAG, SetNameTask.class.getSimpleName() + " " + i);
+
+                    Thread.sleep(TIME_TO_SLEEP);
+                    i++;
+
+                    if (i == TEN_SECOND) {
+
+                        noNetwork = true;
+                        return null;
+                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -160,7 +170,9 @@ public class PortfolioItem {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            nameTV.setText(name);
+            if (!noNetwork) {
+                nameTV.setText(name);
+            }
         }
     }
 }

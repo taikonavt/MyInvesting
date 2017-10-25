@@ -113,6 +113,8 @@ public class PortfolioData {
 
     class TotalTask extends AsyncTask<Void, Void, Void> {
 
+        private final int FIFTEEN_SECOND = 75;
+        int TIME_TO_SLEEP = 200;
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -128,12 +130,22 @@ public class PortfolioData {
         private void setPortfolioCost() {
 
             long costOfItems = 0;
+            int j = 0;
 
             for (int i = 0; i < portfolioItems.size() - 1; i++) {
 
                 while (!portfolioItems.get(i).priceIsReady) {
+
                     try {
-                        Thread.sleep(200);
+
+                        Thread.sleep(TIME_TO_SLEEP);
+                        j++;
+
+                        if (j == FIFTEEN_SECOND) {
+
+                            return;
+                        }
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -640,7 +652,7 @@ public class PortfolioData {
     }
 
 
-    class PricesTask extends AsyncTask<String[], Void, Void> {
+    private class PricesTask extends AsyncTask<String[], Void, Void> {
 
         @Override
         protected Void doInBackground(String[] ... array) {
@@ -652,12 +664,14 @@ public class PortfolioData {
             String results = null;
 
             try {
+
                 results = getResponseFromHttpUrl(url);
+
+                getPriceFromJson(results);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            getPriceFromJson(results);
 
             return null;
         }
