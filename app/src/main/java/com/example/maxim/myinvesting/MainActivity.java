@@ -1,10 +1,12 @@
 package com.example.maxim.myinvesting;
 
 import android.app.DialogFragment;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioItem;
+import com.example.maxim.myinvesting.data.PortfolioNames;
 
 import static com.example.maxim.myinvesting.data.Const.*;
 
@@ -157,9 +160,7 @@ public class MainActivity extends AppCompatActivity
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
-                                        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
-                                                .appendPath(Contract.PATH_PORTFOLIO)
-                                                .build();
+                                        Uri uri = Contract.PortfolioEntry.CONTENT_URI;
 
                                         String selectionArgs [] = {getNameOfPortfolio()};
 
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity
                 .add(GROUP_ID, ADD_BUTTON_ID, 1, R.string.nev_add_new_subitem)
                 .setIcon(R.drawable.ic_add_black_24dp);
 
-        String [] strings = readPortfoliosNames();
+        String [] strings = PortfolioNames.readPortfoliosNames(this);
 
         int length;
         try {
@@ -305,53 +306,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public String[] readPortfoliosNames() {
-
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
-
-        if (arraySize == 0)
-            return null;
-
-        String [] portfolios = new String[arraySize];
-
-        for (int i = 0; i < arraySize; i++) {
-            portfolios[i] = sharedPreferences.getString(KEY + i, null);
-        }
-
-        return portfolios;
-    }
-
-    private void savePortfolioName(String string) {
-
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putString(KEY + arraySize, string);
-
-        editor.putInt(ARRAY_SIZE, arraySize + 1);
-
-        editor.commit();
-
-        // TODO: 02.08.17 Удаляет все preferences с именами портфелей. Удалить когда будет не нужно
-//        sharedPreferences = getPreferences(MODE_PRIVATE);
-//        editor = sharedPreferences.edit();
-//        editor.clear();
-//        editor.commit();
-    }
-
     // реализация интерфейса EnterPortfolioDialogFragment.FragmentListener
     // позволяет получить String с названием портфеля из EnterPortfolioDialogFragment
     @Override
     public void fragmentOnClickOKButton(String nameOfPortfolio) {
 
-        savePortfolioName(nameOfPortfolio);
+        PortfolioNames.savePortfolioName(this, nameOfPortfolio);
 
         addItemsToDrawer(mDrawer);
     }

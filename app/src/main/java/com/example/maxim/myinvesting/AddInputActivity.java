@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
+import com.example.maxim.myinvesting.data.PortfolioNames;
 import com.example.maxim.myinvesting.utilities.DateUtils;
 
 import java.util.Calendar;
@@ -42,7 +43,7 @@ public class AddInputActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_add_input);
 
-        String [] strings = readPortfoliosNames();
+        String [] strings = PortfolioNames.readPortfoliosNames(this);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, strings);
@@ -173,25 +174,5 @@ public class AddInputActivity extends AppCompatActivity {
             Toast.makeText(this, getResources().getString(R.string.db_got_item), Toast.LENGTH_LONG).show();
         } else
             Toast.makeText(this, getResources().getString(R.string.db_have_not_got_item), Toast.LENGTH_LONG).show();
-    }
-
-    // получаю имена существующих портфелей из SharedPreferences
-    public String[] readPortfoliosNames() {
-
-        SharedPreferences sharedPreferences
-                = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        int arraySize = sharedPreferences.getInt(ARRAY_SIZE, 0);
-
-        if (arraySize == 0)
-            return null;
-
-        String [] portfolios = new String[arraySize];
-
-        for (int i = 0; i < arraySize; i++) {
-            portfolios[i] = sharedPreferences.getString(KEY + i, null);
-        }
-
-        return portfolios;
     }
 }

@@ -14,6 +14,8 @@ import android.util.Log;
 
 import static com.example.maxim.myinvesting.data.Contract.DealsEntry;
 import static com.example.maxim.myinvesting.data.Contract.InputEntry;
+import static com.example.maxim.myinvesting.data.Contract.PATH_FEES;
+import static com.example.maxim.myinvesting.data.Contract.PortfolioEntry;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
@@ -164,6 +166,22 @@ public class InvestingProvider extends ContentProvider{
                 break;
             }
 
+            case CODE_PORTFOLIO: {
+
+                String [] all = {"*"};
+
+                cursor = db.query(PortfolioEntry.TABLE_NAME,
+                        all,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                        );
+
+                break;
+            }
+
             case CODE_PORTFOLIO_WITH_TICKER: {
 
                 String groupBy = uri.getPathSegments().get(1);
@@ -229,6 +247,18 @@ public class InvestingProvider extends ContentProvider{
                 break;
             }
 
+            case CODE_PORTFOLIO: {
+
+                long id = db.insert(PortfolioEntry.TABLE_NAME, null, values);
+
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(PortfolioEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -243,22 +273,25 @@ public class InvestingProvider extends ContentProvider{
 
         int match = sUriMatcher.match(uri);
 
-        int rowDeleted;
+        int rowsDeleted;
         String id;
 
         switch (match) {
 
             case CODE_PORTFOLIO:
 
-                rowDeleted = 0;
+                rowsDeleted = 0;
 
-                int dealsRowDeleted = db.delete(DealsEntry.TABLE_NAME,
+                int dealsRowsDeleted = db.delete(DealsEntry.TABLE_NAME,
                         DealsEntry.COLUMN_PORTFOLIO + "=?", selectionArgs);
 
-                int inputRowDeleted = db.delete(InputEntry.TABLE_NAME,
+                int inputRowsDeleted = db.delete(InputEntry.TABLE_NAME,
                         InputEntry.COLUMN_PORTFOLIO + "=?", selectionArgs);
 
-                rowDeleted = dealsRowDeleted + inputRowDeleted;
+                int portfolioRowDeleted = db.delete(PortfolioEntry.TABLE_NAME,
+                        PortfolioEntry.COLUMN_PORTFOLIO + "=?", selectionArgs);
+
+                rowsDeleted = dealsRowsDeleted + inputRowsDeleted + portfolioRowDeleted;
 
                 break;
 
@@ -266,25 +299,25 @@ public class InvestingProvider extends ContentProvider{
 
                 id = uri.getPathSegments().get(1);
 
-                rowDeleted = db.delete(DealsEntry.TABLE_NAME, "_id=?", new String[]{id});
+                rowsDeleted = db.delete(DealsEntry.TABLE_NAME, "_id=?", new String[]{id});
                 break;
 
             case CODE_INPUT_WITH_ID:
 
                 id = uri.getPathSegments().get(1);
 
-                rowDeleted = db.delete(InputEntry.TABLE_NAME, "_id=?", new String[]{id});
+                rowsDeleted = db.delete(InputEntry.TABLE_NAME, "_id=?", new String[]{id});
                 break;
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if (rowDeleted !=0) {
+        if (rowsDeleted !=0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        return rowDeleted;
+        return rowsDeleted;
     }
 
     @Override

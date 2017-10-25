@@ -82,6 +82,16 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_CREATE_INPUT_TABLE);
 
+        final String SQL_CREATE_PORTFOLIO_TABLE =
+                "CREATE TABLE " + PortfolioEntry.TABLE_NAME + " (" +
+
+                        PortfolioEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+                        PortfolioEntry.COLUMN_PORTFOLIO + " STRING NOT NULL" +
+
+                        ");";
+
+        db.execSQL(SQL_CREATE_PORTFOLIO_TABLE);
 
     }
 

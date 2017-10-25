@@ -63,7 +63,7 @@ public class Contract {
                 .appendPath(PATH_INPUT)
                 .build();
 
-        public static final String TABLE_NAME = "input";
+        static final String TABLE_NAME = "input";
 
         // input, output
         public static final String COLUMN_TYPE = "type";
@@ -81,11 +81,15 @@ public class Contract {
         public static final String COLUMN_NOTE = "note";
     }
 
-    public static final class PortfolioEntry {
+    public static final class PortfolioEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_PORTFOLIO)
                 .build();
+
+        static final String TABLE_NAME = "portfolio_names";
+
+        public static final String COLUMN_PORTFOLIO = "portfolio";
     }
 
 }
