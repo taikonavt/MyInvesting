@@ -64,7 +64,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
     }
 
     // Функция заменяет старый курсор на новый когда данные изменились
-    public ArrayList<PortfolioItem> swapArray(ArrayList<PortfolioItem> a) {
+    ArrayList<PortfolioItem> swapArray(ArrayList<PortfolioItem> a) {
 
         // проверяем тот же ли это курсор, если да то возвращаемся - ничего не поменялось
         if (arrayList == a) {
@@ -90,7 +90,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
         ProgressBar pbPortfolioPrice;
         ProgressBar pbPortfolioCost;
 
-        public PortfolioViewHolder(View itemView) {
+        PortfolioViewHolder(View itemView) {
             super(itemView);
 
             tvPortfolioTicker = (TextView) itemView.findViewById(R.id.tv_item_portfolio_ticker);
@@ -111,7 +111,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter <PortfolioAdapter.Por
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity) context).onPortfolioItemClick(portfolioItem);
+
+                    PortfolioItem portfolioItemTemp = portfolioItem;
+
+                    ((MainActivity) context).onPortfolioItemClick(portfolioItemTemp);
                 }
             });
         }

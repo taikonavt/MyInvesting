@@ -75,7 +75,7 @@ public class PortfolioItem {
         setNameTask.execute();
     }
 
-    public long getCost() {
+    long getCost() {
         return price * volume;
     }
 
