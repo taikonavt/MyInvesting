@@ -53,9 +53,6 @@ public class PortfolioItem {
         this.price = price;
 
         priceIsReady = true;
-
-        SetPriceAndCostTask setPriceAndCostTask = new SetPriceAndCostTask();
-        setPriceAndCostTask.execute();
     }
 
     public String getTicker() {
@@ -91,19 +88,50 @@ public class PortfolioItem {
         this.costPB = costPB;
 
         priceTVAndCostTVAreGot = true;
+
+        if (priceIsReady) {
+
+            setPriceAndCostMethod();
+        }
+        else {
+
+            SetPriceAndCostTask setPriceAndCostTask = new SetPriceAndCostTask();
+            setPriceAndCostTask.execute();
+        }
+    }
+
+    private void setPriceAndCostMethod() {
+
+        priceTV.setText(String.valueOf((float) price / MULTIPLIER_FOR_MONEY));
+        costTV.setText(String.valueOf((float) volume * price / MULTIPLIER_FOR_MONEY));
+
+        pricePB.setVisibility(View.GONE);
+        costPB.setVisibility(View.GONE);
+
+        priceTV.setVisibility(View.VISIBLE);
+        costTV.setVisibility(View.VISIBLE);
     }
 
     private class SetPriceAndCostTask extends AsyncTask<Void, Void, Void> {
 
         final int TIME_TO_SLEEP = 200;
+        final int TWELVE_SECOND = 60;
 
         @Override
         protected Void doInBackground(Void... params) {
 
             try {
-                if (!priceTVAndCostTVAreGot) {
+
+                int i = 0;
+
+                while (!priceTVAndCostTVAreGot) {
 
                     Thread.sleep(TIME_TO_SLEEP);
+                    i++;
+
+                    if (i == TWELVE_SECOND) {
+                        return null;
+                    }
                 }
 
             } catch (InterruptedException e) {
@@ -120,15 +148,7 @@ public class PortfolioItem {
             if (priceTV != null && costTV != null &&
                     pricePB != null && costPB != null) {
 
-                priceTV.setText(String.valueOf((float) price / MULTIPLIER_FOR_MONEY));
-                costTV.setText(String.valueOf((float) volume * price / MULTIPLIER_FOR_MONEY));
-
-                pricePB.setVisibility(View.GONE);
-                costPB.setVisibility(View.GONE);
-
-                priceTV.setVisibility(View.VISIBLE);
-                costTV.setVisibility(View.VISIBLE);
-
+                setPriceAndCostMethod();
             }
         }
     }
@@ -146,9 +166,9 @@ public class PortfolioItem {
             int i = 0;
 
             try {
-                if (!nameIsGot) {
+                while (!nameIsGot) {
 
-                    Log.d(TAG, SetNameTask.class.getSimpleName() + " " + i);
+Log.d(TAG, SetNameTask.class.getSimpleName() + " " + i);
 
                     Thread.sleep(TIME_TO_SLEEP);
                     i++;
