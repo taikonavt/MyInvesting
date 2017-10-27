@@ -239,7 +239,6 @@ public class MainActivity extends AppCompatActivity
             drawerLayout.closeDrawers();
             fragment = new InfoDealFragment();
             showFragment();
-            return; // TODO: 22.08.17 проверить зачем здесь нужен ретурн
         }
 
         // Inputs
