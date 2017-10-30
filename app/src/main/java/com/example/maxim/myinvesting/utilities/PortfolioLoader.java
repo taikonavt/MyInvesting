@@ -102,8 +102,8 @@ public class PortfolioLoader extends AsyncTaskLoader<PortfolioData> {
         };
 
         // WHERE portfolio = '5838194'
-        String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = "
-                + ((MainActivity) mContext).getNameOfPortfolio();
+        String selection = Contract.DealsEntry.COLUMN_PORTFOLIO + " = '"
+                + ((MainActivity) mContext).getNameOfPortfolio() + "'";
 
         // ORDER BY ticker ASC
         String orderBy = Contract.DealsEntry.COLUMN_TICKER + " ASC";

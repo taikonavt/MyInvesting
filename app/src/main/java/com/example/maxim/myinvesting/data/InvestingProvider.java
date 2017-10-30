@@ -111,8 +111,8 @@ public class InvestingProvider extends ContentProvider{
             }
 
             case CODE_DEALS_DATE_PRICE: {
-// TODO: 20.10.17 заменить на названия из контракта
-                String groupBy = "date, price";
+
+                String groupBy = DealsEntry.COLUMN_DATE + ", " + DealsEntry.COLUMN_PRICE;
 
                 cursor = db.query(DealsEntry.TABLE_NAME,
                         projection,
@@ -122,6 +122,7 @@ public class InvestingProvider extends ContentProvider{
                         null,
                         null
                 );
+
                 break;
             }
 
