@@ -23,7 +23,6 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 import static com.example.maxim.myinvesting.data.Const.MILLIS_IN_DAY;
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;

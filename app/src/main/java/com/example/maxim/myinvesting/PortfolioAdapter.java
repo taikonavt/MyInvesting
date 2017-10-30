@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;

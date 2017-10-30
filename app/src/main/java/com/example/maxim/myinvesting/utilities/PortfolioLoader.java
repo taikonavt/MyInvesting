@@ -3,34 +3,20 @@ package com.example.maxim.myinvesting.utilities;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.maxim.myinvesting.MainActivity;
-import com.example.maxim.myinvesting.R;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioData;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import static com.example.maxim.myinvesting.data.Const.MILLIS_IN_DAY;
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
-import static java.lang.Math.pow;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Scanner;
 
 /**
  * Created by maxim on 09.08.17.

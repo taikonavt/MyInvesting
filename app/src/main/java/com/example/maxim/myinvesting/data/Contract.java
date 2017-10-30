@@ -1,7 +1,6 @@
 package com.example.maxim.myinvesting.data;
 
 import android.net.Uri;
-import android.os.StrictMode;
 import android.provider.BaseColumns;
 
 /**

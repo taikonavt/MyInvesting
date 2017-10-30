@@ -1,7 +1,5 @@
 package com.example.maxim.myinvesting.utilities;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;

@@ -70,10 +70,6 @@ public class PortfolioFrarment extends Fragment
     public void onResume() {
         super.onResume();
 
-        // перезапускает лоадер. Не очень понятно зачем. Взял из udacity exercises todolist.
-        // На случай поворота экрана и потери данных может быть
-        // TODO: 01.09.17 попробовать реализовать поворот экрана во время загрузки. Можно добавить секундомер на время загрузки
-//        getLoaderManager().restartLoader(PORTFOLIO_LOADER_ID, null, this);
     }
 
     @Override
