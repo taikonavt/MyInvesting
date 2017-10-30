@@ -194,14 +194,16 @@ public class MainActivity extends AppCompatActivity
 
                                         getContentResolver().delete(uri, null, selectionArgs);
 
+                                        invalidateOptionsMenu();
+
                                         fragment = null;
+
+                                        addItemsToDrawer(mDrawer);
 
                                         showFragment();
 
                                         showAddButton = true;
                                         showDeleteButton = false;
-
-                                        invalidateOptionsMenu();
 
                                         dialog.dismiss();
                                     }
