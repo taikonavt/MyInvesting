@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle = null;
     private NavigationView mDrawer;
     public String nameOfPortfolio;
+    private final static String NAME_OF_PROTFOLIO_KEY = "nameOfPortfolioKey";
     private Toolbar toolbar;
 
     private InfoFragment fragment = null;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         if (savedInstanceState != null) {
+
+            nameOfPortfolio = savedInstanceState.getString(NAME_OF_PROTFOLIO_KEY);
 
             Fragment saveFragment = getSupportFragmentManager().getFragment(savedInstanceState,
                     FRAGMENT_KEY);
@@ -102,6 +105,8 @@ public class MainActivity extends AppCompatActivity
         if (saveFragment != null) {
             getSupportFragmentManager().putFragment(outState, FRAGMENT_KEY, saveFragment);
         }
+
+        outState.putString(NAME_OF_PROTFOLIO_KEY, nameOfPortfolio);
     }
 
     @Override

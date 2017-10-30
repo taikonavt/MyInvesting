@@ -548,15 +548,11 @@ public class PortfolioData {
                         // длительность подпериода
                         long tempPeriod = tempTime - previousTime;
 
-Log.d(TAG, tempPeriod + " = " + tempTime + " - " + previousTime);
-
                         // длительность подпериода в днях
                         int periodDays = (int) (tempPeriod / MILLIS_IN_DAY);
 
                         // общее количество дней расчитываемого периода
                         totalDays = totalDays + periodDays;
-
-Log.d(TAG, totalDays + " totalDays " + PortfolioData.class.getSimpleName());
 
                         // TODO: 18.08.17 сделать решение для случая нескольких подпериодов = 0
                         // если подпериод = 0, то сохраняем вносимое количество до следующего цикла
@@ -564,16 +560,10 @@ Log.d(TAG, totalDays + " totalDays " + PortfolioData.class.getSimpleName());
 
                             amountForZeroCase = amountForZeroCase + tempAmount;
 
-Log.d(TAG, "amountForZeroCase = " + amountForZeroCase);
-
                         } else {
-
-Log.d(TAG, sumOfPreviousInputs + " + " + tempAmount + " + " + amountForZeroCase + " = ");
 
                             // считаем сумму для подпериода
                             sumOfPreviousInputs = sumOfPreviousInputs + tempAmount + amountForZeroCase;
-
-Log.d(TAG, sumOfPreviousInputs + " ");
 
                             // если денег выведено больше чем введено, то подпериод не учитывается
                             if (sumOfPreviousInputs <= 0) {
@@ -612,18 +602,11 @@ Log.d(TAG, sumOfPreviousInputs + " ");
                     // последний подпериод
                     long tempPeriod = untilDateInMillis - previousTime;
 
-Log.d(TAG, tempPeriod + " = " + untilDateInMillis + " - " + previousTime);
-
                     int periodDays = (int) (tempPeriod / MILLIS_IN_DAY);
 
                     totalDays = totalDays + periodDays;
 
-Log.d(TAG, "totalDays = " + totalDays);
-Log.d(TAG, sumOfPreviousInputs + " + " + tempAmount + " + " + amountForZeroCase + " = ");
-
                     sumOfPreviousInputs = sumOfPreviousInputs + tempAmount + amountForZeroCase;
-
-Log.d(TAG, sumOfPreviousInputs + " ");
 
                     // если денег выведено больше чем введено, то подпериод не учитывается
                     if (sumOfPreviousInputs <= 0) {
