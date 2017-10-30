@@ -549,22 +549,32 @@ public class PortfolioData {
                         // длительность подпериода
                         long tempPeriod = tempTime - previousTime;
 
+Log.d(TAG, tempPeriod + " = " + tempTime + " - " + previousTime);
+
                         // длительность подпериода в днях
                         int periodDays = (int) (tempPeriod / MILLIS_IN_DAY);
 
                         // общее количество дней расчитываемого периода
                         totalDays = totalDays + periodDays;
 
+Log.d(TAG, totalDays + " totalDays " + PortfolioData.class.getSimpleName());
+
                         // TODO: 18.08.17 сделать решение для случая нескольких подпериодов = 0
                         // если подпериод = 0, то сохраняем вносимое количество до следующего цикла
                         if (periodDays == 0) {
 
-                            amountForZeroCase = tempAmount;
+                            amountForZeroCase = amountForZeroCase + tempAmount;
+
+Log.d(TAG, "amountForZeroCase = " + amountForZeroCase);
 
                         } else {
 
+Log.d(TAG, sumOfPreviousInputs + " + " + tempAmount + " + " + amountForZeroCase + " = ");
+
                             // считаем сумму для подпериода
                             sumOfPreviousInputs = sumOfPreviousInputs + tempAmount + amountForZeroCase;
+
+Log.d(TAG, sumOfPreviousInputs + " ");
 
                             // если денег выведено больше чем введено, то подпериод не учитывается
                             if (sumOfPreviousInputs <= 0) {
@@ -580,9 +590,11 @@ public class PortfolioData {
                             amountForZeroCase = 0;
                         }
 
+                        // если тип = Input то amount берем со знаком "+"
                         if (cursor.getString(typeIndex).equals(strings[0])) {
                             tempAmount = cursor.getInt(amountIndex);
                         }
+                        // если тип = Output то amount берем со знаком "-"
                         else if (cursor.getString(typeIndex).equals(strings[1])) {
 
                             tempAmount = - cursor.getInt(amountIndex);
@@ -592,6 +604,7 @@ public class PortfolioData {
                         }
 
                         // задаю начало слудующего подпериода
+                        // если период = 0, tempTime остается то же, т.к. считываю ту же дату
                         previousTime = tempTime;
                     }
 
@@ -600,27 +613,26 @@ public class PortfolioData {
                     // последний подпериод
                     long tempPeriod = untilDateInMillis - previousTime;
 
+Log.d(TAG, tempPeriod + " = " + untilDateInMillis + " - " + previousTime);
+
                     int periodDays = (int) (tempPeriod / MILLIS_IN_DAY);
+
                     totalDays = totalDays + periodDays;
 
-                    if (periodDays == 0) {
+Log.d(TAG, "totalDays = " + totalDays);
+Log.d(TAG, sumOfPreviousInputs + " + " + tempAmount + " + " + amountForZeroCase + " = ");
 
-                        amountForZeroCase = tempAmount;
+                    sumOfPreviousInputs = sumOfPreviousInputs + tempAmount + amountForZeroCase;
 
-                    } else {
+Log.d(TAG, sumOfPreviousInputs + " ");
 
-                        sumOfPreviousInputs = sumOfPreviousInputs + tempAmount + amountForZeroCase;
-
-                        // если денег выведено больше чем введено, то подпериод не учитывается
-                        if (sumOfPreviousInputs <= 0) {
-                            periodDays = 0;
-                            sumOfPreviousInputs = 0;
-                        }
-
-                        averageInvestment = averageInvestment + (periodDays * sumOfPreviousInputs);
-
-                        amountForZeroCase = 0;
+                    // если денег выведено больше чем введено, то подпериод не учитывается
+                    if (sumOfPreviousInputs <= 0) {
+                        periodDays = 0;
+                        sumOfPreviousInputs = 0;
                     }
+
+                    averageInvestment = averageInvestment + (periodDays * sumOfPreviousInputs);
 
                     averageInvestment = averageInvestment / totalDays;
                 }
@@ -676,7 +688,6 @@ public class PortfolioData {
             return null;
         }
 
-        // TODO: 17.10.17 вылетает если нет подключения. Исправить
         String getResponseFromHttpUrl(URL url) throws IOException {
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
