@@ -48,9 +48,6 @@ public class PortfolioFrarment extends Fragment
         tvCost = (TextView) rootView.findViewById(R.id.tv_total_cost_fragment_portfolio);
         tvProfit = (TextView) rootView.findViewById(R.id.tv_profitability_fragment_portfolio);
 
-Log.d(TAG, "onCreateView() " + PortfolioFrarment.class.getSimpleName());
-Log.d(TAG, ((MainActivity) getContext()).getNameOfPortfolio());
-
         ((MainActivity) getContext()).getSupportActionBar().setTitle(
                 ((MainActivity) getContext()).getNameOfPortfolio());
 

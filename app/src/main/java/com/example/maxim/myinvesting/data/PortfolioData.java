@@ -711,9 +711,15 @@ public class PortfolioData {
                     .appendPath("tqbr")
                     .appendPath("securities.json");
 
-            String str = "";
-            for (int i = 0; i < param.length; i++)
-                str = str + "," + param[i];
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < param.length; i++) {
+
+                stringBuilder.append(",")
+                        .append(param[i]);
+            }
+
+            String str = stringBuilder.toString();
 
             builder.appendQueryParameter("securities", str);
 
