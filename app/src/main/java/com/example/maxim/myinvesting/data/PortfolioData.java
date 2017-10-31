@@ -52,8 +52,8 @@ public class PortfolioData {
 
     private int periodInDays = 0;
 
-    private TextView tvProfitability = null;
-    private TextView tvCostOfPortfolio = null;
+    private WeakReference<TextView> tvProfitability;
+    private WeakReference<TextView> tvCostOfPortfolio = null;
 
 
 // Получаю контекст для определения имени портфеля и даты до которой считается портфель
@@ -99,8 +99,8 @@ public class PortfolioData {
 
     public void setProfitAndCostOfPortfolio(TextView tvProfitability, TextView tvCostOfPortfolio) {
 
-        this.tvProfitability = tvProfitability;
-        this.tvCostOfPortfolio = tvCostOfPortfolio;
+        this.tvProfitability = new WeakReference<TextView>(tvProfitability);
+        this.tvCostOfPortfolio = new WeakReference<TextView>(tvCostOfPortfolio);
 
         TotalTask totalTask = new TotalTask();
         totalTask.execute();
@@ -555,7 +555,6 @@ public class PortfolioData {
                         // общее количество дней расчитываемого периода
                         totalDays = totalDays + periodDays;
 
-                        // TODO: 18.08.17 сделать решение для случая нескольких подпериодов = 0
                         // если подпериод = 0, то сохраняем вносимое количество до следующего цикла
                         if (periodDays == 0) {
 
@@ -638,11 +637,13 @@ public class PortfolioData {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            tvCostOfPortfolio.setText(String.valueOf(costOfPortfolio / MULTIPLIER_FOR_MONEY));
+            if (tvCostOfPortfolio != null && tvProfitability != null) {
+                tvCostOfPortfolio.get().setText(String.valueOf(costOfPortfolio / MULTIPLIER_FOR_MONEY));
 
-            DecimalFormat df = new DecimalFormat("#.##");
-            String str = df.format(mProfitability * 100)  + "%";
-            tvProfitability.setText(str);
+                DecimalFormat df = new DecimalFormat("#.##");
+                String str = df.format(mProfitability * 100)  + "%";
+                tvProfitability.get().setText(str);
+            }
         }
     }
 
