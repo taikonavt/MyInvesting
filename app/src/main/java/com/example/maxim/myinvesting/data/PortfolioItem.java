@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
+
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
@@ -24,13 +26,13 @@ public class PortfolioItem {
     private int price = 0; // Получить из интернета и умножить на константу
     boolean priceIsReady = false;
 
-    private TextView costTV;
-    private TextView priceTV;
-    private ProgressBar costPB;
-    private ProgressBar pricePB;
+    private WeakReference<TextView> costTV;
+    private WeakReference<TextView> priceTV;
+    private WeakReference<ProgressBar> costPB;
+    private WeakReference<ProgressBar> pricePB;
     private boolean priceTVAndCostTVAreGot = false;
 
-    private TextView nameTV;
+    private WeakReference<TextView> nameTV;
     private boolean nameIsGot = false;
 
     public PortfolioItem(int lID, String lTicker, int lVolume) {
@@ -69,7 +71,7 @@ public class PortfolioItem {
 
     public void getName(TextView textView) {
 
-        nameTV = textView;
+        nameTV = new WeakReference<TextView>(textView);
 
         SetNameTask setNameTask = new SetNameTask();
         setNameTask.execute();
@@ -82,10 +84,10 @@ public class PortfolioItem {
     public void getPriceAndCost(TextView priceTV, TextView costTV,
                                 ProgressBar pricePB, ProgressBar costPB) {
 
-        this.priceTV = priceTV;
-        this.costTV = costTV;
-        this.pricePB = pricePB;
-        this.costPB = costPB;
+        this.priceTV = new WeakReference<TextView>(priceTV);
+        this.costTV = new WeakReference<>(costTV);
+        this.pricePB = new WeakReference<ProgressBar>(pricePB);
+        this.costPB = new WeakReference<ProgressBar>(costPB);
 
         priceTVAndCostTVAreGot = true;
 
@@ -102,14 +104,14 @@ public class PortfolioItem {
 
     private void setPriceAndCostMethod() {
 
-        priceTV.setText(String.valueOf((float) price / MULTIPLIER_FOR_MONEY));
-        costTV.setText(String.valueOf((float) volume * price / MULTIPLIER_FOR_MONEY));
+        priceTV.get().setText(String.valueOf((float) price / MULTIPLIER_FOR_MONEY));
+        costTV.get().setText(String.valueOf((float) volume * price / MULTIPLIER_FOR_MONEY));
 
-        pricePB.setVisibility(View.GONE);
-        costPB.setVisibility(View.GONE);
+        pricePB.get().setVisibility(View.GONE);
+        costPB.get().setVisibility(View.GONE);
 
-        priceTV.setVisibility(View.VISIBLE);
-        costTV.setVisibility(View.VISIBLE);
+        priceTV.get().setVisibility(View.VISIBLE);
+        costTV.get().setVisibility(View.VISIBLE);
     }
 
     private class SetPriceAndCostTask extends AsyncTask<Void, Void, Void> {
@@ -189,7 +191,7 @@ public class PortfolioItem {
             super.onPostExecute(aVoid);
 
             if (!noNetwork) {
-                nameTV.setText(name);
+                nameTV.get().setText(name);
             }
         }
     }
