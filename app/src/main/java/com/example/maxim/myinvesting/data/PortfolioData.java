@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,7 +40,7 @@ public class PortfolioData {
 
     private String name = null;
 
-    private Context mContext;
+    private WeakReference<Context> mContext;
 
     private ArrayList<PortfolioItem> portfolioItems = null;
 
@@ -58,9 +59,9 @@ public class PortfolioData {
 // Получаю контекст для определения имени портфеля и даты до которой считается портфель
     public PortfolioData(Context context, long l) {
 
-        mContext = context;
+        mContext = new WeakReference<>(context);
 
-        name = ((MainActivity) mContext).getNameOfPortfolio();
+        name = ((MainActivity) mContext.get()).getNameOfPortfolio();
         untilDateInMillis = l;
     }
 
@@ -200,7 +201,7 @@ public class PortfolioData {
 
             long amountInput = 0;
 
-            String [] strings = mContext.getResources().getStringArray(R.array.spinType_input_array);
+            String [] strings = mContext.get().getResources().getStringArray(R.array.spinType_input_array);
 
             Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
                     .appendPath(Contract.PATH_INPUT)
@@ -222,7 +223,7 @@ public class PortfolioData {
                     Contract.InputEntry.COLUMN_DATE + " < " + untilDateInMillis + " AND " +
                     Contract.InputEntry.COLUMN_TYPE + " = '" + strings[0] + "'";
 
-            Cursor cursor = mContext.getContentResolver().query(
+            Cursor cursor = mContext.get().getContentResolver().query(
                     uri,
                     projection,
                     selection,
@@ -247,7 +248,7 @@ public class PortfolioData {
 
             long amountOutput = 0;
 
-            String [] strings = mContext.getResources().getStringArray(R.array.spinType_input_array);
+            String [] strings = mContext.get().getResources().getStringArray(R.array.spinType_input_array);
 
             Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
                     .appendPath(Contract.PATH_INPUT)
@@ -269,7 +270,7 @@ public class PortfolioData {
                     Contract.InputEntry.COLUMN_DATE + " < " + untilDateInMillis + " AND " +
                     Contract.InputEntry.COLUMN_TYPE + " = '" + strings[1] + "'";
 
-            Cursor cursor = mContext.getContentResolver().query(
+            Cursor cursor = mContext.get().getContentResolver().query(
                     uri,
                     projection,
                     selection,
@@ -295,7 +296,7 @@ public class PortfolioData {
             long costOfBuys = 0;
             final String COLUMN_COST = "cost";
 
-            String [] strings = mContext.getResources().getStringArray(R.array.spinType_deal_array);
+            String [] strings = mContext.get().getResources().getStringArray(R.array.spinType_deal_array);
 
             Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
                     .appendPath(Contract.PATH_DEALS)
@@ -316,7 +317,7 @@ public class PortfolioData {
                     Contract.DealsEntry.COLUMN_DATE + " < " + untilDateInMillis + " AND " +
                     Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[1] + "'";
 
-            Cursor cursor = mContext.getContentResolver().query(
+            Cursor cursor = mContext.get().getContentResolver().query(
                     uri,
                     projection,
                     selection,
@@ -340,7 +341,7 @@ public class PortfolioData {
             long costOfSells = 0;
             final String COLUMN_COST = "cost";
 
-            String [] strings = mContext.getResources().getStringArray(R.array.spinType_deal_array);
+            String [] strings = mContext.get().getResources().getStringArray(R.array.spinType_deal_array);
 
             Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
                     .appendPath(Contract.PATH_DEALS)
@@ -361,7 +362,7 @@ public class PortfolioData {
                     Contract.DealsEntry.COLUMN_DATE + " < " + untilDateInMillis + " AND " +
                     Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[0] + "'";
 
-            Cursor cursor = mContext.getContentResolver().query(
+            Cursor cursor = mContext.get().getContentResolver().query(
                     uri,
                     projection,
                     selection,
@@ -385,7 +386,7 @@ public class PortfolioData {
             long costOfDivs = 0;
             final String COLUMN_COST = "cost";
 
-            String [] strings = mContext.getResources().getStringArray(R.array.spinType_deal_array);
+            String [] strings = mContext.get().getResources().getStringArray(R.array.spinType_deal_array);
 
             Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
                     .appendPath(Contract.PATH_DEALS)
@@ -406,7 +407,7 @@ public class PortfolioData {
                     Contract.DealsEntry.COLUMN_DATE + " < " + untilDateInMillis + " AND " +
                     Contract.DealsEntry.COLUMN_TYPE + " = '" + strings[2] + "'";
 
-            Cursor cursor = mContext.getContentResolver().query(
+            Cursor cursor = mContext.get().getContentResolver().query(
                     uri,
                     projection,
                     selection,
@@ -445,7 +446,7 @@ public class PortfolioData {
                     name + "' AND " +
                     Contract.DealsEntry.COLUMN_DATE + " < " + untilDateInMillis;
 
-            Cursor cursor = mContext.getContentResolver().query(
+            Cursor cursor = mContext.get().getContentResolver().query(
                     uri,
                     projection,
                     selection,
@@ -497,7 +498,7 @@ public class PortfolioData {
 
                 String sortOrder = Contract.InputEntry.COLUMN_DATE + " ASC";
 
-                Cursor cursor = mContext.getContentResolver().query(
+                Cursor cursor = mContext.get().getContentResolver().query(
                         uri,
                         projection,
                         selection,
@@ -517,7 +518,7 @@ public class PortfolioData {
                     long tempAmount;
 
                     // тип операции (Input, Output)
-                    String[] strings = mContext.getResources().getStringArray(R.array.spinType_input_array);
+                    String[] strings = mContext.get().getResources().getStringArray(R.array.spinType_input_array);
 
                     // 3) читаю первую строку курсора
                     // если тип = Input то amount берем со знаком "+"

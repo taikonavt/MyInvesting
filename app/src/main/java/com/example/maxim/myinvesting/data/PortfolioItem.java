@@ -168,8 +168,6 @@ public class PortfolioItem {
             try {
                 while (!nameIsGot) {
 
-Log.d(TAG, SetNameTask.class.getSimpleName() + " " + i);
-
                     Thread.sleep(TIME_TO_SLEEP);
                     i++;
 
