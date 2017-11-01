@@ -78,7 +78,9 @@ public class PortfolioFrarment extends Fragment
 
         AsyncTaskLoader<PortfolioData> loader = null;
 
+        // будет вызван, если при повороте не существовал, т.е. при повороте не будет вызван
         if (id == PORTFOLIO_LOADER_ID) {
+
             loader = new PortfolioLoader(getActivity());
         }
 

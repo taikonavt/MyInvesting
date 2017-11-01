@@ -93,7 +93,13 @@ public class PortfolioItem {
 
         if (priceIsReady) {
 
-            setPriceAndCostMethod();
+            try {
+                setPriceAndCostMethod();
+            }
+            catch (NullPointerException e) {
+
+                e.printStackTrace();
+            }
         }
         else {
 
@@ -102,7 +108,7 @@ public class PortfolioItem {
         }
     }
 
-    private void setPriceAndCostMethod() {
+    private void setPriceAndCostMethod() throws NullPointerException {
 
         priceTV.get().setText(String.valueOf((float) price / MULTIPLIER_FOR_MONEY));
         costTV.get().setText(String.valueOf((float) volume * price / MULTIPLIER_FOR_MONEY));
@@ -116,29 +122,8 @@ public class PortfolioItem {
 
     private class SetPriceAndCostTask extends AsyncTask<Void, Void, Void> {
 
-        final int TIME_TO_SLEEP = 200;
-        final int TWELVE_SECOND = 60;
-
         @Override
         protected Void doInBackground(Void... params) {
-
-            try {
-
-                int i = 0;
-
-                while (!priceTVAndCostTVAreGot) {
-
-                    Thread.sleep(TIME_TO_SLEEP);
-                    i++;
-
-                    if (i == TWELVE_SECOND) {
-                        return null;
-                    }
-                }
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             return null;
         }
@@ -147,10 +132,12 @@ public class PortfolioItem {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            if (priceTV != null && costTV != null &&
-                    pricePB != null && costPB != null) {
-
+            try {
                 setPriceAndCostMethod();
+            }
+            catch (NullPointerException e) {
+
+                e.printStackTrace();
             }
         }
     }
@@ -158,30 +145,8 @@ public class PortfolioItem {
 
     private class SetNameTask extends AsyncTask<Void, Void, Void> {
 
-        private final int TEN_SECOND = 50;
-        final int TIME_TO_SLEEP = 200;
-        private boolean noNetwork = false;
-
         @Override
         protected Void doInBackground(Void... params) {
-
-            int i = 0;
-
-            try {
-                while (!nameIsGot) {
-
-                    Thread.sleep(TIME_TO_SLEEP);
-                    i++;
-
-                    if (i == TEN_SECOND) {
-
-                        noNetwork = true;
-                        return null;
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             return null;
         }
@@ -190,8 +155,11 @@ public class PortfolioItem {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            if (!noNetwork) {
+            try {
                 nameTV.get().setText(name);
+            }
+            catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
     }

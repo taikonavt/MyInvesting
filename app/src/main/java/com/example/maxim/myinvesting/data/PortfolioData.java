@@ -45,15 +45,17 @@ public class PortfolioData {
     private ArrayList<PortfolioItem> portfolioItems = null;
 
     private long costOfPortfolio = 0;
+    private boolean costOfPortfolioIsSet = false;
 
     private double mProfitability = 0;
+    private boolean profitabilityIsSet = false;
 
     private long untilDateInMillis = 0;
 
     private int periodInDays = 0;
 
     private WeakReference<TextView> tvProfitability;
-    private WeakReference<TextView> tvCostOfPortfolio = null;
+    private WeakReference<TextView> tvCostOfPortfolio;
 
 
 // Получаю контекст для определения имени портфеля и даты до которой считается портфель
@@ -102,8 +104,30 @@ public class PortfolioData {
         this.tvProfitability = new WeakReference<TextView>(tvProfitability);
         this.tvCostOfPortfolio = new WeakReference<TextView>(tvCostOfPortfolio);
 
-        TotalTask totalTask = new TotalTask();
-        totalTask.execute();
+        if (costOfPortfolioIsSet && profitabilityIsSet) {
+
+            setProfitAndCostToTv();
+        }
+        else {
+
+            TotalTask totalTask = new TotalTask();
+            totalTask.execute();
+        }
+    }
+
+    private void setProfitAndCostToTv() {
+
+        try {
+            tvCostOfPortfolio.get().setText(String.valueOf(costOfPortfolio / MULTIPLIER_FOR_MONEY));
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            String str = df.format(mProfitability * 100)  + "%";
+            tvProfitability.get().setText(str);
+
+        } catch (NullPointerException e) {
+
+            e.printStackTrace();
+        }
     }
 
     public long getUntilDateInMillis() {
@@ -637,13 +661,7 @@ public class PortfolioData {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            if (tvCostOfPortfolio != null && tvProfitability != null) {
-                tvCostOfPortfolio.get().setText(String.valueOf(costOfPortfolio / MULTIPLIER_FOR_MONEY));
-
-                DecimalFormat df = new DecimalFormat("#.##");
-                String str = df.format(mProfitability * 100)  + "%";
-                tvProfitability.get().setText(str);
-            }
+            setProfitAndCostToTv();
         }
     }
 
