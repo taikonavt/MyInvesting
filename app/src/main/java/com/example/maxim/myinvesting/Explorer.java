@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -38,6 +39,14 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
 
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
+        String path = file.getPath();
+
+        // устанавливаю новую toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(path);
+        setSupportActionBar(toolbar);
+
+        // список файлов и папок в file
         folderContent = file.list();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

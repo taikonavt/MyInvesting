@@ -368,6 +368,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // проверяю наличие разрешения на чтение и запись на внешнюю память
+    // если нет, то запрашиваю
     private void checkPermission() {
 
         if (ContextCompat.checkSelfPermission(this,

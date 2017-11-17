@@ -49,8 +49,8 @@ public class AddDealActivity extends AppCompatActivity {
 
         // устанавливаю новую toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         toolbar.setTitle(getString(R.string.add_deal));
+        setSupportActionBar(toolbar);
 
         String [] strings = PortfolioNames.readPortfoliosNames(this);
 
