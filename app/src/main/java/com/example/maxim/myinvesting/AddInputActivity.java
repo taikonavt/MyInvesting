@@ -169,7 +169,7 @@ public class AddInputActivity extends AppCompatActivity {
 
         if (Long.parseLong(string) >= 0) {
 
-            Toast.makeText(this, getResources().getString(R.string.db_got_item), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getString(R.string.db_got_item), Toast.LENGTH_SHORT).show();
         } else
             Toast.makeText(this, getResources().getString(R.string.db_have_not_got_item), Toast.LENGTH_LONG).show();
     }

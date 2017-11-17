@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -62,9 +63,7 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
+            Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
         }
         else Log.d(TAG, "permission OK");
     }

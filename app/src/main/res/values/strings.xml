@@ -111,4 +111,8 @@
     <string name="txt_total_profit">Total profit:</string>
 
 
+    <!-- Explorer.java -->
+    <string name="permission_denied">Permission Denied</string>
+
+
 </resources>
