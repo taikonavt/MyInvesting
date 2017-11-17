@@ -41,6 +41,8 @@ public class AddDealActivity extends AppCompatActivity {
     EditText eTVolume;
     EditText eTFee;
 
+    static final int REQUEST_CODE = 745;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,13 +105,21 @@ public class AddDealActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(this, Explorer.class);
 
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE);
 
                 break;
             }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (data == null) {return;}
+
+        parseHtml(data.getStringExtra(Explorer.PATH_KEY));
     }
 
     public void onClick(View view) {
@@ -223,5 +233,9 @@ public class AddDealActivity extends AppCompatActivity {
         } else
             Toast.makeText(this, getResources().getString(R.string.db_have_not_got_item),
                     Toast.LENGTH_LONG).show();
+    }
+
+    void parseHtml(String path) {
+
     }
 }

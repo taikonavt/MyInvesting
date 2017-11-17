@@ -1,11 +1,11 @@
 package com.example.maxim.myinvesting;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,9 +25,11 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
 
      ExplorerAdapter adapter;
 
-     String[] folderContent;
-
      RecyclerView recyclerView;
+
+     String path;
+
+     public static final String PATH_KEY = "path_key";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,15 +41,12 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
 
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
-        String path = file.getPath();
+        path = file.getPath();
 
         // устанавливаю новую toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(path);
         setSupportActionBar(toolbar);
-
-        // список файлов и папок в file
-        folderContent = file.list();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -60,6 +59,9 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
         recyclerView.setAdapter(adapter);
 
         recyclerView.setLayoutManager(layoutManager);
+
+        // список файлов и папок в file
+        String [] folderContent = file.list();
 
         adapter.swap(folderContent);
     }
@@ -75,5 +77,56 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
             Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
         }
         else Log.d(TAG, "permission OK");
+    }
+
+    public void setPath(String path) {
+
+        File file;
+
+        if (path == "..") {
+
+            file = new File(this.path);
+
+            file = file.getParentFile();
+
+            this.path = file.getAbsolutePath();
+
+            String [] folderContent = file.list();
+
+            adapter.swap(folderContent);
+        }
+        else {
+
+            this.path = this.path + "/" + path;
+
+            file = new File(this.path);
+
+
+            if (file.isDirectory()) {
+
+                String[] temp = file.list();
+
+                String[] folderContent = new String[temp.length + 1];
+
+                folderContent[0] = "..";
+
+                for (int i = 0; i < temp.length; i++) {
+
+                    folderContent[i + 1] = temp[i];
+                }
+
+                adapter.swap(folderContent);
+
+            } else if (file.isFile()) {
+
+                Intent intent = new Intent();
+
+                intent.putExtra(PATH_KEY, file.getAbsolutePath());
+
+                setResult(RESULT_OK, intent);
+
+                finish();
+            }
+        }
     }
 }

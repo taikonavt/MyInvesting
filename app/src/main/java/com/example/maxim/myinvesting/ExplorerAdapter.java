@@ -18,10 +18,12 @@ public class ExplorerAdapter extends RecyclerView.Adapter<ExplorerAdapter.Explor
 
     private String [] folderContent;
 
+    private Context context;
+
     @Override
     public ExplorerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Context context = parent.getContext();
+        context = parent.getContext();
 
         int layoutIdForListItem = R.layout.item_explorer;
 
@@ -76,9 +78,17 @@ public class ExplorerAdapter extends RecyclerView.Adapter<ExplorerAdapter.Explor
             textView = (TextView) itemView.findViewById(R.id.tv_item_explorer);
         }
 
-        void bind(String string) {
+        void bind(final String string) {
 
             textView.setText(string);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ((Explorer) context).setPath(string);
+                }
+            });
         }
     }
 }
