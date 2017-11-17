@@ -1,11 +1,16 @@
 package com.example.maxim.myinvesting;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -17,6 +22,7 @@ import com.example.maxim.myinvesting.data.PortfolioNames;
 import com.example.maxim.myinvesting.utilities.DateUtils;
 import static com.example.maxim.myinvesting.data.Const.*;
 
+import java.io.File;
 import java.util.Calendar;
 
 /**
@@ -41,6 +47,11 @@ public class AddDealActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_add_deal);
 
+        // устанавливаю новую toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getString(R.string.add_deal));
+
         String [] strings = PortfolioNames.readPortfoliosNames(this);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -59,7 +70,18 @@ public class AddDealActivity extends AppCompatActivity {
         eTPrice = (EditText) findViewById(R.id.eTPrice);
         eTVolume = (EditText) findViewById(R.id.eTVolume);
         eTFee = (EditText) findViewById(R.id.eTFee);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.add_deal_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
     }
 
     String portfolio = null;
@@ -71,6 +93,24 @@ public class AddDealActivity extends AppCompatActivity {
     int price = 0;
     int volume = 0;
     int fee = 0;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.open_deals_button: {
+
+                Intent intent = new Intent(this, Explorer.class);
+
+                startActivity(intent);
+
+                break;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public void onClick(View view) {
 

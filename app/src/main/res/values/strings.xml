@@ -18,6 +18,8 @@
     <!-- AddInputActivity.java -->
     <string name="db_got_item">Got it!</string>
     <string name="db_have_not_got_item">Sorry, error happened!</string>
+    <string name="open_button">Open</string>
+    <string name="add_deal">Add Deal</string>
 
 
     <!-- Hints -->
