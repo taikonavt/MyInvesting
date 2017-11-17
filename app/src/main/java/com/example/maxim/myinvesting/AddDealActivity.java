@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioNames;
 import com.example.maxim.myinvesting.utilities.DateUtils;
+import com.example.maxim.myinvesting.utilities.HtmlParser;
+
 import static com.example.maxim.myinvesting.data.Const.*;
 
 import java.io.File;
@@ -237,5 +239,12 @@ public class AddDealActivity extends AppCompatActivity {
 
     void parseHtml(String path) {
 
+        HtmlParser htmlParser = new HtmlParser();
+
+        String[] paths = {path};
+
+        htmlParser.execute(paths);
+
+        finish();
     }
 }
