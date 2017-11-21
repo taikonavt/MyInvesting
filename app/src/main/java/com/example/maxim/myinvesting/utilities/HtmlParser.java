@@ -31,21 +31,23 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
     @Override
     protected Boolean doInBackground(String... strings) {
 
-        Log.d(TAG, "---------------------------------------------");
-
         String path = strings[0];
 
         File file = new File(path);
 
+        // флаг "операция разбора и вставки в базу данных прошла успешно"
         Boolean operationOK = false;
 
         try {
             Document doc = Jsoup.parse(file, "windows-1251", "com.example.maxim");
 
+            // получаю все элементы с тагом "table"
             Elements tables = doc.getElementsByTag("table");
 
+            // получаю первую таблицу, если таблиц нет то получаю null
             Element oneTable = tables.first();
 
+            // в tables есть таблица со сделками
             boolean thereIsDealTable = false;
 
             if (oneTable != null) {
@@ -54,8 +56,9 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
 
                 int size = tables.size();
 
+                // проверяю есть ли в tables таблица со сделками.
+                // если есть, то ставлю флаг и сохраняю ее в oneTable
                 do {
-
                     oneTable = tables.get(i);
 
                     thereIsDealTable = checkIsItDealTable(oneTable);
@@ -67,10 +70,9 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
 
             if (thereIsDealTable) {
 
+                // вношу инофрмацию из таблицы со сделками в БД
                 setInfo(oneTable);
             }
-
-            Log.d(TAG, String.valueOf(checkIsItDealTable(oneTable)));
 
             operationOK = true;
 
@@ -102,25 +104,30 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
 
     private void setInfo(Element table) throws NullPointerException {
 
+        // получаю все строки из таблицы
         Elements rows = table.getElementsByTag("tr");
 
         for (int i = 2; i < (rows.size() - 1); i++) {
 
             try {
 
+                // получаю одну строку
                 Element oneRow = rows.get(i);
 
+                // получаю все ячейки из строки
                 Elements cells = oneRow.getElementsByTag("td");
 
-                String date = cells.get(2).text();
-                String subDate = date.substring(0, 6);
-
+                // получаю код ISIN
                 String code = cells.get(5).text();
                 int firstSlash = code.indexOf("/", 0);
                 int secondSlash = code.indexOf("/", firstSlash + 1);
                 String isin = code.substring((firstSlash + 1), secondSlash);
+
+                // если в полученном коде есть пробелы убираю их
                 isin = isin.replace(" ", "");
 
+                // получаю номер портфеля
+                // todo если имени портфеля нет в списке, то добавить
                 String portfolio = cells.get(20).text();
 
                 // TODO: 21.11.17 Исправить!!!
@@ -128,6 +135,7 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
 
                 String type;
 
+                // получаю тип операции
                 String typeHtml = cells.get(4).text();
                 String[] typeApp = MyApp.getAppContext().getResources().
                         getStringArray(R.array.spinType_deal_array);
@@ -138,6 +146,10 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
                     type = typeApp[0];
                 else
                     throw new UnsupportedCharsetException(typeHtml);
+
+                // получаю дату в виде yymmdd
+                String date = cells.get(2).text();
+                String subDate = date.substring(0, 6);
 
                 int year = Integer.parseInt(subDate.substring(0, 2));
 
@@ -153,12 +165,13 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
 
                 int day = Integer.parseInt(subDate.substring(4, 6));
 
-                long dateInmillis = DateUtils.getTimeForMoscowInMillis(year, month, day);
-
+                //получаю цену
                 int price = (int) (Float.parseFloat(cells.get(7).text()) * MULTIPLIER_FOR_MONEY);
 
+                // получаю объем
                 int volume = Math.abs(Integer.parseInt(cells.get(6).text()));
 
+                // получаю комиссию
                 String firstFeeStr = cells.get(16).text();
                 String secondFeeStr = cells.get(17).text();
 
@@ -177,15 +190,6 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
                 int fee = (int) ((firstFeeFlt +
                         secondFeeFlt) * MULTIPLIER_FOR_MONEY);
 
-                Log.d(TAG, "Portfolio: " + portfolio);
-                Log.d(TAG, "DateInMillis: " + dateInmillis);
-                Log.d(TAG, "Type: " + type);
-                Log.d(TAG, "ISNI: " + isin);
-                Log.d(TAG, "Volume: " + volume);
-                Log.d(TAG, "Price: " + price);
-                Log.d(TAG, "fee: " + fee);
-
-
                 ContentValues contentValues = new ContentValues();
 
                 contentValues.put(Contract.DealsEntry.COLUMN_PORTFOLIO, portfolio);
@@ -200,6 +204,12 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
 
                 Uri uri = MyApp.getAppContext().getContentResolver().
                         insert(Contract.DealsEntry.CONTENT_URI, contentValues);
+
+                // сообщение о вставке транзакции в базу данных
+                String string = uri.getPathSegments().get(1);
+
+                if (Long.parseLong(string) < 0)
+                    throw new UnsupportedCharsetException("Database insertion error");
             }
             catch (UnsupportedCharsetException e) {
 
