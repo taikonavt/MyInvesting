@@ -115,4 +115,8 @@
     <string name="permission_denied">Permission Denied</string>
 
 
+    <!-- HtmlParser.java -->
+    <string name="htmlParsingIsOK">Operation OK!</string>
+    <string name="htmlParsingIsWrong">Operation Failed!</string>
+
 </resources>

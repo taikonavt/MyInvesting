@@ -349,6 +349,8 @@ public class MainActivity extends AppCompatActivity
         addItemsToDrawer(mDrawer);
     }
 
+    // TODO: 21.11.17 попробовать реализоавть передачу имени вместо вызова функции
+    // может быть ошибка если MainActivity была уничтожена
     public String getNameOfPortfolio() {
         return nameOfPortfolio;
     }
