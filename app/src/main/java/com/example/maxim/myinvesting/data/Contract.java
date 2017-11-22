@@ -19,6 +19,8 @@ public class Contract {
 
     public static final String PATH_PORTFOLIO = "portfolio";
 
+    public static final String PATH_SECURITIES = "securities";
+
     public static final String PATH_SUM = "type"; // используется при запросе к БД о получении всех вводов и сделок
 
     public static final String PATH_FEES = "fees";
@@ -91,4 +93,22 @@ public class Contract {
         public static final String COLUMN_PORTFOLIO = "portfolio";
     }
 
+    public static final class SecuritiesEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_SECURITIES)
+                .build();
+
+        static final String TABLE_NAME = "securities_db";
+
+        public static final String COLUMN_GROUP = "group";
+
+        public static final String COLUMN_ISIN = "isin";
+
+        public static final String COLUMN_REGNUMBER = "registration_number";
+
+        public static final String COLUMN_TICKER = "ticker";
+
+        public static final String COLUMN_NAME = "name";
+    }
 }

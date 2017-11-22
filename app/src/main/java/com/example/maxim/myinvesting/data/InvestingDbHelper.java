@@ -9,6 +9,7 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
 import com.example.maxim.myinvesting.data.Contract.DealsEntry;
 import com.example.maxim.myinvesting.data.Contract.InputEntry;
 import com.example.maxim.myinvesting.data.Contract.PortfolioEntry;
+import com.example.maxim.myinvesting.data.Contract.SecuritiesEntry;
 
 /**
  * Created by maxim on 26.03.17.
@@ -93,12 +94,32 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_CREATE_PORTFOLIO_TABLE);
 
+        final String SQL_CREATE_SECURITIES_TABLE =
+                "CREATE TABLE " + SecuritiesEntry.TABLE_NAME + " (" +
+
+                        SecuritiesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+                        SecuritiesEntry.COLUMN_GROUP + " STRING NOT NULL" +
+
+                        SecuritiesEntry.COLUMN_ISIN + " STRING NOT NULL" +
+
+                        SecuritiesEntry.COLUMN_REGNUMBER + " STRING NOT NULL" +
+
+                        SecuritiesEntry.COLUMN_TICKER + " STRING NOT NULL" +
+
+                        SecuritiesEntry.COLUMN_NAME + " STRING NOT NULL" +
+
+                        ");";
+
+        db.execSQL(SQL_CREATE_SECURITIES_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DealsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + InputEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PortfolioEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + SecuritiesEntry.TABLE_NAME);
         onCreate(db);
     }
 }
