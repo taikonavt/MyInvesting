@@ -171,6 +171,20 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
                 // получаю объем
                 int volume = Math.abs(Integer.parseInt(cells.get(6).text()));
 
+                // получаю накопленный купонный доход для облигации
+                String couponStr = cells.get(13).text();
+
+                int couponInt;
+
+                if (couponStr.length() > 0)
+                    couponInt = (int) Math.abs(Float.parseFloat(couponStr) * MULTIPLIER_FOR_MONEY);
+                else
+                    couponInt = 0;
+
+                int couponForEachBond = couponInt / volume;
+
+                price = price + couponForEachBond;
+
                 // получаю комиссию
                 String firstFeeStr = cells.get(16).text();
                 String secondFeeStr = cells.get(17).text();
@@ -231,6 +245,5 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
         else
             Toast.makeText(MyApp.getAppContext(), MyApp.getAppContext().
                     getString(R.string.htmlParsingIsWrong), Toast.LENGTH_LONG).show();
-
     }
 }
