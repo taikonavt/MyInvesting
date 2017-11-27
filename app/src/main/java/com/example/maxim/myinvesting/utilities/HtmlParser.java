@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.maxim.myinvesting.R;
 import com.example.maxim.myinvesting.data.Contract;
+import com.example.maxim.myinvesting.data.SecurityData;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,8 +17,13 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Calendar;
+import java.util.Scanner;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
@@ -131,7 +137,9 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
                 String portfolio = cells.get(20).text();
 
                 // TODO: 21.11.17 Исправить!!!
-                String ticker = "SBER";
+                SecurityData securityData = new SecurityData();
+
+                String ticker = securityData.getTickerByIsin(isin);
 
                 String type;
 

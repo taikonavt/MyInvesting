@@ -101,7 +101,7 @@ public class Contract {
 
         static final String TABLE_NAME = "securities_db";
 
-        public static final String COLUMN_GROUP = "group";
+        public static final String COLUMN_GROUP = "group_of_sec";
 
         public static final String COLUMN_ISIN = "isin";
 

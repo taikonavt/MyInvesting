@@ -99,13 +99,13 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
                         SecuritiesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
-                        SecuritiesEntry.COLUMN_GROUP + " STRING NOT NULL" +
+                        SecuritiesEntry.COLUMN_GROUP + " STRING NOT NULL, " +
 
-                        SecuritiesEntry.COLUMN_ISIN + " STRING NOT NULL" +
+                        SecuritiesEntry.COLUMN_ISIN + " STRING NOT NULL, " +
 
-                        SecuritiesEntry.COLUMN_REGNUMBER + " STRING NOT NULL" +
+                        SecuritiesEntry.COLUMN_REGNUMBER + " STRING NOT NULL, " +
 
-                        SecuritiesEntry.COLUMN_TICKER + " STRING NOT NULL" +
+                        SecuritiesEntry.COLUMN_TICKER + " STRING NOT NULL, " +
 
                         SecuritiesEntry.COLUMN_NAME + " STRING NOT NULL" +
 

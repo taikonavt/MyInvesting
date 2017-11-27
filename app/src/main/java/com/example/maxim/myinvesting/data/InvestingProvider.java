@@ -16,6 +16,7 @@ import static com.example.maxim.myinvesting.data.Contract.DealsEntry;
 import static com.example.maxim.myinvesting.data.Contract.InputEntry;
 import static com.example.maxim.myinvesting.data.Contract.PATH_FEES;
 import static com.example.maxim.myinvesting.data.Contract.PortfolioEntry;
+import static com.example.maxim.myinvesting.data.Contract.SecuritiesEntry;
 import static com.example.maxim.myinvesting.data.Const.TAG;
 
 /**
@@ -36,6 +37,8 @@ public class InvestingProvider extends ContentProvider{
 
     public static final int CODE_PORTFOLIO = 300;
     public static final int CODE_PORTFOLIO_WITH_TICKER = 301;
+
+    public static final int CODE_SECURITY = 400;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -58,6 +61,8 @@ public class InvestingProvider extends ContentProvider{
 
         matcher.addURI(authority, Contract.PATH_PORTFOLIO, CODE_PORTFOLIO);
         matcher.addURI(authority, Contract.PATH_PORTFOLIO + "/*", CODE_PORTFOLIO_WITH_TICKER);
+
+        matcher.addURI(authority, Contract.PATH_SECURITIES, CODE_SECURITY);
 
         return  matcher;
     }
@@ -198,6 +203,19 @@ public class InvestingProvider extends ContentProvider{
                 break;
             }
 
+            case CODE_SECURITY: {
+
+                cursor = db.query(SecuritiesEntry.TABLE_NAME,
+                        projection, // список возвращаемых полей
+                        selection, // where
+                        selectionArgs, // значения аргументов
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -254,6 +272,18 @@ public class InvestingProvider extends ContentProvider{
 
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(PortfolioEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
+
+            case CODE_SECURITY: {
+
+                long id = db.insert(SecuritiesEntry.TABLE_NAME, null, values);
+
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(SecuritiesEntry.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
