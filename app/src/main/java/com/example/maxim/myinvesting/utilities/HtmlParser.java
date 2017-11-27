@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.maxim.myinvesting.R;
 import com.example.maxim.myinvesting.data.Contract;
+import com.example.maxim.myinvesting.data.PortfolioNames;
 import com.example.maxim.myinvesting.data.SecurityData;
 
 import org.jsoup.Jsoup;
@@ -17,13 +18,8 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Calendar;
-import java.util.Scanner;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
 import static com.example.maxim.myinvesting.data.Const.TAG;
@@ -133,10 +129,21 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
                 isin = isin.replace(" ", "");
 
                 // получаю номер портфеля
-                // todo если имени портфеля нет в списке, то добавить
                 String portfolio = cells.get(20).text();
 
-                // TODO: 21.11.17 Исправить!!!
+                String [] portfolios = PortfolioNames.readPortfoliosNames(MyApp.getAppContext());
+
+                boolean isExists = false;
+
+                for (String str :
+                        portfolios) {
+                    if (str.equals(portfolio))
+                        isExists = true;
+                }
+
+                if (!isExists)
+                    PortfolioNames.savePortfolioName(MyApp.getAppContext(), portfolio);
+
                 SecurityData securityData = new SecurityData();
 
                 String ticker = securityData.getTickerByIsin(isin);
