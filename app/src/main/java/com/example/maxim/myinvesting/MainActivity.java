@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity
 
         checkPermission();
 
+        // слушаю broadcast сообщения от HtmlParser, если получил, то обновляю recyclerView InfoDealFragment
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -117,6 +118,8 @@ public class MainActivity extends AppCompatActivity
                 String string = intent.getStringExtra(REFRESH_KEY);
 
                 if (string.equals(HtmlParser.REFRESH)) {
+
+                    // обновляю
                     refresh();
                 }
             }
@@ -340,17 +343,22 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // обновляю список портфелей в дровере
     private void addItemsToDrawer(NavigationView mDrawer) {
 
         int GROUP_ID = 1;
         int SUBMENU_ID = 2;
 
+        // получаю меню дровера
         Menu menu = mDrawer.getMenu();
 
+        // удаляю список портфелей из подменю
         menu.removeItem(SUBMENU_ID);
 
+        // добавляю подменю в дровер
         SubMenu subMenu = menu.addSubMenu(GROUP_ID, SUBMENU_ID, 100, R.string.nav_title_submenu);
 
+        // добавляю в подменю кнопку + Add new
         subMenu
                 .add(GROUP_ID, ADD_BUTTON_ID, 1, R.string.nev_add_new_subitem)
                 .setIcon(R.drawable.ic_add_black_24dp);
@@ -365,6 +373,7 @@ public class MainActivity extends AppCompatActivity
             length = 0;
         }
 
+        // добавляю в подменю список портфелей
         for (int i = 0; i < length; i++) {
             subMenu
                     .add(GROUP_ID, i + SUB_MENU_ITEM_ID, i+1, strings[i]);
@@ -419,19 +428,25 @@ public class MainActivity extends AppCompatActivity
         else Log.d(TAG, "permission OK");
     }
 
+    // обновление recyclerView и списка портфелей
     private void refresh() {
 
+        // fragment бывает только InfoDealFragment или InfoInputFragment, поэтому проверка не требуется
         Uri uri = fragment.getUri();
 
+        // если fragment DealFragment и фрагмент прикреплен
         if (uri == Contract.DealsEntry.CONTENT_URI && fragment.isDetached()) {
 
             InfoDealFragment fragmentTemp = (InfoDealFragment) fragment;
 
+            // перезагружаю курсор
             fragmentTemp.getLoaderManager().restartLoader(InfoFragment.INFO_LOADER_ID, null, fragmentTemp);
 
+            // обновляю recyclerView
             fragmentTemp.notifyAdapter();
         }
 
+        // обновляю список портфелей в дровере
         addItemsToDrawer(mDrawer);
     }
 }

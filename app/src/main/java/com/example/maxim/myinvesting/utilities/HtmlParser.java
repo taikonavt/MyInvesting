@@ -152,6 +152,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + "doInBackground 1");
 
                 SecurityData securityData = new SecurityData();
 
+                // получаю тикер по ISIN
                 String ticker = securityData.getTickerByIsin(isin);
 
                 String type;
@@ -197,11 +198,13 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + "doInBackground 1");
 
                 int couponInt;
 
+                // если ячейка не пустая
                 if (couponStr.length() > 0)
                     couponInt = (int) Math.abs(Float.parseFloat(couponStr) * MULTIPLIER_FOR_MONEY);
                 else
                     couponInt = 0;
 
+                // делю на объем, т.к. указан купон для всех облигаций
                 int couponForEachBond = couponInt / volume;
 
                 price = price + couponForEachBond;

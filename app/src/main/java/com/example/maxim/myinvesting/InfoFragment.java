@@ -78,8 +78,8 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
     @Override
     public abstract Loader<Cursor> onCreateLoader(int id, Bundle args);
 
-    public abstract RecyclerView.Adapter getAdapter();
+    abstract RecyclerView.Adapter getAdapter();
 
     // используется для определения какой фрагмент сейчас активен
-    public abstract Uri getUri();
+    abstract Uri getUri();
 }

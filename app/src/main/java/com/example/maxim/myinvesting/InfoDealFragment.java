@@ -26,7 +26,7 @@ public class InfoDealFragment extends InfoFragment
 
     // метод используется для доступа к экземпляру адаптера из суперкласса
     @Override
-    public RecyclerView.Adapter getAdapter() {
+    RecyclerView.Adapter getAdapter() {
 
         mAdapter = new InfoDealAdapter(this);
         return mAdapter;
@@ -34,7 +34,7 @@ public class InfoDealFragment extends InfoFragment
 
     // возвращает CONTENT_URI для InfoFragment.onSwiped();
     @Override
-    public Uri getUri() {
+    Uri getUri() {
         return Contract.DealsEntry.CONTENT_URI;
     }
 
@@ -57,8 +57,6 @@ public class InfoDealFragment extends InfoFragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-Log.d(TAG, InfoDealFragment.class.getSimpleName() + " onLoadFinished()");
-
         mAdapter.swapCursor(data);
     }
 
@@ -69,18 +67,13 @@ Log.d(TAG, InfoDealFragment.class.getSimpleName() + " onLoadFinished()");
 
     @Override
     public void notifyAdapter() {
-        mAdapter.notifyDataSetChanged();
 
-Log.d(TAG, InfoDealFragment.class.getSimpleName() + " notifyAdapter()");
+        mAdapter.notifyDataSetChanged();
     }
 
     // показывает адаптеру что список в режиме ActionMode и нужно включить checkboxes
     @Override
     public void setInActionMode(boolean inActionMode) {
         this.inActionMode = inActionMode;
-    }
-
-    public void dealFragentOnClick(View view) {
-        notifyAdapter();
     }
 }

@@ -33,8 +33,10 @@ public class SecurityData {
 
         String result = null;
 
+        // получаю данные о компании с ISIN из базы данных
         Cursor cursor = getInfoFromDb(Contract.SecuritiesEntry.COLUMN_ISIN, isin);
 
+        // если данных нет, запрашиваю из интернета
         if (!cursor.moveToFirst()) {
 
             cv = askFromNet(isin);
@@ -42,7 +44,7 @@ public class SecurityData {
             if (cv != null)
                 result = cv.getAsString(Contract.SecuritiesEntry.COLUMN_TICKER);
         }
-
+        // если данные есть, беру тикер из курсора
         else {
 
             int index = cursor.getColumnIndex(Contract.SecuritiesEntry.COLUMN_TICKER);
@@ -55,6 +57,7 @@ public class SecurityData {
         return result;
     }
 
+    // передаю в метод название столбца и его значение, по которым нужно вернуть инфо о компании
     private Cursor getInfoFromDb(String key, String value) {
 
         Uri uri = Contract.SecuritiesEntry.CONTENT_URI;
@@ -77,6 +80,7 @@ public class SecurityData {
         return cursor;
     }
 
+    // запрашиваю инфо о бумаге с сайта ММВБ
     private ContentValues askFromNet(String request) {
 
         URL url = buildUrlForSecurityInfo(request);
@@ -89,6 +93,7 @@ public class SecurityData {
 
             cv = getInfoFromJson(results);
 
+            // добавляю отсутствующую информацию в БД
             MyApp.getAppContext().getContentResolver().insert(Contract.SecuritiesEntry.CONTENT_URI, cv);
 
         } catch (IOException e) {
@@ -124,6 +129,7 @@ public class SecurityData {
         }
     }
 
+    // строю url для запроса на сайт
     private URL buildUrlForSecurityInfo (String request) {
 
         Uri.Builder builder = new Uri.Builder();
@@ -158,6 +164,7 @@ public class SecurityData {
 
             JSONArray dataJson = securitiesJson.getJSONArray("data");
 
+            // выбираю 1й массив, т.к. TQBR стоит первым
             JSONArray infoJson = dataJson.getJSONArray(0);
 
             String ticker = infoJson.getString(1);
