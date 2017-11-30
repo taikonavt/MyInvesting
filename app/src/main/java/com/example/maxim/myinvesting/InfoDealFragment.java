@@ -7,6 +7,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.example.maxim.myinvesting.data.Contract;
 
@@ -55,6 +56,9 @@ public class InfoDealFragment extends InfoFragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+Log.d(TAG, InfoDealFragment.class.getSimpleName() + " onLoadFinished()");
+
         mAdapter.swapCursor(data);
     }
 
@@ -66,11 +70,17 @@ public class InfoDealFragment extends InfoFragment
     @Override
     public void notifyAdapter() {
         mAdapter.notifyDataSetChanged();
+
+Log.d(TAG, InfoDealFragment.class.getSimpleName() + " notifyAdapter()");
     }
 
     // показывает адаптеру что список в режиме ActionMode и нужно включить checkboxes
     @Override
     public void setInActionMode(boolean inActionMode) {
         this.inActionMode = inActionMode;
+    }
+
+    public void dealFragentOnClick(View view) {
+        notifyAdapter();
     }
 }

@@ -283,10 +283,13 @@ public class InvestingProvider extends ContentProvider{
                 long id = db.insert(SecuritiesEntry.TABLE_NAME, null, values);
 
                 if (id > 0) {
+
                     returnUri = ContentUris.withAppendedId(SecuritiesEntry.CONTENT_URI, id);
+
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
+
                 break;
             }
 

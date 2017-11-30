@@ -2,8 +2,11 @@ package com.example.maxim.myinvesting;
 
 import android.Manifest;
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -28,6 +31,7 @@ import android.widget.Toast;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 import com.example.maxim.myinvesting.data.PortfolioNames;
+import com.example.maxim.myinvesting.utilities.HtmlParser;
 
 import static com.example.maxim.myinvesting.data.Const.*;
 
@@ -47,6 +51,11 @@ public class MainActivity extends AppCompatActivity
 
     private boolean showAddButton = true;
     private boolean showDeleteButton = false;
+
+    public static final String REFRESH_KEY = "refresh";
+    public static final String BROADCAST_ACTION = "com.example.maxim.myinvesting";
+
+    BroadcastReceiver br;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +109,29 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setTitle(null);
 
         checkPermission();
+
+        br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String string = intent.getStringExtra(REFRESH_KEY);
+
+                if (string.equals(HtmlParser.REFRESH)) {
+                    refresh();
+                }
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
+
+        registerReceiver(br, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(br);
     }
 
     @Override
@@ -385,5 +417,21 @@ public class MainActivity extends AppCompatActivity
                             Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
         }
         else Log.d(TAG, "permission OK");
+    }
+
+    private void refresh() {
+
+        Uri uri = fragment.getUri();
+
+        if (uri == Contract.DealsEntry.CONTENT_URI && fragment.isDetached()) {
+
+            InfoDealFragment fragmentTemp = (InfoDealFragment) fragment;
+
+            fragmentTemp.getLoaderManager().restartLoader(InfoFragment.INFO_LOADER_ID, null, fragmentTemp);
+
+            fragmentTemp.notifyAdapter();
+        }
+
+        addItemsToDrawer(mDrawer);
     }
 }

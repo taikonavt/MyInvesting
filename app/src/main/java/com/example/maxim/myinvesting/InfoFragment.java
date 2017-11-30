@@ -40,6 +40,7 @@ public abstract class InfoFragment extends Fragment // TODO: 20.06.17 узнат
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_info);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setHasFixedSize(true);

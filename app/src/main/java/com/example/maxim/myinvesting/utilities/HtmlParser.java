@@ -1,11 +1,13 @@
 package com.example.maxim.myinvesting.utilities;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.maxim.myinvesting.MainActivity;
 import com.example.maxim.myinvesting.R;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioNames;
@@ -30,8 +32,12 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
 
 public class HtmlParser extends AsyncTask <String, Void, Boolean> {
 
+    public static final String REFRESH = "refresh";
+
     @Override
     protected Boolean doInBackground(String... strings) {
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + "doInBackground 1");
 
         String path = strings[0];
 
@@ -253,6 +259,12 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
         super.onPostExecute(operationOK);
 
         if (operationOK) {
+
+            Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
+
+            intent.putExtra(MainActivity.REFRESH_KEY, REFRESH);
+
+            MyApp.getAppContext().sendBroadcast(intent);
 
             Toast.makeText(MyApp.getAppContext(), MyApp.getAppContext().
                     getString(R.string.htmlParsingIsOK), Toast.LENGTH_LONG).show();
