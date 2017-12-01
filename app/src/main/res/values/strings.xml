@@ -20,6 +20,7 @@
     <string name="db_have_not_got_item">Sorry, error happened!</string>
     <string name="open_button">Open</string>
     <string name="add_deal">Add Deal</string>
+    <string name="add_input">Add Input</string>
 
 
     <!-- Hints -->
@@ -36,6 +37,7 @@
         <item>Sell</item>
         <item>Buy</item>
         <item>Dividend</item>
+        <item>Tax</item>
     </string-array>
 
     <!-- от порядка следования зависит работа PortfolioLoader.java -->
@@ -116,7 +118,7 @@
 
 
     <!-- HtmlParser.java -->
-    <string name="htmlParsingIsOK">Operation OK!</string>
-    <string name="htmlParsingIsWrong">Operation Failed!</string>
+    <string name="htmlParsingIsOK">Html parsing operation OK!</string>
+    <string name="htmlParsingIsWrong">Html parsing operation Failed!</string>
 
 </resources>

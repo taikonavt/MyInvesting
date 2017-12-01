@@ -41,7 +41,7 @@ public class AddDealActivity extends AppCompatActivity {
     EditText eTVolume;
     EditText eTFee;
 
-    static final int REQUEST_CODE = 745;
+    private static final int REQUEST_CODE = 745;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,16 +86,6 @@ public class AddDealActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    String portfolio = null;
-    String ticker = null;
-    String type = null;
-    int year = 0;
-    int month = 0;
-    int day = 0;
-    int price = 0;
-    int volume = 0;
-    int fee = 0;
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -121,6 +111,16 @@ public class AddDealActivity extends AppCompatActivity {
 
         parseHtml(data.getStringExtra(Explorer.PATH_KEY));
     }
+
+    String portfolio = null;
+    String ticker = null;
+    String type = null;
+    int year = 0;
+    int month = 0;
+    int day = 0;
+    int price = 0;
+    int volume = 0;
+    int fee = 0;
 
     public void onClick(View view) {
 
@@ -237,7 +237,7 @@ public class AddDealActivity extends AppCompatActivity {
 
     void parseHtml(String path) {
 
-        HtmlParser htmlParser = new HtmlParser();
+        HtmlParser htmlParser = new HtmlParser(this.getClass().getSimpleName());
 
         String[] paths = {path};
 

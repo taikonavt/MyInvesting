@@ -201,17 +201,29 @@ public class MainActivity extends AppCompatActivity
                     Uri uri = fragment.getUri();
 
                     if (uri == Contract.DealsEntry.CONTENT_URI) {
+
                         drawerLayout.closeDrawers();
+
                         Intent intent = new Intent(this, AddDealActivity.class);
+
                         startActivity(intent);
+
                     } else if (uri == Contract.InputEntry.CONTENT_URI) {
+
                         drawerLayout.closeDrawers();
+
                         Intent intent = new Intent(this, AddInputActivity.class);
+
                         startActivity(intent);
+
                     } else throw new UnsupportedOperationException
+
                             ("MainActivity.java, onOptionItemSelected(), Unknown Uri");
+
                 } catch (UnsupportedOperationException e) {
+
                     Log.d(TAG, e.toString());
+
                     e.printStackTrace();
                 }
 

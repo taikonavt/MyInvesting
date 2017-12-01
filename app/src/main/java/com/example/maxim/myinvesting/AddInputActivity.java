@@ -1,11 +1,15 @@
 package com.example.maxim.myinvesting;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.data.PortfolioNames;
 import com.example.maxim.myinvesting.utilities.DateUtils;
+import com.example.maxim.myinvesting.utilities.HtmlParser;
 
 import java.util.Calendar;
 
@@ -35,11 +40,18 @@ public class AddInputActivity extends AppCompatActivity {
     EditText eTFee;
     EditText eTNote;
 
+    private static final int REQUEST_CODE = 746;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_add_input);
+
+        // устанавливаю новую toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.add_input));
+        setSupportActionBar(toolbar);
 
         String [] strings = PortfolioNames.readPortfoliosNames(this);
 
@@ -58,6 +70,44 @@ public class AddInputActivity extends AppCompatActivity {
         eTAmount = (EditText) findViewById(R.id.eTAmount_input);
         eTFee = (EditText) findViewById(R.id.eTFee_input);
         eTNote = (EditText) findViewById(R.id.eTNote_input);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.add_deal_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.open_deals_button: {
+
+                Intent intent = new Intent(this, Explorer.class);
+
+                startActivityForResult(intent, REQUEST_CODE);
+
+                break;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (data == null) {return;}
+
+        parseHtml(data.getStringExtra(Explorer.PATH_KEY));
     }
 
     String portfolio = null;
@@ -172,5 +222,16 @@ public class AddInputActivity extends AppCompatActivity {
             Toast.makeText(this, getResources().getString(R.string.db_got_item), Toast.LENGTH_SHORT).show();
         } else
             Toast.makeText(this, getResources().getString(R.string.db_have_not_got_item), Toast.LENGTH_LONG).show();
+    }
+
+    void parseHtml(String path) {
+
+        HtmlParser htmlParser = new HtmlParser(this.getClass().getSimpleName());
+
+        String[] paths = {path};
+
+        htmlParser.execute(paths);
+
+        finish();
     }
 }
