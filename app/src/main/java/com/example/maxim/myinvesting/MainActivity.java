@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity
             Fragment saveFragment = getSupportFragmentManager().getFragment(savedInstanceState,
                     FRAGMENT_KEY);
 
+            // TODO: 05.12.17 Save fragment in SaveInstance
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.ll_main_activity, saveFragment)
                     .commit();
@@ -447,9 +449,21 @@ public class MainActivity extends AppCompatActivity
         Uri uri = fragment.getUri();
 
         // если fragment DealFragment и фрагмент прикреплен
-        if (uri == Contract.DealsEntry.CONTENT_URI && fragment.isDetached()) {
+        if (uri == Contract.DealsEntry.CONTENT_URI && fragment.isAdded()) {
 
             InfoDealFragment fragmentTemp = (InfoDealFragment) fragment;
+
+            // перезагружаю курсор
+            fragmentTemp.getLoaderManager().restartLoader(InfoFragment.INFO_LOADER_ID, null, fragmentTemp);
+
+            // обновляю recyclerView
+            fragmentTemp.notifyAdapter();
+        }
+
+        // если fragment InputFragment и фрагмент прикреплен
+        if (uri == Contract.InputEntry.CONTENT_URI && fragment.isAdded()) {
+
+            InfoInputFragment fragmentTemp = (InfoInputFragment) fragment;
 
             // перезагружаю курсор
             fragmentTemp.getLoaderManager().restartLoader(InfoFragment.INFO_LOADER_ID, null, fragmentTemp);

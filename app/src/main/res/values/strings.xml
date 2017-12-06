@@ -37,7 +37,6 @@
         <item>Sell</item>
         <item>Buy</item>
         <item>Dividend</item>
-        <item>Tax</item>
     </string-array>
 
     <!-- от порядка следования зависит работа PortfolioLoader.java -->
@@ -120,5 +119,6 @@
     <!-- HtmlParser.java -->
     <string name="htmlParsingIsOK">Html parsing operation OK!</string>
     <string name="htmlParsingIsWrong">Html parsing operation Failed!</string>
+    <string name="htmlParsingTableNotExists">Table does not exist!</string>
 
 </resources>

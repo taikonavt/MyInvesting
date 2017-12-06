@@ -355,7 +355,32 @@ public class InvestingProvider extends ContentProvider{
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+
+        String id;
+
+        int rowsUpdated = 0;
+
+        switch (match) {
+
+            case CODE_DEAL_WITH_ID:
+
+                id = uri.getPathSegments().get(1);
+
+                db.execSQL("UPDATE " + DealsEntry.TABLE_NAME + " SET " + DealsEntry.COLUMN_PRICE +
+                        " = " + DealsEntry.COLUMN_PRICE + " - " + selection + " WHERE " + DealsEntry._ID + " = " + id);
+
+                break;
+
+            default:
+                    throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        return rowsUpdated;
     }
 }

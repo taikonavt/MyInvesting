@@ -2,6 +2,7 @@ package com.example.maxim.myinvesting.utilities;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -32,9 +33,14 @@ import static com.example.maxim.myinvesting.data.Const.TAG;
  * Created by maxim on 17.11.17.
  */
 
-public class HtmlParser extends AsyncTask <String, Void, Boolean> {
+public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithMsg> {
 
     public static final String REFRESH = "refresh";
+
+    // тип для обозначения налогов на дивидены
+    private static final String TAX = "tax";
+
+    private long lastDealInsertionId;
 
     private String callingClass;
 
@@ -44,19 +50,17 @@ public class HtmlParser extends AsyncTask <String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... strings) {
+    protected BooleanWithMsg doInBackground(String... strings) {
 
         String path = strings[0];
 
         // флаг "операция разбора и вставки в базу данных прошла успешно"
-        boolean operationOK = false;
+        BooleanWithMsg operationOK = new BooleanWithMsg(false);
 
         try {
             if (callingClass.equals(AddDealActivity.class.getSimpleName())) {
 
                 operationOK = openDealTable(path);
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " doInBackGround() " + operationOK);
             }
             else if (callingClass.equals(AddInputActivity.class.getSimpleName())) {
 
@@ -67,7 +71,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " doInBackGround() " + operationOK
             Log.e(TAG, "Html parsing - IOException");
             e.printStackTrace();
 
-            operationOK = false;
+            operationOK.setValue(false);
         }
 
         catch (NullPointerException e) {
@@ -75,7 +79,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " doInBackGround() " + operationOK
             Log.e(TAG, "Html parsing - NullPointerException");
             e.printStackTrace();
 
-            operationOK = false;
+            operationOK.setValue(false);
         }
 
         catch (UnsupportedCharsetException e) {
@@ -84,19 +88,19 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " doInBackGround() " + operationOK
                     " setInfo() " + e.getCharsetName());
             e.printStackTrace();
 
-            operationOK = false;
+            operationOK.setValue(false);
         }
 
         return operationOK;
     }
 
-    private boolean openDealTable(String path)
+    private BooleanWithMsg openDealTable(String path)
             throws IOException, NullPointerException, UnsupportedCharsetException
     {
 
         File file = new File(path);
 
-        Document doc = Jsoup.parse(file, "windows-1251", "com.example.maxim");
+        Document doc = Jsoup.parse(file, null, "com.example.maxim");
 
         // получаю все элементы с тагом "table"
         Elements tables = doc.getElementsByTag("table");
@@ -105,7 +109,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " doInBackGround() " + operationOK
         Element oneTable = tables.first();
 
         // в tables есть таблица со сделками
-        boolean thereIsDealTable = false;
+        BooleanWithMsg thereIsDealTable = new BooleanWithMsg(false);
 
         if (oneTable != null) {
 
@@ -122,21 +126,22 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " doInBackGround() " + operationOK
 
                 i++;
 
-Log.d(TAG, "openDealTable() " + thereIsDealTable + " " + tables.size());
-
-            } while (!thereIsDealTable && (i < size));
+            } while (!thereIsDealTable.getValue() && (i < size));
         }
 
-        if (thereIsDealTable) {
+        // операция разбора файла прошла без ошибок
+        if (thereIsDealTable.getValue()) {
 
             // вношу инофрмацию из таблицы со сделками в БД
             parseDealTable(oneTable);
 
-            // операция разбора файла прошла без ошибок
-            return true;
+            return thereIsDealTable;
         }
+        else
+            thereIsDealTable.setMessage(MyApp.getAppContext().getString(R.string.htmlParsingTableNotExists));
 
-        else return false;
+        // возвращаю false с сообщением
+        return thereIsDealTable;
     }
 
     private void parseDealTable (Element table) throws NullPointerException, UnsupportedCharsetException {
@@ -264,7 +269,7 @@ Log.d(TAG, "openDealTable() " + thereIsDealTable + " " + tables.size());
         setDealInfo(portfolio, ticker, type, year, month, day, price, volume, fee);
     }
 
-    private void setDealInfo(String portfolio, String ticker, String type, int year,
+    private long setDealInfo(String portfolio, String ticker, String type, int year,
                              int month, int day, long price, int volume, int fee)
             throws UnsupportedOperationException {
 
@@ -286,13 +291,17 @@ Log.d(TAG, "openDealTable() " + thereIsDealTable + " " + tables.size());
         // сообщение о вставке транзакции в базу данных
         String string = uri.getPathSegments().get(1);
 
-        if (Long.parseLong(string) < 0)
+        long id = Long.parseLong(string);
+
+        if (id < 0)
             // использую UnsupportedCharsetException т.к. выше есть такое же исключение
             // и обработать это можно в том же кэтче
             throw new UnsupportedCharsetException("Database insertion error");
+
+        return id;
     }
 
-    private boolean openInputTable(String path) throws IOException, NullPointerException,
+    private BooleanWithMsg openInputTable(String path) throws IOException, NullPointerException,
             UnsupportedCharsetException {
 
         File file = new File(path);
@@ -306,7 +315,7 @@ Log.d(TAG, "openDealTable() " + thereIsDealTable + " " + tables.size());
         Element oneTable = tables.first();
 
         // в tables есть таблица со сделками
-        boolean thereIsInputTable = false;
+        BooleanWithMsg thereIsInputTable = new BooleanWithMsg(false);
 
         if (oneTable != null) {
 
@@ -323,17 +332,24 @@ Log.d(TAG, "openDealTable() " + thereIsDealTable + " " + tables.size());
 
                 i++;
 
-            } while (!thereIsInputTable && (i < size));
-        }
-
-        if (thereIsInputTable) {
-
-            // вношу инофрмацию из таблицы со сделками в БД
-            parseInputTable(oneTable);
+            } while (!thereIsInputTable.getValue() && (i < size));
         }
 
         // операция разбора файла прошла без ошибок
-        return true;
+        if (thereIsInputTable.getValue()) {
+
+            // вношу инофрмацию из таблицы со сделками в БД
+            parseInputTable(oneTable);
+
+            return thereIsInputTable;
+        }
+        else {
+
+            thereIsInputTable.setMessage(MyApp.getAppContext().getString(R.string.htmlParsingTableNotExists));
+
+            // возвращаю false с сообщением
+            return thereIsInputTable;
+        }
     }
 
     private void parseInputTable (Element table) throws NullPointerException, UnsupportedCharsetException {
@@ -375,45 +391,77 @@ Log.d(TAG, "openDealTable() " + thereIsDealTable + " " + tables.size());
         String type;
 
         // получаю тип операции
-        String typeHtml = cells.get(4).text();
+        String typeHtml = cells.get(3).text();
 
-        String[] typeApp = MyApp.getAppContext().getResources().
-                getStringArray(R.array.spinType_deal_array);
+        String[] typeInput = MyApp.getAppContext().getResources().
+                getStringArray(R.array.spinType_input_array);
 
         String[] typeDeal = MyApp.getAppContext().getResources().
                 getStringArray(R.array.spinType_deal_array);
 
+        String tempStrAmount = cells.get(6).text();
+
+        if (tempStrAmount.isEmpty()) {
+
+            tempStrAmount = cells.get(5).text();
+        }
+
         // беру значение со знаком, чтобы верно определить тип операции
         // по модулю беру ниже
-        long amount = (long) (Float.parseFloat(cells.get(4).text()) * MULTIPLIER_FOR_MONEY);
+        long amount = (long) (Float.parseFloat(tempStrAmount) * MULTIPLIER_FOR_MONEY);
 
         String currency = "RUB";
         int fee = 0;
         String note = null;
 
         if (typeHtml.equals("Поступило на счет.") ||
-                (typeHtml.startsWith("перевод денег") && (amount > 0)))
+                (typeHtml.startsWith("перевод денег") && (amount > 0))) {// перевод денег со знаком +
 
-            type = typeApp[0];
+            // Input
+            type = typeInput[0];
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
+        }
 
         // todo в дальнейшем исправить "Списано со счета."
         else if (typeHtml.equals("Списано со счета.") ||
-                (typeHtml.startsWith("перевод денег") && (amount < 0)))
+                (typeHtml.startsWith("перевод денег") && (amount < 0))) {// перевод денег со знаком -
 
-            type = typeApp[1];
+            // Output
+            type = typeInput[1];
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
+        }
 
         else if (typeHtml.startsWith("Дивиденды")) {
 
             type = typeDeal[2];
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
         }
 
         else if (typeHtml.startsWith("Налог")) {
 
-            type = typeDeal[3];
+            type = TAX;
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
         }
 
-        else
+        else if (typeHtml.startsWith("Проценты по сделке") ||
+                typeHtml.equals("Выдача денежных средств") ||
+                typeHtml.equals("Возврат денежных средств")) {
+
+            type = "unusable";
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
+        }
+
+        else {
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml);
+
             throw new UnsupportedCharsetException(typeHtml);
+        }
 
         amount = Math.abs(amount);
 
@@ -435,36 +483,51 @@ Log.d(TAG, "openDealTable() " + thereIsDealTable + " " + tables.size());
             PortfolioNames.savePortfolioName(MyApp.getAppContext(), portfolio);
 
 
-
-        if (type.equals(typeDeal[0])) {
+        // Input
+        if (type.equals(typeInput[0])) {
 
             setInputInfo(type, year, month, day, amount, currency, fee, portfolio, note);
         }
 
-        if (type.equals(typeDeal[1])) {
+        // Output
+        if (type.equals(typeInput[1])) {
 
             setInputInfo(type, year, month, day, amount, currency, fee, portfolio, note);
         }
 
         String ticker = null;
 
+        // Dividend
         if (type.equals(typeDeal[2])) {
 
             // получаю registration number
             String code = cells.get(3).text();
 
-            int space = code.indexOf(" ", 0);
+            String regNum = findRegNum(code);
 
-            int slash = code.indexOf("/", space + 1);
-
-            String regNum = code.substring((space + 1), slash);
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() regNum " + regNum);
 
             SecurityData securityData = new SecurityData();
 
             // получаю тикер по ISIN
             ticker = securityData.getTickerByIsin(regNum);
 
-            setDealInfo(portfolio, ticker, type, year, month, day, amount, 1, fee);
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() ticker " + ticker + " " + amount);
+
+            lastDealInsertionId = setDealInfo(portfolio, ticker, type, year, month, day, amount, 1, fee);
+        }
+
+        // налог на дивиденды
+        if (type.equals(TAX)) {
+
+            Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+                    .appendPath(Contract.PATH_DEALS)
+                    .appendPath(String.valueOf(lastDealInsertionId))
+                    .build();
+
+            MyApp.getAppContext().getContentResolver().update(uri, null, String.valueOf(amount), null);
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() TAX " + amount);
         }
     }
 
@@ -493,40 +556,70 @@ Log.d(TAG, "openDealTable() " + thereIsDealTable + " " + tables.size());
             throw new UnsupportedCharsetException("Database insertion error");
     }
 
-    private boolean checkIsItDealTable(Element table) throws NullPointerException {
+    private BooleanWithMsg checkIsItDealTable(Element table) throws NullPointerException {
 
         Elements rows = table.getElementsByTag("tr");
 
         Element oneRow = rows.first();
 
-Log.d(TAG, "checkIsItDealTable() " + oneRow.text());
-
-        return (oneRow.text().equals("Исполненные сделки"));
+        return new BooleanWithMsg(oneRow.text().equals("Исполненные сделки"));
     }
 
-    private boolean checkIsItInputTable(Element table) throws NullPointerException {
+    private BooleanWithMsg checkIsItInputTable(Element table) throws NullPointerException {
 
         Elements rows = table.getElementsByTag("tr");
 
         Element oneRow = rows.first();
 
-        return (oneRow.text().trim().equals("Операции с денежными средствами"));
+        return new BooleanWithMsg(oneRow.text().startsWith("Операции с денежными средствами"));
     }
 
-//    private String findRegNum(String string) {
-//
-//        if (!string.isEmpty()) {
-//
-//            String[] strings = string.split(" ");
-//        }
-//    }
-//    afkl;
+    private String findRegNum(String string) {
+
+        if (!string.isEmpty()) {
+
+            // разбиваю фразу на слова
+            String[] strings = string.split(" ");
+
+            for (String word :
+                    strings) {
+
+                int i = 0;
+                boolean flag = false;
+
+                // т.к. regNums все больше 7 букв
+                if (word.length() >= 7) {
+                    do {
+
+                        // в слове используются только латинские буквы, цифры или знаки
+                        // (без русских букв)
+                        if (word.charAt(i) <= 'z') {
+
+                            flag = true;
+                        }
+                        else
+                            flag = false;
+
+                        i++;
+                    }
+                    while (flag && (i < 7));
+                }
+
+                if (flag) {
+
+                    return word;
+                }
+            }
+        }
+
+        return null;
+    }
 
     @Override
-    protected void onPostExecute(Boolean operationOK) {
+    protected void onPostExecute(BooleanWithMsg operationOK) {
         super.onPostExecute(operationOK);
 
-        if (operationOK) {
+        if (operationOK.getValue()) {
 
             Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
 
@@ -537,8 +630,50 @@ Log.d(TAG, "checkIsItDealTable() " + oneRow.text());
             Toast.makeText(MyApp.getAppContext(), MyApp.getAppContext().
                     getString(R.string.htmlParsingIsOK), Toast.LENGTH_LONG).show();
         }
-        else
-            Toast.makeText(MyApp.getAppContext(), MyApp.getAppContext().
-                    getString(R.string.htmlParsingIsWrong), Toast.LENGTH_LONG).show();
+        else {
+
+            String message;
+
+            if (operationOK.getMessage().isEmpty())
+                message = MyApp.getAppContext().getString(R.string.htmlParsingIsWrong);
+            else
+                message = operationOK.getMessage();
+
+            Toast.makeText(MyApp.getAppContext(), message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    class BooleanWithMsg {
+
+        private boolean value;
+
+        private String message;
+
+        BooleanWithMsg(boolean value) {
+
+            this.value = value;
+        }
+
+        String getMessage() {
+
+            if (message == null)
+                return "";
+
+            else
+                return message;
+        }
+
+        void setMessage(String msg) {
+            message = msg;
+        }
+
+        boolean getValue() {
+            return value;
+        }
+
+        void setValue(boolean value) {
+            this.value = value;
+        }
     }
 }

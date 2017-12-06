@@ -304,8 +304,15 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
 
                     break;
                 }
-                case "Dividend": llRowInfo.setBackgroundColor(ContextCompat.getColor(
-                        itemView.getContext(), R.color.colorDiv));
+                case "Dividend": {
+                    llRowInfo.setBackgroundColor(ContextCompat.getColor(
+                            itemView.getContext(), R.color.colorDiv));
+
+                    String string = "+" + String.valueOf(
+                            (float) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
+
+                    tvInfoItemCost.setText(string);
+                }
 
                 default: Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
             }
