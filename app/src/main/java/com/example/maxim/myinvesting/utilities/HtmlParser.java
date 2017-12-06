@@ -2,7 +2,6 @@ package com.example.maxim.myinvesting.utilities;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -46,6 +45,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
     public HtmlParser(String callingClass) {
 
+        // используется для определения вызывающего класса
         this.callingClass = callingClass;
     }
 
@@ -57,6 +57,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         // флаг "операция разбора и вставки в базу данных прошла успешно"
         BooleanWithMsg operationOK = new BooleanWithMsg(false);
 
+        // в зависимости от вызывающего класса запускаю парсинг той или иной таблицы
         try {
             if (callingClass.equals(AddDealActivity.class.getSimpleName())) {
 
@@ -94,9 +95,9 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         return operationOK;
     }
 
+    // открываю таблицу "Исполненные сделки"
     private BooleanWithMsg openDealTable(String path)
-            throws IOException, NullPointerException, UnsupportedCharsetException
-    {
+            throws IOException, NullPointerException, UnsupportedCharsetException {
 
         File file = new File(path);
 
@@ -175,6 +176,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         // получаю номер портфеля
         String portfolio = cells.get(20).text();
 
+        // если портфеля нет в списке, то добавляю
         String [] portfolios = PortfolioNames.readPortfoliosNames(MyApp.getAppContext());
 
         boolean isExists = false;
@@ -419,8 +421,6 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
             // Input
             type = typeInput[0];
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
         }
 
         // todo в дальнейшем исправить "Списано со счета."
@@ -429,22 +429,16 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeH
 
             // Output
             type = typeInput[1];
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
         }
 
         else if (typeHtml.startsWith("Дивиденды") || typeHtml.startsWith("Купонный")) {
 
             type = typeDeal[2];
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
         }
 
         else if (typeHtml.startsWith("Налог")) {
 
             type = TAX;
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
         }
 
         else if (typeHtml.startsWith("Проценты по сделке") ||
@@ -452,16 +446,10 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeH
                 typeHtml.equals("Возврат денежных средств")) {
 
             type = "unusable";
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
         }
 
-        else {
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml);
-
+        else
             throw new UnsupportedCharsetException(typeHtml);
-        }
 
         amount = Math.abs(amount);
 
@@ -482,7 +470,6 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeH
         if (!isExists)
             PortfolioNames.savePortfolioName(MyApp.getAppContext(), portfolio);
 
-
         // Input
         if (type.equals(typeInput[0])) {
 
@@ -497,6 +484,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeH
 
         String ticker = null;
 
+        // TODO: 06.12.17 Может сделать получение дивидендов из таблицы Deal?
         // Dividend
         if (type.equals(typeDeal[2])) {
 
@@ -505,14 +493,10 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeH
 
             String regNum = findRegNum(code);
 
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() regNum " + regNum);
-
             SecurityData securityData = new SecurityData();
 
             // получаю тикер по ISIN
             ticker = securityData.getTickerByIsin(regNum);
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() ticker " + ticker + " " + amount);
 
             lastDealInsertionId = setDealInfo(portfolio, ticker, type, year, month, day, amount, 1, fee);
         }
@@ -526,8 +510,6 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() ticker " 
                     .build();
 
             MyApp.getAppContext().getContentResolver().update(uri, null, String.valueOf(amount), null);
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() TAX " + amount);
         }
     }
 
@@ -578,6 +560,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() TAX " + a
 
         if (!string.isEmpty()) {
 
+            // заменяю на пробелы для случая где они используются для разделения слов
             string = string.replace('/', ' ');
 
             // разбиваю фразу на слова
