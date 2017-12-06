@@ -433,7 +433,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeH
 Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() " + typeHtml + " " + type);
         }
 
-        else if (typeHtml.startsWith("Дивиденды")) {
+        else if (typeHtml.startsWith("Дивиденды") || typeHtml.startsWith("Купонный")) {
 
             type = typeDeal[2];
 
@@ -577,6 +577,8 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfInputTable() TAX " + a
     private String findRegNum(String string) {
 
         if (!string.isEmpty()) {
+
+            string = string.replace('/', ' ');
 
             // разбиваю фразу на слова
             String[] strings = string.split(" ");
