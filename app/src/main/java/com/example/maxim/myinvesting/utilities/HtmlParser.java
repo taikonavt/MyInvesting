@@ -61,7 +61,11 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         try {
             if (callingClass.equals(AddDealActivity.class.getSimpleName())) {
 
-                operationOK = openDealTable(path);
+                BooleanWithMsg first = openDealTable(path);
+
+                BooleanWithMsg second = openRepaymentTable(path);
+
+                operationOK.setValue(first.getValue() || second.getValue());
             }
             else if (callingClass.equals(AddInputActivity.class.getSimpleName())) {
 
@@ -325,7 +329,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
             int size = tables.size();
 
-            // проверяю есть ли в tables таблица со сделками.
+            // проверяю есть ли в tables таблица с вводами.
             // если есть, то ставлю флаг и сохраняю ее в oneTable
             do {
                 oneTable = tables.get(i);
@@ -340,7 +344,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         // операция разбора файла прошла без ошибок
         if (thereIsInputTable.getValue()) {
 
-            // вношу инофрмацию из таблицы со сделками в БД
+            // вношу инофрмацию из таблицы с вводами в БД
             parseInputTable(oneTable);
 
             return thereIsInputTable;
@@ -538,6 +542,140 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             throw new UnsupportedCharsetException("Database insertion error");
     }
 
+    // открываю таблицу "Операции по погашению ЦБ"
+    private BooleanWithMsg openRepaymentTable(String path)
+            throws IOException, NullPointerException, UnsupportedCharsetException {
+
+        File file = new File(path);
+
+        Document doc = Jsoup.parse(file, null, "com.example.maxim");
+
+        // получаю все элементы с тагом "table"
+        Elements tables = doc.getElementsByTag("table");
+
+        // получаю первую таблицу, если таблиц нет то получаю null
+        Element oneTable = tables.first();
+
+        // в tables есть таблица со сделками
+        BooleanWithMsg thereIsRepayTable = new BooleanWithMsg(false);
+
+        if (oneTable != null) {
+
+            int i = 0;
+
+            int size = tables.size();
+
+            // проверяю есть ли в tables таблица погашений.
+            // если есть, то ставлю флаг и сохраняю ее в oneTable
+            do {
+                oneTable = tables.get(i);
+
+                thereIsRepayTable = checkIsItRepayTable(oneTable);
+
+                i++;
+
+            } while (!thereIsRepayTable.getValue() && (i < size));
+        }
+
+        // операция разбора файла прошла без ошибок
+        if (thereIsRepayTable.getValue()) {
+
+            // вношу инофрмацию из таблицы со сделками в БД
+            parseRepayTable(oneTable);
+
+            return thereIsRepayTable;
+        }
+        else
+            thereIsRepayTable.setMessage(MyApp.getAppContext().getString(R.string.htmlParsingTableNotExists));
+
+        // возвращаю false с сообщением
+        return thereIsRepayTable;
+    }
+
+    private void parseRepayTable (Element table) throws NullPointerException, UnsupportedCharsetException {
+
+        // получаю все строки из таблицы
+        Elements rows = table.getElementsByTag("tr");
+
+        for (int i = 3; i < rows.size(); i++) {
+
+            // получаю одну строку
+            Element oneRow = rows.get(i);
+
+            parseRowOfRepayTable(oneRow);
+        }
+    }
+
+    private void parseRowOfRepayTable(Element row) throws UnsupportedCharsetException {
+
+        // получаю все ячейки из строки
+        Elements cells = row.getElementsByTag("td");
+
+        // получаю код ISIN
+        String code = cells.get(5).text();
+        int firstSlash = code.indexOf("/", 0);
+        int secondSlash = code.indexOf("/", firstSlash + 1);
+        String isin = code.substring((firstSlash + 1), secondSlash);
+
+        // если в полученном коде есть пробелы убираю их
+        isin = isin.replace(" ", "");
+
+        // получаю номер портфеля
+        String portfolio = cells.get(12).text();
+
+        // если портфеля нет в списке, то добавляю
+        String [] portfolios = PortfolioNames.readPortfoliosNames(MyApp.getAppContext());
+
+        boolean isExists = false;
+
+        for (String str :
+                portfolios) {
+            if (str.equals(portfolio))
+                isExists = true;
+        }
+
+        if (!isExists)
+            PortfolioNames.savePortfolioName(MyApp.getAppContext(), portfolio);
+
+        SecurityData securityData = new SecurityData();
+
+        // получаю тикер по ISIN
+        String ticker = securityData.getTickerByIsin(isin);
+
+        String[] typeApp = MyApp.getAppContext().getResources().
+                getStringArray(R.array.spinType_deal_array);
+
+        // Sell
+        String type = typeApp[0];
+
+        // получаю дату в виде 03.10.17
+        String date = cells.get(4).text();
+
+        int year = Integer.parseInt(date.substring(6));
+
+        // проверяем введенную дату(двухзначную): если больше текущей значит 1900,
+        // если нет - 2000
+        if ((year + 2000) > Calendar.getInstance().get(Calendar.YEAR)) {
+            year = year + 1900;
+        } else year = year + 2000;
+
+        int month = Integer.parseInt(date.substring(3, 5));
+
+        month = month - 1; // перевожу в значения константы Calendar.MONTH
+
+        int day = Integer.parseInt(date.substring(0, 2));
+
+        //получаю цену
+        int price = (int) (Float.parseFloat(cells.get(7).text()) * MULTIPLIER_FOR_MONEY);
+
+        // получаю объем
+        int volume = Math.abs(Integer.parseInt(cells.get(6).text()));
+
+        int fee = 0;
+
+        setDealInfo(portfolio, ticker, type, year, month, day, price, volume, fee);
+    }
+
     private BooleanWithMsg checkIsItDealTable(Element table) throws NullPointerException {
 
         Elements rows = table.getElementsByTag("tr");
@@ -554,6 +692,15 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         Element oneRow = rows.first();
 
         return new BooleanWithMsg(oneRow.text().startsWith("Операции с денежными средствами"));
+    }
+
+    private BooleanWithMsg checkIsItRepayTable(Element table) throws NullPointerException {
+
+        Elements rows = table.getElementsByTag("tr");
+
+        Element oneRow = rows.first();
+
+        return new BooleanWithMsg(oneRow.text().startsWith("Операции по погашению ЦБ"));
     }
 
     private String findRegNum(String string) {
