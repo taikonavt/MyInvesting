@@ -78,7 +78,8 @@
 
 
     <!-- enter_ticker_of_security_dialog_fragment.xml -->
-    <string name="unknown_security">Unknown Ticker: </string>
+    <string name="unknown_security">Name:&#160;</string>
+    <string name="et_df_sec_hint">Enter ticker</string>
 
 
     <!-- Toast сообщения -->
