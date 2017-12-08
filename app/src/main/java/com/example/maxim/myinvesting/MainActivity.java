@@ -37,7 +37,8 @@ import static com.example.maxim.myinvesting.data.Const.*;
 
 
 public class MainActivity extends AppCompatActivity
-                    implements EnterPortfolioDialogFragment.FragmentListener {
+                    implements EnterPortfolioDialogFragment.FragmentPortfolioListener,
+                                EnterSecurityDialogFragment.FragmentSecurityListener {
 
     private DrawerLayout drawerLayout = null;
     private ActionBarDrawerToggle toggle = null;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     private boolean showDeleteButton = false;
 
     public static final String REFRESH_KEY = "refresh";
+    public static final String INSERTED_DEAL_ID_KEY = "insertedDealId";
+    public static final String UNKNOWN_ISNIS_KEY = "unknownIsnis";
     public static final String BROADCAST_ACTION = "com.example.maxim.myinvesting";
 
     BroadcastReceiver br;
@@ -117,12 +120,24 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                String string = intent.getStringExtra(REFRESH_KEY);
+                String stringRefresh = intent.getStringExtra(REFRESH_KEY);
 
-                if (string.equals(HtmlParser.REFRESH)) {
+                String[] stringsUnknown = intent.getStringArrayExtra(UNKNOWN_ISNIS_KEY);
+
+                long[] stringsInsertedId = intent.getLongArrayExtra(INSERTED_DEAL_ID_KEY);
+
+Log.d(TAG, MainActivity.class.getSimpleName() + " onReceive() " + stringRefresh + " " + stringsUnknown + " " + stringsInsertedId);
+
+                if (stringRefresh != null && stringRefresh.equals(HtmlParser.REFRESH)) {
 
                     // обновляю
                     refresh();
+                }
+                else if (stringsUnknown != null) {
+
+Log.d(TAG, MainActivity.class.getSimpleName() + " onReceive(); 1");
+
+                    toKnowTicker(stringsUnknown, stringsInsertedId);
                 }
             }
         };
@@ -397,7 +412,7 @@ public class MainActivity extends AppCompatActivity
     // реализация интерфейса EnterPortfolioDialogFragment.FragmentListener
     // позволяет получить String с названием портфеля из EnterPortfolioDialogFragment
     @Override
-    public void fragmentOnClickOKButton(String nameOfPortfolio) {
+    public void fragmentPortfolioOnClickOKButton(String nameOfPortfolio) {
 
         PortfolioNames.savePortfolioName(this, nameOfPortfolio);
 
@@ -474,5 +489,39 @@ public class MainActivity extends AppCompatActivity
 
         // обновляю список портфелей в дровере
         addItemsToDrawer(mDrawer);
+    }
+
+    String[] securityStringsUnknown;
+    long[] securityStringsInsertedId;
+
+    private void toKnowTicker(String[] stringsUnknown, long[] stringsInsertedId) {
+
+Log.d(TAG, MainActivity.class.getSimpleName() + " toKnowTicker() ");
+
+        securityStringsInsertedId = stringsInsertedId;
+
+        securityStringsUnknown = stringsUnknown;
+
+        drawerLayout.closeDrawers();
+
+        EnterSecurityDialogFragment dialogFragment = new EnterSecurityDialogFragment();
+
+        dialogFragment.setAskedTicker(securityStringsUnknown[0]);
+
+        dialogFragment.show(getFragmentManager(), "Enter security fragment");
+    }
+
+    @Override
+    public void fragmentSecurityOnClickOKButton(String ticker) {
+
+//        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
+//                .appendPath(Contract.PATH_DEALS)
+//                .build();
+//
+//        String[] projection = {Contract.DealsEntry.COLUMN_TICKER};
+//
+//        String selection = Contract.DealsEntry.
+//
+//        getContentResolver().query()
     }
 }

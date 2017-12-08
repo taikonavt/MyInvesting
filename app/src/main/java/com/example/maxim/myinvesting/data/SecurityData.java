@@ -57,6 +57,11 @@ public class SecurityData {
         return result;
     }
 
+    public String getTickerByName(String name) {
+
+        return null;
+    }
+
     // передаю в метод название столбца и его значение, по которым нужно вернуть инфо о компании
     private Cursor getInfoFromDb(String key, String value) {
 

@@ -1,6 +1,7 @@
 package com.example.maxim.myinvesting.data;
 
 import android.net.Uri;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 
 /**
@@ -20,6 +21,8 @@ public class Contract {
     public static final String PATH_PORTFOLIO = "portfolio";
 
     public static final String PATH_SECURITIES = "securities";
+
+    public static final String PATH_ATON = "aton";
 
     public static final String PATH_SUM = "type"; // используется при запросе к БД о получении всех вводов и сделок
 
@@ -110,5 +113,18 @@ public class Contract {
         public static final String COLUMN_TICKER = "ticker";
 
         public static final String COLUMN_NAME = "name";
+    }
+
+    public static final class AtonEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_ATON)
+                .build();
+
+        static final String TABLE_NAME = "aton_db";
+
+        public static final String COLUMN_ATON_NAME = "aton_name";
+
+        public static final String COLUMN_TICKER = "ticker";
     }
 }

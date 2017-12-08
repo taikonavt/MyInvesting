@@ -10,6 +10,7 @@ import com.example.maxim.myinvesting.data.Contract.DealsEntry;
 import com.example.maxim.myinvesting.data.Contract.InputEntry;
 import com.example.maxim.myinvesting.data.Contract.PortfolioEntry;
 import com.example.maxim.myinvesting.data.Contract.SecuritiesEntry;
+import com.example.maxim.myinvesting.data.Contract.AtonEntry;
 
 /**
  * Created by maxim on 26.03.17.
@@ -107,11 +108,23 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
                         SecuritiesEntry.COLUMN_TICKER + " STRING NOT NULL, " +
 
-                        SecuritiesEntry.COLUMN_NAME + " STRING NOT NULL" +
+                        SecuritiesEntry.COLUMN_NAME + " STRING NOT NULL " +
 
                         ");";
 
         db.execSQL(SQL_CREATE_SECURITIES_TABLE);
+
+//        final String SQL_CREATE_ATON_TABLE =
+//
+//                "CREATE TABLE " + AtonEntry.TABLE_NAME + " (" +
+//
+//                        AtonEntry.COLUMN_ATON_NAME + " STRING PRIMARY KEY, " +
+//
+//                        AtonEntry.COLUMN_TICKER + " STRING NOT NULL " +
+//
+//                        ");";
+//
+//        db.execSQL(SQL_CREATE_ATON_TABLE);
     }
 
     @Override
@@ -120,6 +133,7 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + InputEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PortfolioEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + SecuritiesEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + AtonEntry.TABLE_NAME);
         onCreate(db);
     }
 }

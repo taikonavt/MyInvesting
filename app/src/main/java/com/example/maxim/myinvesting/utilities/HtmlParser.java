@@ -1,5 +1,6 @@
 package com.example.maxim.myinvesting.utilities;
 
+import android.app.DialogFragment;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_MONEY;
@@ -39,7 +41,10 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
     // тип для обозначения налогов на дивидены
     private static final String TAX = "tax";
 
-    private long lastDealInsertionId;
+    // список id успешно вставленных
+    private ArrayList <Long> insertedDealsId;
+
+    private ArrayList <String> unknownIsnis;
 
     private String callingClass;
 
@@ -51,6 +56,9 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
     @Override
     protected BooleanWithMsg doInBackground(String... strings) {
+
+        insertedDealsId = new ArrayList<>();
+        unknownIsnis = new ArrayList<>();
 
         String path = strings[0];
 
@@ -168,14 +176,40 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         // получаю все ячейки из строки
         Elements cells = row.getElementsByTag("td");
 
+        String ticker;
+
         // получаю код ISIN
         String code = cells.get(5).text();
-        int firstSlash = code.indexOf("/", 0);
-        int secondSlash = code.indexOf("/", firstSlash + 1);
-        String isin = code.substring((firstSlash + 1), secondSlash);
 
-        // если в полученном коде есть пробелы убираю их
-        isin = isin.replace(" ", "");
+        int firstSlash = code.indexOf("/", 0);
+
+        if (firstSlash > 0) {
+
+            int secondSlash = code.indexOf("/", firstSlash + 1);
+
+            String isin = code.substring((firstSlash + 1), secondSlash);
+
+            // если в полученном коде есть пробелы убираю их
+            isin = isin.replace(" ", "");
+
+            Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code + " " + isin);
+
+            SecurityData securityData = new SecurityData();
+
+            // получаю тикер по ISIN
+            ticker = securityData.getTickerByIsin(isin);
+        }
+        else {
+
+            SecurityData securityData = new SecurityData();
+
+            ticker = securityData.getTickerByName(code);
+        }
+
+        if (ticker == null) {
+
+            unknownIsnis.add(code);
+        }
 
         // получаю номер портфеля
         String portfolio = cells.get(20).text();
@@ -193,11 +227,6 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
         if (!isExists)
             PortfolioNames.savePortfolioName(MyApp.getAppContext(), portfolio);
-
-        SecurityData securityData = new SecurityData();
-
-        // получаю тикер по ISIN
-        String ticker = securityData.getTickerByIsin(isin);
 
         String type;
 
@@ -272,7 +301,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         int fee = (int) ((firstFeeFlt +
                 secondFeeFlt) * MULTIPLIER_FOR_MONEY);
 
-        setDealInfo(portfolio, ticker, type, year, month, day, price, volume, fee);
+        insertedDealsId.add(setDealInfo(portfolio, ticker, type, year, month, day, price, volume, fee));
     }
 
     private long setDealInfo(String portfolio, String ticker, String type, int year,
@@ -502,7 +531,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             // получаю тикер по ISIN
             ticker = securityData.getTickerByIsin(regNum);
 
-            lastDealInsertionId = setDealInfo(portfolio, ticker, type, year, month, day, amount, 1, fee);
+            insertedDealsId.add(setDealInfo(portfolio, ticker, type, year, month, day, amount, 1, fee));
         }
 
         // налог на дивиденды
@@ -510,7 +539,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
             Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
                     .appendPath(Contract.PATH_DEALS)
-                    .appendPath(String.valueOf(lastDealInsertionId))
+                    .appendPath(String.valueOf(insertedDealsId.get(insertedDealsId.size() - 1)))
                     .build();
 
             MyApp.getAppContext().getContentResolver().update(uri, null, String.valueOf(amount), null);
@@ -673,7 +702,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
         int fee = 0;
 
-        setDealInfo(portfolio, ticker, type, year, month, day, price, volume, fee);
+        insertedDealsId.add(setDealInfo(portfolio, ticker, type, year, month, day, price, volume, fee));
     }
 
     private BooleanWithMsg checkIsItDealTable(Element table) throws NullPointerException {
@@ -681,6 +710,9 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         Elements rows = table.getElementsByTag("tr");
 
         Element oneRow = rows.first();
+
+        if (oneRow == null)
+            return new BooleanWithMsg(false);
 
         return new BooleanWithMsg(oneRow.text().equals("Исполненные сделки"));
     }
@@ -691,6 +723,9 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
         Element oneRow = rows.first();
 
+        if (oneRow == null)
+            return new BooleanWithMsg(false);
+
         return new BooleanWithMsg(oneRow.text().startsWith("Операции с денежными средствами"));
     }
 
@@ -699,6 +734,9 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         Elements rows = table.getElementsByTag("tr");
 
         Element oneRow = rows.first();
+
+        if (oneRow == null)
+            return new BooleanWithMsg(false);
 
         return new BooleanWithMsg(oneRow.text().startsWith("Операции по погашению ЦБ"));
     }
@@ -739,6 +777,8 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
                 if (flag) {
 
+Log.d(TAG, HtmlParser.class.getSimpleName() + " findRegNub() " + word);
+
                     return word;
                 }
             }
@@ -751,28 +791,120 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
     protected void onPostExecute(BooleanWithMsg operationOK) {
         super.onPostExecute(operationOK);
 
-        if (operationOK.getValue()) {
+Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute " +
+        operationOK.getValue() + " " + !unknownIsnis.isEmpty());
+
+        // если есть неизвестные ticker
+        if (operationOK.getValue() && !unknownIsnis.isEmpty()) {
+
+            Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
+
+            long[] longs = primitiveLong(insertedDealsId);
+
+            intent.putExtra(MainActivity.INSERTED_DEAL_ID_KEY, longs);
+
+            intent.putExtra(MainActivity.UNKNOWN_ISNIS_KEY, unknownIsnis.toArray(new String[0]));
+
+            // оповещаю mainActivity об окончании разбора файла
+            MyApp.getAppContext().sendBroadcast(intent);
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute 1");
+
+callLogLong(insertedDealsId);
+
+callLogString(unknownIsnis);
+        }
+        // если все ОК
+        else if (operationOK.getValue()) {
 
             Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
 
             intent.putExtra(MainActivity.REFRESH_KEY, REFRESH);
 
+            // оповещаю mainActivity об окончании разбора файла
             MyApp.getAppContext().sendBroadcast(intent);
 
             Toast.makeText(MyApp.getAppContext(), MyApp.getAppContext().
                     getString(R.string.htmlParsingIsOK), Toast.LENGTH_LONG).show();
+
+callLogLong(insertedDealsId);
+
+callLogString(unknownIsnis);
         }
+        // если ошибка
         else {
 
             String message;
 
+            // ошибка чтения файла
             if (operationOK.getMessage().isEmpty())
+
                 message = MyApp.getAppContext().getString(R.string.htmlParsingIsWrong);
+
+            // ошибка с сообщением (в файле нет таблицы)
             else
                 message = operationOK.getMessage();
 
             Toast.makeText(MyApp.getAppContext(), message, Toast.LENGTH_LONG).show();
+
+callLogLong(insertedDealsId);
+
+callLogString(unknownIsnis);
         }
+    }
+
+    long[] primitiveLong(ArrayList<Long> array){
+
+        Long[] longArray = array.toArray(new Long[array.size()]);
+
+        long[] result = new long[array.size()];
+
+        for (int i = 0; i < array.size(); i++) {
+
+            result[i] = longArray[i];
+        }
+
+        return result;
+    }
+
+    private void callLogString(ArrayList <String> arrayList) {
+
+        if (!(arrayList == null)) {
+
+            String[] strings = arrayList.toArray(new String[0]);
+
+            StringBuilder toLog = new StringBuilder();
+
+            for (int i = 0; i < strings.length; i++) {
+
+                toLog.append(strings[i]);
+            }
+
+            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + toLog.toString());
+        }
+        else
+            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + null);
+    }
+
+    private void callLogLong(ArrayList <Long> arrayList) {
+
+        if (!(arrayList == null)) {
+
+            Long [] strings = arrayList.toArray(new Long[0]);
+
+            StringBuilder toLog = new StringBuilder();
+
+            for (int i = 0; i < strings.length; i++) {
+
+                toLog
+                        .append(" ")
+                        .append(strings[i]);
+            }
+
+            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + toLog.toString());
+        }
+        else
+            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + null);
     }
 
 
