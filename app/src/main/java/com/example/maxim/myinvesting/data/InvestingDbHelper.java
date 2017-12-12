@@ -114,17 +114,17 @@ public class InvestingDbHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_CREATE_SECURITIES_TABLE);
 
-//        final String SQL_CREATE_ATON_TABLE =
-//
-//                "CREATE TABLE " + AtonEntry.TABLE_NAME + " (" +
-//
-//                        AtonEntry.COLUMN_ATON_NAME + " STRING PRIMARY KEY, " +
-//
-//                        AtonEntry.COLUMN_TICKER + " STRING NOT NULL " +
-//
-//                        ");";
-//
-//        db.execSQL(SQL_CREATE_ATON_TABLE);
+        final String SQL_CREATE_ATON_TABLE =
+
+                "CREATE TABLE " + AtonEntry.TABLE_NAME + " (" +
+
+                        AtonEntry.COLUMN_ATON_NAME + " STRING PRIMARY KEY, " +
+
+                        AtonEntry.COLUMN_TICKER + " STRING NOT NULL " +
+
+                        ");";
+
+        db.execSQL(SQL_CREATE_ATON_TABLE);
     }
 
     @Override

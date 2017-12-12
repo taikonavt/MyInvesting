@@ -2,6 +2,7 @@ package com.example.maxim.myinvesting.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
@@ -34,7 +35,7 @@ public class SecurityData {
         String result = null;
 
         // получаю данные о компании с ISIN из базы данных
-        Cursor cursor = getInfoFromDb(Contract.SecuritiesEntry.COLUMN_ISIN, isin);
+        Cursor cursor = getInfoFromSecTable(Contract.SecuritiesEntry.COLUMN_ISIN, isin);
 
         // если данных нет, запрашиваю из интернета
         if (!cursor.moveToFirst()) {
@@ -57,13 +58,46 @@ public class SecurityData {
         return result;
     }
 
-    public String getTickerByName(String name) {
+    public String getTickerByName(String atonName) {
 
-        return null;
+        InvestingDbHelper openHelper = new InvestingDbHelper(MyApp.getAppContext());
+
+        final SQLiteDatabase db = openHelper.getReadableDatabase();
+
+        String table_name = Contract.AtonEntry.TABLE_NAME;
+
+        String[] column_names = {Contract.AtonEntry.COLUMN_TICKER};
+
+        String selection = Contract.AtonEntry.COLUMN_ATON_NAME + " = '" + atonName + "'";
+
+        Cursor cursor = db.query(table_name,
+                column_names,
+                selection,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+
+            int index = cursor.getColumnIndex(Contract.AtonEntry.COLUMN_TICKER);
+
+            String ticker = cursor.getString(index);
+
+            cursor.close();
+
+            return ticker;
+        }
+        else {
+
+            cursor.close();
+
+            return null;
+        }
     }
 
     // передаю в метод название столбца и его значение, по которым нужно вернуть инфо о компании
-    private Cursor getInfoFromDb(String key, String value) {
+    private Cursor getInfoFromSecTable(String key, String value) {
 
         Uri uri = Contract.SecuritiesEntry.CONTENT_URI;
 

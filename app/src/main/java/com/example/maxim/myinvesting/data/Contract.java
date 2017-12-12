@@ -121,7 +121,7 @@ public class Contract {
                 .appendPath(PATH_ATON)
                 .build();
 
-        static final String TABLE_NAME = "aton_db";
+        public static final String TABLE_NAME = "aton_db";
 
         public static final String COLUMN_ATON_NAME = "aton_name";
 

@@ -791,9 +791,6 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " findRegNub() " + word);
     protected void onPostExecute(BooleanWithMsg operationOK) {
         super.onPostExecute(operationOK);
 
-Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute " +
-        operationOK.getValue() + " " + !unknownIsnis.isEmpty());
-
         // если есть неизвестные ticker
         if (operationOK.getValue() && !unknownIsnis.isEmpty()) {
 
@@ -807,12 +804,6 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute " +
 
             // оповещаю mainActivity об окончании разбора файла
             MyApp.getAppContext().sendBroadcast(intent);
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute 1");
-
-callLogLong(insertedDealsId);
-
-callLogString(unknownIsnis);
         }
         // если все ОК
         else if (operationOK.getValue()) {
@@ -826,10 +817,6 @@ callLogString(unknownIsnis);
 
             Toast.makeText(MyApp.getAppContext(), MyApp.getAppContext().
                     getString(R.string.htmlParsingIsOK), Toast.LENGTH_LONG).show();
-
-callLogLong(insertedDealsId);
-
-callLogString(unknownIsnis);
         }
         // если ошибка
         else {
@@ -846,14 +833,10 @@ callLogString(unknownIsnis);
                 message = operationOK.getMessage();
 
             Toast.makeText(MyApp.getAppContext(), message, Toast.LENGTH_LONG).show();
-
-callLogLong(insertedDealsId);
-
-callLogString(unknownIsnis);
         }
     }
 
-    long[] primitiveLong(ArrayList<Long> array){
+    private long[] primitiveLong(ArrayList<Long> array){
 
         Long[] longArray = array.toArray(new Long[array.size()]);
 
@@ -867,45 +850,47 @@ callLogString(unknownIsnis);
         return result;
     }
 
-    private void callLogString(ArrayList <String> arrayList) {
+    // TODO: 08.12.17 удалить когда не будет нужно
+//    private void callLogString(ArrayList <String> arrayList) {
+//
+//        if (!(arrayList == null)) {
+//
+//            String[] strings = arrayList.toArray(new String[0]);
+//
+//            StringBuilder toLog = new StringBuilder();
+//
+//            for (int i = 0; i < strings.length; i++) {
+//
+//                toLog.append(strings[i]);
+//            }
+//
+//            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + toLog.toString());
+//        }
+//        else
+//            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + null);
+//    }
 
-        if (!(arrayList == null)) {
-
-            String[] strings = arrayList.toArray(new String[0]);
-
-            StringBuilder toLog = new StringBuilder();
-
-            for (int i = 0; i < strings.length; i++) {
-
-                toLog.append(strings[i]);
-            }
-
-            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + toLog.toString());
-        }
-        else
-            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + null);
-    }
-
-    private void callLogLong(ArrayList <Long> arrayList) {
-
-        if (!(arrayList == null)) {
-
-            Long [] strings = arrayList.toArray(new Long[0]);
-
-            StringBuilder toLog = new StringBuilder();
-
-            for (int i = 0; i < strings.length; i++) {
-
-                toLog
-                        .append(" ")
-                        .append(strings[i]);
-            }
-
-            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + toLog.toString());
-        }
-        else
-            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + null);
-    }
+    // TODO: 08.12.17 удалить когда не будет нужно
+//    private void callLogLong(ArrayList <Long> arrayList) {
+//
+//        if (!(arrayList == null)) {
+//
+//            Long [] strings = arrayList.toArray(new Long[0]);
+//
+//            StringBuilder toLog = new StringBuilder();
+//
+//            for (int i = 0; i < strings.length; i++) {
+//
+//                toLog
+//                        .append(" ")
+//                        .append(strings[i]);
+//            }
+//
+//            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + toLog.toString());
+//        }
+//        else
+//            Log.d(TAG, HtmlParser.class.getSimpleName() + " onPostExecute() " + null);
+//    }
 
 
     class BooleanWithMsg {

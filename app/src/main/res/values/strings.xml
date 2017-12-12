@@ -4,6 +4,7 @@
     <!-- main_activity -->
     <string name="deal_btn">Deal info</string>
     <string name="input_btn">Input info</string>
+    <string name="repeat_last_operation">Please, repeat last operation!</string>
 
     <!-- navigation drawer menu items -->
     <string name="nav_deal_item">Deals</string>

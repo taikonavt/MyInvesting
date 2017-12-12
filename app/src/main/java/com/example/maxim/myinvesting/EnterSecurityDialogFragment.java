@@ -1,7 +1,6 @@
 package com.example.maxim.myinvesting;
 
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +25,8 @@ public class EnterSecurityDialogFragment extends DialogFragment
 
     private String askedTicker;
 
+    private static final String ASKED_TICKER_KEY = "tv_key";
+
     // интерефейс реализуемый в MainActivity для взаимодействия активити и диалогфрагмента
     public interface FragmentSecurityListener {
         void fragmentSecurityOnClickOKButton(String string);
@@ -38,6 +39,11 @@ public class EnterSecurityDialogFragment extends DialogFragment
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+
+            askedTicker = savedInstanceState.getString(ASKED_TICKER_KEY);
+        }
 
         View view = inflater.inflate(R.layout.enter_name_of_secutiry_dialog_fragment, null);
 
@@ -53,6 +59,13 @@ public class EnterSecurityDialogFragment extends DialogFragment
         textView.setText(string);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(ASKED_TICKER_KEY, askedTicker);
     }
 
     @Override

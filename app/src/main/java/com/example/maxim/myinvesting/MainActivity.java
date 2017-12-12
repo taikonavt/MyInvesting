@@ -3,12 +3,14 @@ package com.example.maxim.myinvesting;
 import android.Manifest;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +31,7 @@ import android.view.SubMenu;
 import android.widget.Toast;
 
 import com.example.maxim.myinvesting.data.Contract;
+import com.example.maxim.myinvesting.data.InvestingDbHelper;
 import com.example.maxim.myinvesting.data.PortfolioItem;
 import com.example.maxim.myinvesting.data.PortfolioNames;
 import com.example.maxim.myinvesting.utilities.HtmlParser;
@@ -48,7 +51,9 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
 
     private InfoFragment fragment = null;
-    private final String FRAGMENT_KEY = "key";
+    private static String FRAGMENT_KEY = "key";
+    private static final String UNKNOWN_STRINGS_KEY = "unknown";
+    private static final String UNKNOWN_STR_INDEX_KEY = "unknown_index";
 
     private boolean showAddButton = true;
     private boolean showDeleteButton = false;
@@ -72,6 +77,10 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState != null) {
 
             nameOfPortfolio = savedInstanceState.getString(NAME_OF_PROTFOLIO_KEY);
+
+            securityStringsUnknown = savedInstanceState.getStringArray(UNKNOWN_STRINGS_KEY);
+
+            unknownSecIndex = savedInstanceState.getInt(UNKNOWN_STR_INDEX_KEY);
 
             Fragment saveFragment = getSupportFragmentManager().getFragment(savedInstanceState,
                     FRAGMENT_KEY);
@@ -126,16 +135,12 @@ public class MainActivity extends AppCompatActivity
 
                 long[] stringsInsertedId = intent.getLongArrayExtra(INSERTED_DEAL_ID_KEY);
 
-Log.d(TAG, MainActivity.class.getSimpleName() + " onReceive() " + stringRefresh + " " + stringsUnknown + " " + stringsInsertedId);
-
                 if (stringRefresh != null && stringRefresh.equals(HtmlParser.REFRESH)) {
 
                     // обновляю
                     refresh();
                 }
                 else if (stringsUnknown != null) {
-
-Log.d(TAG, MainActivity.class.getSimpleName() + " onReceive(); 1");
 
                     toKnowTicker(stringsUnknown, stringsInsertedId);
                 }
@@ -165,6 +170,10 @@ Log.d(TAG, MainActivity.class.getSimpleName() + " onReceive(); 1");
         }
 
         outState.putString(NAME_OF_PROTFOLIO_KEY, nameOfPortfolio);
+
+        outState.putStringArray(UNKNOWN_STRINGS_KEY, securityStringsUnknown);
+
+        outState.putInt(UNKNOWN_STR_INDEX_KEY, unknownSecIndex);
     }
 
     @Override
@@ -491,14 +500,14 @@ Log.d(TAG, MainActivity.class.getSimpleName() + " onReceive(); 1");
         addItemsToDrawer(mDrawer);
     }
 
-    String[] securityStringsUnknown;
-    long[] securityStringsInsertedId;
+    //todo Сохранить при вращении
+    private String[] securityStringsUnknown;
+
+    private int unknownSecIndex;
 
     private void toKnowTicker(String[] stringsUnknown, long[] stringsInsertedId) {
 
 Log.d(TAG, MainActivity.class.getSimpleName() + " toKnowTicker() ");
-
-        securityStringsInsertedId = stringsInsertedId;
 
         securityStringsUnknown = stringsUnknown;
 
@@ -506,22 +515,53 @@ Log.d(TAG, MainActivity.class.getSimpleName() + " toKnowTicker() ");
 
         EnterSecurityDialogFragment dialogFragment = new EnterSecurityDialogFragment();
 
-        dialogFragment.setAskedTicker(securityStringsUnknown[0]);
+        unknownSecIndex = 0;
+
+        dialogFragment.setAskedTicker(securityStringsUnknown[unknownSecIndex]);
 
         dialogFragment.show(getFragmentManager(), "Enter security fragment");
+
+        Uri uri = Contract.DealsEntry.CONTENT_URI;
+
+        for (long l :
+                stringsInsertedId) {
+
+            Uri tempUri = uri.buildUpon().appendPath(String.valueOf(l)).build();
+
+            getContentResolver().delete(tempUri, null, null);
+        }
     }
 
     @Override
     public void fragmentSecurityOnClickOKButton(String ticker) {
 
-//        Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
-//                .appendPath(Contract.PATH_DEALS)
-//                .build();
-//
-//        String[] projection = {Contract.DealsEntry.COLUMN_TICKER};
-//
-//        String selection = Contract.DealsEntry.
-//
-//        getContentResolver().query()
+        InvestingDbHelper openHelper = new InvestingDbHelper(this);
+
+        final SQLiteDatabase db = openHelper.getReadableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(Contract.AtonEntry.COLUMN_ATON_NAME, securityStringsUnknown[unknownSecIndex]);
+
+        cv.put(Contract.AtonEntry.COLUMN_TICKER, ticker);
+
+        db.insert(Contract.AtonEntry.TABLE_NAME, null, cv);
+
+        unknownSecIndex++;
+
+        if (unknownSecIndex < securityStringsUnknown.length) {
+
+            drawerLayout.closeDrawers();
+
+            EnterSecurityDialogFragment dialogFragment = new EnterSecurityDialogFragment();
+
+            dialogFragment.setAskedTicker(securityStringsUnknown[unknownSecIndex]);
+
+            dialogFragment.show(getFragmentManager(), "Enter security fragment");
+        }
+        else {
+
+            Toast.makeText(this, getString(R.string.repeat_last_operation), Toast.LENGTH_LONG).show();
+        }
     }
 }
