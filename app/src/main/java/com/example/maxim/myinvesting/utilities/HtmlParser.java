@@ -1,6 +1,5 @@
 package com.example.maxim.myinvesting.utilities;
 
-import android.app.DialogFragment;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,8 +7,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.maxim.myinvesting.AddDealActivity;
-import com.example.maxim.myinvesting.AddInputActivity;
 import com.example.maxim.myinvesting.MainActivity;
 import com.example.maxim.myinvesting.R;
 import com.example.maxim.myinvesting.data.Contract;
@@ -68,18 +65,18 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
         // в зависимости от вызывающего класса запускаю парсинг той или иной таблицы
         try {
-            if (callingClass.equals(AddDealActivity.class.getSimpleName())) {
+//            if (callingClass.equals(AddDealActivity.class.getSimpleName())) {
 
                 BooleanWithMsg first = openDealTable(path);
 
                 BooleanWithMsg second = openRepaymentTable(path);
 
                 operationOK.setValue(first.getValue() || second.getValue());
-            }
-            else if (callingClass.equals(AddInputActivity.class.getSimpleName())) {
+//            }
+//            else if (callingClass.equals(AddInputActivity.class.getSimpleName())) {
 
                 operationOK = openInputTable(path);
-            }
+//            }
         } catch (IOException e) {
 
             Log.e(TAG, "Html parsing - IOException");
@@ -184,6 +181,8 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
         int firstSlash = code.indexOf("/", 0);
 
+        // если значение расположения первого слэша больше нуля, то значит таблица нового типа
+        // и я беру значение между двумя слэшами
         if (firstSlash > 0) {
 
             int secondSlash = code.indexOf("/", firstSlash + 1);
@@ -200,6 +199,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             // получаю тикер по ISIN
             ticker = securityData.getTickerByIsin(isin);
         }
+        // иначе таблица старая и я беру значение тикера из таблицы соответствия атона
         else {
 
             SecurityData securityData = new SecurityData();
@@ -207,6 +207,8 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             ticker = securityData.getTickerByName(code);
         }
 
+        // если тикер определить не удалось, значит в таблице его нет
+        // и я добавляю его в таблицу
         if (ticker == null) {
 
             unknownIsnis.add(code);
@@ -311,6 +313,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
         ContentValues contentValues = new ContentValues();
 
+        // проверяю тикер на наличие изменений в количестве акций в лоте
         if (ticker != null) {
 
             HardcodedRules hardcodedRules = new HardcodedRules();
@@ -789,8 +792,6 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
                 }
 
                 if (flag) {
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " findRegNub() " + word);
 
                     return word;
                 }

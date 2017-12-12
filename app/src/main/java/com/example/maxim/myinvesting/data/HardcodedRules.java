@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.maxim.myinvesting.utilities.DateUtils;
 
-import java.awt.font.TextAttribute;
 import java.util.Calendar;
 
 import static com.example.maxim.myinvesting.data.Const.TAG;
@@ -23,6 +22,8 @@ public class HardcodedRules {
 
         priceAndVolume.volume = volume;
 
+        // с 1.01.15 акция Интер РАО стала равна 100 шт. до этой даты
+        // если дата раньше, то изменяю цену и объем
         if (ticker.equals("IRAO") && (time < DateUtils.getTimeForMoscowInMillis(2015, Calendar.JANUARY, 1))) {
 
             priceAndVolume.price = priceAndVolume.price * 100;

@@ -101,7 +101,6 @@ public class EnterSecurityDialogFragment extends DialogFragment
                     throw new ClassCastException(getActivity().toString()
                             + " must implement FragmentListener");
                 }
-                // TODO: 02.08.17 Попробовать запустить эту ошибку
 
                 mListener.fragmentSecurityOnClickOKButton(ticker);
 

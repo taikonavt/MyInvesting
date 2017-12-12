@@ -38,6 +38,8 @@ import com.example.maxim.myinvesting.utilities.HtmlParser;
 
 import static com.example.maxim.myinvesting.data.Const.*;
 
+// TODO: 12.12.17 Редактирование таблицы Атон на случай ошибки во вводе
+// TODO: 12.12.17 Парсинг таблицы с коммисией за ведение ИИС
 
 public class MainActivity extends AppCompatActivity
                     implements EnterPortfolioDialogFragment.FragmentPortfolioListener,
@@ -131,15 +133,18 @@ public class MainActivity extends AppCompatActivity
 
                 String stringRefresh = intent.getStringExtra(REFRESH_KEY);
 
+                // неизвестные названия компаний из таблицы сделок
                 String[] stringsUnknown = intent.getStringArrayExtra(UNKNOWN_ISNIS_KEY);
 
                 long[] stringsInsertedId = intent.getLongArrayExtra(INSERTED_DEAL_ID_KEY);
 
+                // если есть значение ключа refresh обновляю
                 if (stringRefresh != null && stringRefresh.equals(HtmlParser.REFRESH)) {
 
                     // обновляю
                     refresh();
                 }
+                // если нет ключа refresh, но есть stringsUnknown
                 else if (stringsUnknown != null) {
 
                     toKnowTicker(stringsUnknown, stringsInsertedId);
@@ -500,14 +505,12 @@ public class MainActivity extends AppCompatActivity
         addItemsToDrawer(mDrawer);
     }
 
-    //todo Сохранить при вращении
+    // неизвестные компании из таблицы сделок
     private String[] securityStringsUnknown;
 
     private int unknownSecIndex;
 
     private void toKnowTicker(String[] stringsUnknown, long[] stringsInsertedId) {
-
-Log.d(TAG, MainActivity.class.getSimpleName() + " toKnowTicker() ");
 
         securityStringsUnknown = stringsUnknown;
 
@@ -517,6 +520,7 @@ Log.d(TAG, MainActivity.class.getSimpleName() + " toKnowTicker() ");
 
         unknownSecIndex = 0;
 
+        // запускаю dialogFragment для ручного ввода тикера неизвестной компании
         dialogFragment.setAskedTicker(securityStringsUnknown[unknownSecIndex]);
 
         dialogFragment.show(getFragmentManager(), "Enter security fragment");
@@ -535,6 +539,7 @@ Log.d(TAG, MainActivity.class.getSimpleName() + " toKnowTicker() ");
     @Override
     public void fragmentSecurityOnClickOKButton(String ticker) {
 
+        // вставляю тикер компании в БД атон
         InvestingDbHelper openHelper = new InvestingDbHelper(this);
 
         final SQLiteDatabase db = openHelper.getReadableDatabase();
@@ -549,6 +554,7 @@ Log.d(TAG, MainActivity.class.getSimpleName() + " toKnowTicker() ");
 
         unknownSecIndex++;
 
+        // запускаю диалог со следующей неизвестной компанией
         if (unknownSecIndex < securityStringsUnknown.length) {
 
             drawerLayout.closeDrawers();
