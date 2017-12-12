@@ -11,7 +11,7 @@ import java.util.TimeZone;
 public class DateUtils {
 
     // возвращает время в миллисекундах для указанной даты
-    public static long getTimeForMoscowInMillis(int yy, int mm, int dd) {
+    public static long getTimeForMoscowInMillis(int yyyy, int mm, int dd) {
 
         GregorianCalendar calendar;
 
@@ -21,7 +21,7 @@ public class DateUtils {
 
         calendar.clear();
 
-        calendar.set(yy, mm, dd, 0, 0, 0);
+        calendar.set(yyyy, mm, dd, 0, 0, 0);
 
         return calendar.getTimeInMillis();
     }

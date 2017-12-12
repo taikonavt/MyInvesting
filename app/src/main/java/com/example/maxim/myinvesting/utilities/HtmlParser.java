@@ -13,6 +13,7 @@ import com.example.maxim.myinvesting.AddInputActivity;
 import com.example.maxim.myinvesting.MainActivity;
 import com.example.maxim.myinvesting.R;
 import com.example.maxim.myinvesting.data.Contract;
+import com.example.maxim.myinvesting.data.HardcodedRules;
 import com.example.maxim.myinvesting.data.PortfolioNames;
 import com.example.maxim.myinvesting.data.SecurityData;
 
@@ -298,8 +299,8 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         else
             secondFeeFlt = 0;
 
-        int fee = (int) ((firstFeeFlt +
-                secondFeeFlt) * MULTIPLIER_FOR_MONEY);
+        int fee = (int) (firstFeeFlt * MULTIPLIER_FOR_MONEY +
+                secondFeeFlt * MULTIPLIER_FOR_MONEY);
 
         insertedDealsId.add(setDealInfo(portfolio, ticker, type, year, month, day, price, volume, fee));
     }
@@ -309,6 +310,18 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             throws UnsupportedOperationException {
 
         ContentValues contentValues = new ContentValues();
+
+        if (ticker != null) {
+
+            HardcodedRules hardcodedRules = new HardcodedRules();
+
+            HardcodedRules.PriceAndVolume priceAndVolume = hardcodedRules.
+                    checkTicker(ticker, DateUtils.getTimeForMoscowInMillis(year, month, day), price, volume);
+
+            price = priceAndVolume.getPrice();
+
+            volume = priceAndVolume.getVolume();
+        }
 
         contentValues.put(Contract.DealsEntry.COLUMN_PORTFOLIO, portfolio);
         contentValues.put(Contract.DealsEntry.COLUMN_TICKER, ticker);

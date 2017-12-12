@@ -287,7 +287,7 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                             itemView.getContext(), R.color.colorSell));
 
                     String string = "+" + String.valueOf((
-                            (float) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
+                            (double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
 
                     tvInfoItemCost.setText(string);
 
@@ -297,8 +297,8 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                     llRowInfo.setBackgroundColor(ContextCompat.getColor(
                             itemView.getContext(), R.color.colorBuy));
 
-                    String string = "-" + String.valueOf(
-                            (float) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
+                            String string = "-" + String.valueOf(
+                            (double) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
 
                     tvInfoItemCost.setText(string);
 
@@ -309,7 +309,7 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                             itemView.getContext(), R.color.colorDiv));
 
                     String string = "+" + String.valueOf(
-                            (float) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
+                            (double) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
 
                     tvInfoItemCost.setText(string);
                 }

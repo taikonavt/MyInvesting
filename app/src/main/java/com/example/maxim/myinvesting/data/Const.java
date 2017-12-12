@@ -5,7 +5,7 @@ package com.example.maxim.myinvesting.data;
  */
 
 public class Const {
-    public final static int MULTIPLIER_FOR_MONEY = 10000;
+    public final static int MULTIPLIER_FOR_MONEY = 1000000;
     public final static int MULTIPLIER_FOR_CURRENCY = 100;
     public static final String TAG = "MyLog";
     public final static String KEY = "key"; // используется для формирования подменю портфелей в Drawer
