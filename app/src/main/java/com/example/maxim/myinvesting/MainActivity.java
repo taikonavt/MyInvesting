@@ -41,7 +41,6 @@ import static com.example.maxim.myinvesting.data.Const.*;
 // TODO: 12.12.17 Редактирование таблицы Атон на случай ошибки во вводе
 // TODO: 12.12.17 Парсинг таблицы с коммисией за ведение ИИС
 // TODO: 13.12.17 Добавить дивиденды в таблицу с историей тикера
-// todo Добавить НДФЛ
 
 public class MainActivity extends AppCompatActivity
                     implements EnterPortfolioDialogFragment.FragmentPortfolioListener,

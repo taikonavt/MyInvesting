@@ -288,13 +288,13 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                 llRowInfo.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorSell));
 
-Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + lPrice + " " + lVolume + " " + lFee);
-
-Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (lPrice * lVolume - lFee));
-
-Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (double) (lPrice * lVolume - lFee));
-
-Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
+//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + lPrice + " " + lVolume + " " + lFee);
+//
+//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (lPrice * lVolume - lFee));
+//
+//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (double) (lPrice * lVolume - lFee));
+//
+//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
 
                         String string = "+" + String.valueOf((
                         (double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
@@ -305,13 +305,13 @@ Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPric
                 llRowInfo.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorBuy));
 
-Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + lPrice + " " + lVolume + " " + lFee);
-
-Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (lPrice * lVolume + lFee));
-
-Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (double) (lPrice * lVolume + lFee));
-
-Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume + lFee) / MULTIPLIER_FOR_MONEY));
+//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + lPrice + " " + lVolume + " " + lFee);
+//
+//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (lPrice * lVolume + lFee));
+//
+//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (double) (lPrice * lVolume + lFee));
+//
+//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume + lFee) / MULTIPLIER_FOR_MONEY));
 
                         String string = "-" + String.valueOf(
                         (double) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);

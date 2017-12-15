@@ -101,6 +101,7 @@ public class PortfolioData {
         return portfolioItems;
     }
 
+    // получаю textView из PortfolioFragment и устанавливаю профит и кост
     public void setProfitAndCostOfPortfolio(TextView tvProfitability, TextView tvCostOfPortfolio) {
 
         this.tvProfitability = new WeakReference<TextView>(tvProfitability);
@@ -117,14 +118,19 @@ public class PortfolioData {
         }
     }
 
+    // устанавливает готовые профит и кост в textView
     private void setProfitAndCostToTv() {
 
         try {
             tvCostOfPortfolio.get().setText(String.valueOf(costOfPortfolio / MULTIPLIER_FOR_MONEY));
 
+Log.d(TAG, PortfolioData.class.getSimpleName() + " setProfitAndCostToTv(); " + mProfitability);
+
             DecimalFormat df = new DecimalFormat("#.##");
             String str = df.format(mProfitability * 100)  + "%";
             tvProfitability.get().setText(str);
+
+Log.d(TAG, PortfolioData.class.getSimpleName() + " setProfitAndCostToTv(); " + df.format(mProfitability * 100));
 
         } catch (NullPointerException e) {
 
@@ -160,6 +166,7 @@ public class PortfolioData {
 
             for (int i = 0; i < portfolioItems.size() - 1; i++) {
 
+
                 while (!portfolioItems.get(i).priceIsReady) {
 
                     try {
@@ -181,13 +188,13 @@ public class PortfolioData {
             }
 
             // вычисляю и устанавливаю в массив количество свободных денег
-            long freeMoney = (int) (getInputs() - getBuys() +
-                    getSells() + getDividends() - getOutputs() - getFees() - getNdfl());
+            long freeMoney = (getInputs() - getBuys() +
+                    getSells() + getDividends() - getOutputs() - getFees() + getNdfl());
 
             int size = portfolioItems.size();
 
             // свободные деньги всегда последним пунктом в массиве
-            portfolioItems.get(size-1).setPrice(freeMoney);
+            portfolioItems.get(size - 1).setPrice(freeMoney);
 
             costOfPortfolio = freeMoney + costOfItems;
         }
@@ -598,9 +605,14 @@ public class PortfolioData {
                     else if (cursor.getString(typeIndex).equals(strings[1])) {
                         tempAmount = - cursor.getInt(amountIndex);
                         // если тип = чему то другому, то пишем в лог
-                    } else {
+                    }
+                    else if (cursor.getString(typeIndex).equals(strings[2])) {
                         tempAmount = 0;
-                        Log.d(TAG, cursor.getString(typeIndex) + "Не верный тип ввода");
+                    }
+                    else {
+                        tempAmount = 0;
+                        Log.d(TAG, PortfolioData.class.getSimpleName() +
+                                " AverageInvestment() 3) " + cursor.getString(typeIndex) + " Не верный тип ввода");
                     }
 
                     // считываем начало периода из курсора
@@ -656,9 +668,14 @@ public class PortfolioData {
                         else if (cursor.getString(typeIndex).equals(strings[1])) {
 
                             tempAmount = - cursor.getInt(amountIndex);
-                        } else {
+                        }
+                        else if (cursor.getString(typeIndex).equals(strings[2])) {
                             tempAmount = 0;
-                            Log.d(TAG, "Не верный тип ввода");
+                        }
+                        else {
+                            tempAmount = 0;
+                            Log.d(TAG, PortfolioData.class.getSimpleName() +
+                                    " AverageInvestment() 4) " + cursor.getString(typeIndex) + " Не верный тип ввода");
                         }
 
                         // задаю начало слудующего подпериода

@@ -128,6 +128,8 @@ public class AddInputActivity extends AppCompatActivity {
 
             type = spinnerType.getSelectedItem().toString();
 
+Log.d(TAG, AddInputActivity.class.getSimpleName() + " onClick(); " + type);
+
             year = Integer.valueOf(eTYear.getText().toString());
 
             // ввел это условие т.к. все мои вводы были сделаны после 2014 года

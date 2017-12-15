@@ -302,19 +302,24 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
 
                 tvInfoInputItemAmount.setText(string);
             }
+            // НДФЛ
             else if (lType.equals(inputType[2])) {
 
                 llRowInput.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorDiv));
 
-                String string = String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
-                        " " + lCurrency;
+                String string;
+
+                if (lAmount >= 0)
+                    string = "+" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) + " " + lCurrency;
+                else
+                    string = String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) + " " + lCurrency;
 
                 tvInfoInputItemAmount.setText(string);
             }
             else {
                 llRowInput.setBackgroundColor(0);
-                Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
+                Log.d(TAG, "InfoInputAdapter.java, switch(lType) {default}");
             }
 
             // вход в режим "ActionMode" при долгом нажатии

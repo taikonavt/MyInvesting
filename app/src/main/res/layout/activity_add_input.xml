@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_for_fields"
                 android:ems="5"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned|numberDecimal"
                 android:layout_marginTop="24dp"
                 app:layout_constraintLeft_toLeftOf="@+id/spinnerType_input"
                 android:layout_marginRight="8dp"
