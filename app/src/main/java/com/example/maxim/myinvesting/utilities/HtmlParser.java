@@ -39,8 +39,12 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
     // тип для обозначения налогов на дивидены
     private static final String TAX = "tax";
 
+    private static final String NDFL = "ndfl";
+
     // список id успешно вставленных
     private ArrayList <Long> insertedDealsId;
+
+    private ArrayList <Long> insertedInputsId;
 
     private ArrayList <String> unknownIsnis;
 
@@ -56,7 +60,10 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
     protected BooleanWithMsg doInBackground(String... strings) {
 
         insertedDealsId = new ArrayList<>();
+
         unknownIsnis = new ArrayList<>();
+
+        insertedInputsId = new ArrayList<>();
 
         String path = strings[0];
 
@@ -71,11 +78,13 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
                 BooleanWithMsg second = openRepaymentTable(path);
 
-                operationOK.setValue(first.getValue() || second.getValue());
+//                operationOK.setValue(first.getValue() || second.getValue());
 //            }
 //            else if (callingClass.equals(AddInputActivity.class.getSimpleName())) {
 
-                operationOK = openInputTable(path);
+                BooleanWithMsg third = openInputTable(path);
+
+                operationOK.setValue(first.getValue() || second.getValue() || third.getValue());
 //            }
         } catch (IOException e) {
 
@@ -326,6 +335,8 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             volume = priceAndVolume.getVolume();
         }
 
+Log.d(TAG, HtmlParser.class.getSimpleName() + " setDealInfo() " + price + " " + volume + " " + fee);
+
         contentValues.put(Contract.DealsEntry.COLUMN_PORTFOLIO, portfolio);
         contentValues.put(Contract.DealsEntry.COLUMN_TICKER, ticker);
         contentValues.put(Contract.DealsEntry.COLUMN_TYPE, type);
@@ -497,10 +508,16 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             type = "unusable";
         }
 
+        else if (typeHtml.startsWith("НДФЛ") || typeHtml.startsWith("Доудержание НДФЛ")) {
+
+            // NDFL
+            type = typeInput[2];
+        }
+
         else
             throw new UnsupportedCharsetException(typeHtml);
 
-        amount = Math.abs(amount);
+        long amountAbs = Math.abs(amount);
 
         // получаю номер портфеля
         String portfolio = cells.get(7).text();
@@ -522,13 +539,13 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         // Input
         if (type.equals(typeInput[0])) {
 
-            setInputInfo(type, year, month, day, amount, currency, fee, portfolio, note);
+            insertedInputsId.add(setInputInfo(type, year, month, day, amountAbs, currency, fee, portfolio, note));
         }
 
         // Output
         if (type.equals(typeInput[1])) {
 
-            setInputInfo(type, year, month, day, amount, currency, fee, portfolio, note);
+            insertedInputsId.add(setInputInfo(type, year, month, day, amountAbs, currency, fee, portfolio, note));
         }
 
         String ticker = null;
@@ -547,7 +564,8 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             // получаю тикер по ISIN
             ticker = securityData.getTickerByIsin(regNum);
 
-            insertedDealsId.add(setDealInfo(portfolio, ticker, type, year, month, day, amount, 1, fee));
+            // добавляю deal в БД и добавляю id строки в список вставленных строк
+            insertedDealsId.add(setDealInfo(portfolio, ticker, type, year, month, day, amountAbs, 1, fee));
         }
 
         // налог на дивиденды
@@ -555,14 +573,20 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
             Uri uri = Contract.BASE_CONTENT_URI.buildUpon()
                     .appendPath(Contract.PATH_DEALS)
-                    .appendPath(String.valueOf(insertedDealsId.get(insertedDealsId.size() - 1)))
+                    .appendPath(String.valueOf(insertedDealsId.get(insertedDealsId.size() - 1))) // id предыдущей операции
                     .build();
 
-            MyApp.getAppContext().getContentResolver().update(uri, null, String.valueOf(amount), null);
+            MyApp.getAppContext().getContentResolver().update(uri, null, String.valueOf(amountAbs), null);
+        }
+
+        // НДФЛ
+        if (type.equals(typeInput[2])) {
+
+            insertedInputsId.add(setInputInfo(type, year, month, day, amount, currency, fee, portfolio, note));
         }
     }
 
-    private void setInputInfo(String type, int year, int month, int day, long amount,
+    private long setInputInfo(String type, int year, int month, int day, long amount,
                               String currency, int fee, String portfolio, String note)
             throws UnsupportedOperationException {
 
@@ -583,8 +607,12 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         // сообщение о вставке транзакции в базу данных
         String string = uri.getPathSegments().get(1);
 
-        if (Long.parseLong(string) < 0)
+        long id = Long.parseLong(string);
+
+        if (id < 0)
             throw new UnsupportedCharsetException("Database insertion error");
+
+        return id;
     }
 
     // открываю таблицу "Операции по погашению ЦБ"
@@ -810,9 +838,13 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
             Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
 
-            long[] longs = primitiveLong(insertedDealsId);
+            long[] longDeal = primitiveLong(insertedDealsId);
 
-            intent.putExtra(MainActivity.INSERTED_DEAL_ID_KEY, longs);
+            long[] longInput = primitiveLong(insertedInputsId);
+
+            intent.putExtra(MainActivity.INSERTED_DEAL_ID_KEY, longDeal);
+
+            intent.putExtra(MainActivity.INSERTED_INPUT_ID_KEY, longInput);
 
             intent.putExtra(MainActivity.UNKNOWN_ISNIS_KEY, unknownIsnis.toArray(new String[0]));
 

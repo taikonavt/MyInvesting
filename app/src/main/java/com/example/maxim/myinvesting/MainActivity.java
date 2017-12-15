@@ -40,6 +40,8 @@ import static com.example.maxim.myinvesting.data.Const.*;
 
 // TODO: 12.12.17 Редактирование таблицы Атон на случай ошибки во вводе
 // TODO: 12.12.17 Парсинг таблицы с коммисией за ведение ИИС
+// TODO: 13.12.17 Добавить дивиденды в таблицу с историей тикера
+// todo Добавить НДФЛ
 
 public class MainActivity extends AppCompatActivity
                     implements EnterPortfolioDialogFragment.FragmentPortfolioListener,
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final String REFRESH_KEY = "refresh";
     public static final String INSERTED_DEAL_ID_KEY = "insertedDealId";
+    public static final String INSERTED_INPUT_ID_KEY = "insertedInputId";
     public static final String UNKNOWN_ISNIS_KEY = "unknownIsnis";
     public static final String BROADCAST_ACTION = "com.example.maxim.myinvesting";
 
@@ -136,7 +139,9 @@ public class MainActivity extends AppCompatActivity
                 // неизвестные названия компаний из таблицы сделок
                 String[] stringsUnknown = intent.getStringArrayExtra(UNKNOWN_ISNIS_KEY);
 
-                long[] stringsInsertedId = intent.getLongArrayExtra(INSERTED_DEAL_ID_KEY);
+                long[] dealsInsertedId = intent.getLongArrayExtra(INSERTED_DEAL_ID_KEY);
+
+                long[] inputsInsertedId = intent.getLongArrayExtra(INSERTED_INPUT_ID_KEY);
 
                 // если есть значение ключа refresh обновляю
                 if (stringRefresh != null && stringRefresh.equals(HtmlParser.REFRESH)) {
@@ -147,7 +152,7 @@ public class MainActivity extends AppCompatActivity
                 // если нет ключа refresh, но есть stringsUnknown
                 else if (stringsUnknown != null) {
 
-                    toKnowTicker(stringsUnknown, stringsInsertedId);
+                    toKnowTicker(stringsUnknown, dealsInsertedId, inputsInsertedId);
                 }
             }
         };
@@ -510,7 +515,7 @@ public class MainActivity extends AppCompatActivity
 
     private int unknownSecIndex;
 
-    private void toKnowTicker(String[] stringsUnknown, long[] stringsInsertedId) {
+    private void toKnowTicker(String[] stringsUnknown, long[] dealsInsertedId, long[] inputsInsertedId) {
 
         securityStringsUnknown = stringsUnknown;
 
@@ -525,12 +530,20 @@ public class MainActivity extends AppCompatActivity
 
         dialogFragment.show(getFragmentManager(), "Enter security fragment");
 
-        Uri uri = Contract.DealsEntry.CONTENT_URI;
+        Uri uriDeal = Contract.DealsEntry.CONTENT_URI;
 
         for (long l :
-                stringsInsertedId) {
+                dealsInsertedId) {
 
-            Uri tempUri = uri.buildUpon().appendPath(String.valueOf(l)).build();
+            Uri tempUri = uriDeal.buildUpon().appendPath(String.valueOf(l)).build();
+
+            getContentResolver().delete(tempUri, null, null);
+        }
+
+        for (long l :
+                inputsInsertedId) {
+
+            Uri tempUri = uriDeal.buildUpon().appendPath(String.valueOf(l)).build();
 
             getContentResolver().delete(tempUri, null, null);
         }

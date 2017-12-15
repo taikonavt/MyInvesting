@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
+import com.example.maxim.myinvesting.utilities.MyApp;
 
 import java.util.ArrayList;
 
@@ -250,7 +251,7 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                   String lTicker,
                   String lType,
                   String lDate,
-                  int lPrice,
+                  long lPrice,
                   int lVolume,
                   int lFee) {
 
@@ -281,41 +282,53 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                 checkBox.setVisibility(View.VISIBLE);
             else checkBox.setVisibility(View.GONE);
 
-            switch (lType) {
-                case "Sell": {
-                    llRowInfo.setBackgroundColor(ContextCompat.getColor(
-                            itemView.getContext(), R.color.colorSell));
+            String[] dealsType = MyApp.getAppContext().getResources().getStringArray(R.array.spinType_deal_array);
 
-                    String string = "+" + String.valueOf((
-                            (double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
+            if(lType.equals(dealsType[0])) {
+                llRowInfo.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorSell));
 
-                    tvInfoItemCost.setText(string);
+Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + lPrice + " " + lVolume + " " + lFee);
 
-                    break;
-                }
-                case "Buy": {
-                    llRowInfo.setBackgroundColor(ContextCompat.getColor(
-                            itemView.getContext(), R.color.colorBuy));
+Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (lPrice * lVolume - lFee));
 
-                            String string = "-" + String.valueOf(
-                            (double) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
+Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (double) (lPrice * lVolume - lFee));
 
-                    tvInfoItemCost.setText(string);
+Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
 
-                    break;
-                }
-                case "Dividend": {
-                    llRowInfo.setBackgroundColor(ContextCompat.getColor(
-                            itemView.getContext(), R.color.colorDiv));
+                        String string = "+" + String.valueOf((
+                        (double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
 
-                    String string = "+" + String.valueOf(
-                            (double) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
-
-                    tvInfoItemCost.setText(string);
-                }
-
-                default: Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
+                tvInfoItemCost.setText(string);
             }
+            else if (lType.equals(dealsType[1])) {
+                llRowInfo.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorBuy));
+
+Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + lPrice + " " + lVolume + " " + lFee);
+
+Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (lPrice * lVolume + lFee));
+
+Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (double) (lPrice * lVolume + lFee));
+
+Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume + lFee) / MULTIPLIER_FOR_MONEY));
+
+                        String string = "-" + String.valueOf(
+                        (double) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
+
+                tvInfoItemCost.setText(string);
+            }
+            else if (lType.equals(dealsType[2])) {
+                llRowInfo.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorDiv));
+
+                String string = "+" + String.valueOf(
+                        (double) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
+
+                tvInfoItemCost.setText(string);
+            }
+
+            else Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
 
             // вход в режим "ActionMode" при долгом нажатии
             itemView.setOnLongClickListener(new View.OnLongClickListener() {

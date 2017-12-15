@@ -37,13 +37,14 @@
     <string-array name="spinType_deal_array">
         <item>Sell</item>
         <item>Buy</item>
-        <item>Dividend</item>
+        <item>Div</item>
     </string-array>
 
     <!-- от порядка следования зависит работа PortfolioLoader.java -->
     <string-array name="spinType_input_array">
         <item>Input</item>
         <item>Output</item>
+        <item>NDFL</item>
     </string-array>
 
     <string name="hint_eTYear">yy</string>

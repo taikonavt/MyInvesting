@@ -23,7 +23,7 @@ public class PortfolioItem {
     private int volume = 0; // Высчитываю из базы данных
     private int lotSize = 0;
 
-    private int price = 0; // Получить из интернета и умножить на константу
+    private long price = 0; // Получить из интернета и умножить на константу
     boolean priceIsReady = false;
 
     private WeakReference<TextView> costTV;
@@ -51,7 +51,7 @@ public class PortfolioItem {
         this.lotSize = lotSize;
     }
 
-    void setPrice(int price) {
+    void setPrice(long price) {
         this.price = price;
 
         priceIsReady = true;

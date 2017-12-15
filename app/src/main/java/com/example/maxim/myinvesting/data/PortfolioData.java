@@ -2,6 +2,7 @@ package com.example.maxim.myinvesting.data;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.maxim.myinvesting.MainActivity;
 import com.example.maxim.myinvesting.R;
+import com.example.maxim.myinvesting.utilities.MyApp;
 import com.example.maxim.myinvesting.utilities.PortfolioLoader;
 
 import org.json.JSONArray;
@@ -179,8 +181,8 @@ public class PortfolioData {
             }
 
             // вычисляю и устанавливаю в массив количество свободных денег
-            int freeMoney = (int) (getInputs() - getBuys() +
-                    getSells() + getDividends() - getOutputs() - getFees());
+            long freeMoney = (int) (getInputs() - getBuys() +
+                    getSells() + getDividends() - getOutputs() - getFees() - getNdfl());
 
             int size = portfolioItems.size();
 
@@ -486,6 +488,49 @@ public class PortfolioData {
             cursor.close();
 
             return costOfFees;
+        }
+
+        private long getNdfl() {
+
+            InvestingDbHelper openHelper = new InvestingDbHelper(MyApp.getAppContext());
+
+            final SQLiteDatabase db = openHelper.getReadableDatabase();
+
+            String tableName = Contract.InputEntry.TABLE_NAME;
+
+            String[] columns = {"sum (" + Contract.InputEntry.COLUMN_AMOUNT + ") AS " +
+                    Contract.InputEntry.COLUMN_AMOUNT};
+
+            String[] type = (MyApp.getAppContext().getResources().getStringArray(R.array.spinType_input_array));
+
+            String ndflType = type[2];
+
+            String selection = Contract.InputEntry.COLUMN_TYPE + " = '" + ndflType + "' AND " +
+                    Contract.InputEntry.COLUMN_DATE + " < " + untilDateInMillis + " AND " +
+                    Contract.InputEntry.COLUMN_PORTFOLIO + " = '" + name + "'";
+
+            String groupBy = Contract.InputEntry.COLUMN_PORTFOLIO;
+
+            Cursor cursor = db.query(tableName,
+                    columns,
+                    selection,
+                    null,
+                    groupBy,
+                    null,
+                    null);
+
+            int index = cursor.getColumnIndex(Contract.InputEntry.COLUMN_AMOUNT);
+
+            long ndfl = 0;
+
+            if (cursor.moveToFirst()) {
+
+                ndfl = cursor.getLong(index);
+            }
+
+            cursor.close();
+
+            return ndfl;
         }
 
 

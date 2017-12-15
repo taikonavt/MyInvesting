@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
+import com.example.maxim.myinvesting.utilities.MyApp;
 
 import java.util.ArrayList;
 
@@ -270,8 +271,9 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
 
             tvInfoInputItemType.setText(lType);
             tvInfoInputItemDate.setText(lDate);
-            tvInfoInputItemFee.setText("- " + String.valueOf(lFee/MULTIPLIER_FOR_MONEY) +
-                    " " + lCurrency);
+
+            String temp = "- " + String.valueOf(lFee/MULTIPLIER_FOR_MONEY) + " " + lCurrency;
+            tvInfoInputItemFee.setText(temp);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
 
             // если не в режиме "ActionMode" то скрываю checkboxes
@@ -280,32 +282,39 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             else checkBox.setVisibility(View.GONE);
 
             // если ввод то обозначаю item зеленым, если вывод то красным
-            switch (lType) {
-                case "Output": {
-                    llRowInput.setBackgroundColor(ContextCompat.getColor(
-                            itemView.getContext(), R.color.colorSell));
+            String[] inputType = MyApp.getAppContext().getResources().getStringArray(R.array.spinType_input_array);
 
-                    String string = "-" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
-                            " " + lCurrency;
+            if (lType.equals(inputType[1])) {
+                llRowInput.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorSell));
 
-                    tvInfoInputItemAmount.setText(string);
+                String string = "-" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
+                        " " + lCurrency;
 
-                    break;
-                }
-                case "Input": {
-                    llRowInput.setBackgroundColor(ContextCompat.getColor(
-                            itemView.getContext(), R.color.colorBuy));
+                tvInfoInputItemAmount.setText(string);
+            }
+            else if (lType.equals(inputType[0])){
+                llRowInput.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorBuy));
 
-                    String string = "+" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
-                            " " + lCurrency;
+                String string = "+" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
+                        " " + lCurrency;
 
-                    tvInfoInputItemAmount.setText(string);
+                tvInfoInputItemAmount.setText(string);
+            }
+            else if (lType.equals(inputType[2])) {
 
-                    break;
-                }
-                default:
-                    llRowInput.setBackgroundColor(0);
-                    Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
+                llRowInput.setBackgroundColor(ContextCompat.getColor(
+                        itemView.getContext(), R.color.colorDiv));
+
+                String string = String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
+                        " " + lCurrency;
+
+                tvInfoInputItemAmount.setText(string);
+            }
+            else {
+                llRowInput.setBackgroundColor(0);
+                Log.d(TAG, "InfoDealAdapter.java, switch(lType) {default}");
             }
 
             // вход в режим "ActionMode" при долгом нажатии
