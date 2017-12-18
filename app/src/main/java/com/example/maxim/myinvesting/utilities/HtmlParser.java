@@ -273,7 +273,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         int day = Integer.parseInt(subDate.substring(4, 6));
 
         //получаю цену
-        int price = (int) (Float.parseFloat(cells.get(7).text()) * MULTIPLIER_FOR_MONEY);
+        int price = (int) (Double.parseDouble(cells.get(7).text()) * MULTIPLIER_FOR_MONEY);
 
         // получаю объем
         int volume = Math.abs(Integer.parseInt(cells.get(6).text()));
@@ -285,7 +285,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
         // если ячейка не пустая
         if (couponStr.length() > 0)
-            couponInt = (int) Math.abs(Float.parseFloat(couponStr) * MULTIPLIER_FOR_MONEY);
+            couponInt = (int) Math.abs(Double.parseDouble(couponStr) * MULTIPLIER_FOR_MONEY);
         else
             couponInt = 0;
 
@@ -298,15 +298,15 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         String firstFeeStr = cells.get(16).text();
         String secondFeeStr = cells.get(17).text();
 
-        float firstFeeFlt;
+        double firstFeeFlt;
         if (firstFeeStr.length() > 0)
-            firstFeeFlt = Math.abs(Float.parseFloat(firstFeeStr));
+            firstFeeFlt = Math.abs(Double.parseDouble(firstFeeStr));
         else
             firstFeeFlt = 0;
 
-        float secondFeeFlt;
+        double secondFeeFlt;
         if (secondFeeStr.length() > 0)
-            secondFeeFlt = Math.abs(Float.parseFloat(secondFeeStr));
+            secondFeeFlt = Math.abs(Double.parseDouble(secondFeeStr));
         else
             secondFeeFlt = 0;
 
@@ -334,8 +334,6 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
             volume = priceAndVolume.getVolume();
         }
-
-Log.d(TAG, HtmlParser.class.getSimpleName() + " setDealInfo() " + price + " " + volume + " " + fee);
 
         contentValues.put(Contract.DealsEntry.COLUMN_PORTFOLIO, portfolio);
         contentValues.put(Contract.DealsEntry.COLUMN_TICKER, ticker);
@@ -470,7 +468,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " setDealInfo() " + price + " " + 
 
         // беру значение со знаком, чтобы верно определить тип операции
         // по модулю беру ниже
-        long amount = (long) (Float.parseFloat(tempStrAmount) * MULTIPLIER_FOR_MONEY);
+        long amount = (long) (Double.parseDouble(tempStrAmount) * MULTIPLIER_FOR_MONEY);
 
         String currency = "RUB";
         int fee = 0;
@@ -739,7 +737,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " setDealInfo() " + price + " " + 
         int day = Integer.parseInt(date.substring(0, 2));
 
         //получаю цену
-        int price = (int) (Float.parseFloat(cells.get(7).text()) * MULTIPLIER_FOR_MONEY);
+        int price = (int) (Double.parseDouble(cells.get(7).text()) * MULTIPLIER_FOR_MONEY);
 
         // получаю объем
         int volume = Math.abs(Integer.parseInt(cells.get(6).text()));

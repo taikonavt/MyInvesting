@@ -26,6 +26,7 @@ import com.example.maxim.myinvesting.data.Contract;
 import com.example.maxim.myinvesting.utilities.DateUtils;
 import com.example.maxim.myinvesting.utilities.MyApp;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static com.example.maxim.myinvesting.data.Const.MULTIPLIER_FOR_CURRENCY;
@@ -259,7 +260,7 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             tvInfoItemTicker.setText(lTicker);
             tvInfoItemType.setText(lType);
             tvInfoItemDate.setText(lDate);
-            tvInfoItemPrice.setText(String.valueOf( (float) lPrice/MULTIPLIER_FOR_MONEY));
+            tvInfoItemPrice.setText(String.valueOf( (double) lPrice/MULTIPLIER_FOR_MONEY));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
 
             // если список содержит id то помечаю item как отмеченный
@@ -296,7 +297,7 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
 //
 //Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
 
-                        String string = "+" + String.valueOf((
+                String string = "+" + String.valueOf((
                         (double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
 
                 tvInfoItemCost.setText(string);
