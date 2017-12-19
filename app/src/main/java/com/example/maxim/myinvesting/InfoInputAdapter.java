@@ -272,7 +272,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
             tvInfoInputItemType.setText(lType);
             tvInfoInputItemDate.setText(lDate);
 
-            String temp = "- " + String.valueOf(lFee/MULTIPLIER_FOR_MONEY) + " " + lCurrency;
+            String temp = "- " + String.valueOf((double) lFee / MULTIPLIER_FOR_MONEY) + " " + lCurrency;
             tvInfoInputItemFee.setText(temp);
             tvInfoInputItemPortfolio.setText(String.valueOf(lPortfolio));
 
@@ -288,7 +288,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                 llRowInput.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorSell));
 
-                String string = "-" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
+                String string = "-" + String.valueOf((double) lAmount / MULTIPLIER_FOR_MONEY) +
                         " " + lCurrency;
 
                 tvInfoInputItemAmount.setText(string);
@@ -297,7 +297,7 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                 llRowInput.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorBuy));
 
-                String string = "+" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) +
+                String string = "+" + String.valueOf((double) lAmount / MULTIPLIER_FOR_MONEY) +
                         " " + lCurrency;
 
                 tvInfoInputItemAmount.setText(string);
@@ -311,9 +311,9 @@ public class InfoInputAdapter extends RecyclerView.Adapter <InfoInputAdapter.Inf
                 String string;
 
                 if (lAmount >= 0)
-                    string = "+" + String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) + " " + lCurrency;
+                    string = "+" + String.valueOf((double) lAmount / MULTIPLIER_FOR_MONEY) + " " + lCurrency;
                 else
-                    string = String.valueOf(lAmount / MULTIPLIER_FOR_MONEY) + " " + lCurrency;
+                    string = String.valueOf((double) lAmount / MULTIPLIER_FOR_MONEY) + " " + lCurrency;
 
                 tvInfoInputItemAmount.setText(string);
             }

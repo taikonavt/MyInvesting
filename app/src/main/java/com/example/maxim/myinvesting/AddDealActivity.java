@@ -22,6 +22,7 @@ import com.example.maxim.myinvesting.utilities.DateUtils;
 import com.example.maxim.myinvesting.utilities.HtmlParser;
 
 import static com.example.maxim.myinvesting.data.Const.*;
+import static java.lang.Math.round;
 
 import java.util.Calendar;
 
@@ -155,20 +156,30 @@ public class AddDealActivity extends AppCompatActivity {
             day = Integer.valueOf(eTDay.getText().toString());
 
             String strPrice = eTPrice.getText().toString();
+
             if (strPrice.length() == 0)
                 throw new UnsupportedOperationException("Price не задан");
 
+            // если длина строки начиная с точки больше размерности мультипликатора, то разряд не поддерживается
+            {
+                int indexOfDec = strPrice.indexOf(".");
+
+                int lengthOfMult = (int) Math.log10(MULTIPLIER_FOR_MONEY);
+
+                if (indexOfDec >= 0) {
+
+                    if (strPrice.substring(indexOfDec).length() > (lengthOfMult + 1)) {
+
+                        throw new UnsupportedOperationException("Разряд числа price не поддерживается");
+                    }
+                }
+            }
+
             Float floatPrice = Float.valueOf(strPrice);
 
-            //цену акции умножаю на 10000 чтобы уйти от запятой, т.е. 1 руб = 10000 ед.
-            // т.к. на бирже акций меньше 0,0001 нет
-            price = (int) (floatPrice * MULTIPLIER_FOR_MONEY);
-
-            // если price и floatprice не равны значит разрядность цены слишком мала
-            //  и часть после запятой будет отброшена
-            if (price != floatPrice * MULTIPLIER_FOR_MONEY) {
-                throw new UnsupportedOperationException("Разряд числа price не поддерживается");
-            }
+            //цену акции умножаю на 1000000 чтобы уйти от запятой, т.е. 1 руб = 1000000 ед.
+            // т.к. на бирже акций меньше 0,000001 нет
+            price = Math.round(floatPrice * MULTIPLIER_FOR_MONEY);
 
             String strVolume = eTVolume.getText().toString();
             if (strVolume.length() == 0)
@@ -176,25 +187,26 @@ public class AddDealActivity extends AppCompatActivity {
             volume = Integer.valueOf(strVolume);
 
             String strFee = eTFee.getText().toString();
+
             if (strFee.length() == 0)
                 throw new UnsupportedOperationException("Fee не задан");
 
-            Float floatFee = Float.valueOf(strFee);
+            // если длина строки начиная с точки больше разрядности мультиплекатора, то разряд не поддерживается
+            {
+                int indexOfDec = strFee.indexOf(".");
 
-            //сумму ввода умножаю на 100 чтобы уйти от запятой
-            fee = (int) (floatFee * MULTIPLIER_FOR_CURRENCY);
+                int lengthOfMult = (int) Math.log10(MULTIPLIER_FOR_CURRENCY);
 
-Log.d(TAG, AddDealActivity.class.getSimpleName() + " onClick(); " + (floatFee * MULTIPLIER_FOR_CURRENCY) + " " + fee);
-
-            // если fee и floatFee не равны значит разрядность цены слишком мала
-            //  и часть после запятой будет отброшена
-            if (fee != floatFee * MULTIPLIER_FOR_CURRENCY) {
-                throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
+                if (indexOfDec >= 0) {
+                    if (strFee.substring(indexOfDec).length() > lengthOfMult + 1)
+                        throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
+                }
             }
 
-            // домножаю на 100, чтобы привести все деньги в программе
-            // к одной разрядности 1 руб = 10000 ед.
-            fee = fee * MULTIPLIER_FOR_MONEY / MULTIPLIER_FOR_CURRENCY;
+            Float floatFee = Float.valueOf(strFee);
+
+            //сумму ввода умножаю на 100 и округляю чтобы уйти от запятой
+            fee = Math.round(floatFee * MULTIPLIER_FOR_MONEY);
 
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Дата указана не верно", Toast.LENGTH_LONG).show();

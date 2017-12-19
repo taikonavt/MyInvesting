@@ -224,8 +224,6 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " findAddition() " + firstCell + "
             // если в полученном коде есть пробелы убираю их
             isin = isin.replace(" ", "");
 
-Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code + " '" + isin + "'");
-
             SecurityData securityData = new SecurityData();
 
             // получаю тикер по ISIN
@@ -296,7 +294,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code +
         int day = Integer.parseInt(subDate.substring(4, 6));
 
         //получаю цену
-        int price = (int) (Double.parseDouble(cells.get(addition + 6).text()) * MULTIPLIER_FOR_MONEY);
+        long price = Math.round(Double.parseDouble(cells.get(addition + 6).text()) * MULTIPLIER_FOR_MONEY);
 
         // получаю объем
         int volume = Math.abs(Integer.parseInt(cells.get(addition + 5).text()));
@@ -304,16 +302,16 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code +
         // получаю накопленный купонный доход для облигации
         String couponStr = cells.get(addition + 12).text();
 
-        int couponInt;
+        long couponInt;
 
         // если ячейка не пустая
         if (couponStr.length() > 0)
-            couponInt = (int) Math.abs(Double.parseDouble(couponStr) * MULTIPLIER_FOR_MONEY);
+            couponInt = Math.abs(Math.round(Double.parseDouble(couponStr) * MULTIPLIER_FOR_MONEY));
         else
             couponInt = 0;
 
         // делю на объем, т.к. указан купон для всех облигаций
-        int couponForEachBond = couponInt / volume;
+        long couponForEachBond = couponInt / volume;
 
         price = price + couponForEachBond;
 
@@ -321,11 +319,11 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code +
         String firstFeeStr = cells.get(addition + 15).text();
         String secondFeeStr = cells.get(addition + 16).text();
 
-        double firstFeeFlt;
+        double firstFeeDbl;
         if (firstFeeStr.length() > 0)
-            firstFeeFlt = Math.abs(Double.parseDouble(firstFeeStr));
+            firstFeeDbl = Math.abs(Double.parseDouble(firstFeeStr));
         else
-            firstFeeFlt = 0;
+            firstFeeDbl = 0;
 
         double secondFeeFlt;
         if (secondFeeStr.length() > 0)
@@ -333,8 +331,8 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code +
         else
             secondFeeFlt = 0;
 
-        int fee = (int) (firstFeeFlt * MULTIPLIER_FOR_MONEY +
-                secondFeeFlt * MULTIPLIER_FOR_MONEY);
+        int fee = (int) (Math.round(firstFeeDbl * MULTIPLIER_FOR_MONEY) +
+                Math.round(secondFeeFlt * MULTIPLIER_FOR_MONEY));
 
         insertedDealsId.add(setDealInfo(portfolio, ticker, type, year, month, day, price, volume, fee));
     }
@@ -491,7 +489,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code +
 
         // беру значение со знаком, чтобы верно определить тип операции
         // по модулю беру ниже
-        long amount = (long) (Double.parseDouble(tempStrAmount) * MULTIPLIER_FOR_MONEY);
+        long amount = (Math.round(Double.parseDouble(tempStrAmount) * MULTIPLIER_FOR_MONEY));
 
         String currency = "RUB";
         int fee = 0;
@@ -571,7 +569,6 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code +
 
         String ticker = null;
 
-        // TODO: 06.12.17 Может сделать получение дивидендов из таблицы Deal?
         // Dividend
         if (type.equals(typeDeal[2])) {
 
@@ -760,7 +757,7 @@ Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code +
         int day = Integer.parseInt(date.substring(0, 2));
 
         //получаю цену
-        int price = (int) (Double.parseDouble(cells.get(7).text()) * MULTIPLIER_FOR_MONEY);
+        long price = (Math.round(Double.parseDouble(cells.get(7).text()) * MULTIPLIER_FOR_MONEY));
 
         // получаю объем
         int volume = Math.abs(Integer.parseInt(cells.get(6).text()));

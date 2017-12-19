@@ -128,8 +128,6 @@ public class AddInputActivity extends AppCompatActivity {
 
             type = spinnerType.getSelectedItem().toString();
 
-Log.d(TAG, AddInputActivity.class.getSimpleName() + " onClick(); " + type);
-
             year = Integer.valueOf(eTYear.getText().toString());
 
             // ввел это условие т.к. все мои вводы были сделаны после 2014 года
@@ -151,40 +149,51 @@ Log.d(TAG, AddInputActivity.class.getSimpleName() + " onClick(); " + type);
             day = Integer.valueOf(eTDay.getText().toString());
 
             String strAmount = eTAmount.getText().toString();
+
             if (strAmount.length() == 0)
                 throw new UnsupportedOperationException("Amount не задан");
-            Float floatAmount = Float.valueOf(strAmount);
 
-            //сумму ввода умножаю на 100 чтобы уйти от запятой
-            amount = (long) (floatAmount * MULTIPLIER_FOR_CURRENCY);
+            // если длина строки начиная с точки больше разрядности мультиплекатора, то разряд не поддерживается
+            {
+                int indexOfDec = strAmount.indexOf(".");
 
-            // если amount и floatAmount не равны значит разрядность цены слишком мала
-            //  и часть после запятой будет отброшена
-            if (amount != floatAmount * MULTIPLIER_FOR_CURRENCY) {
-                throw new UnsupportedOperationException("Разряд числа amount не поддерживается");
+                int lengthOfMult = (int) Math.log10(MULTIPLIER_FOR_CURRENCY);
+
+                if (indexOfDec >= 0) {
+                    if (strAmount.substring(indexOfDec).length() > lengthOfMult + 1)
+                        throw new UnsupportedOperationException("Разряд числа amount не поддерживается");
+                }
             }
-            // домножаю на 100, чтобы привести все деньги в программе
-            // к одной разрядности 1 руб = 10000 ед.
-            amount = (amount / MULTIPLIER_FOR_CURRENCY) * MULTIPLIER_FOR_MONEY;
+
+            Double floatAmount = Double.valueOf(strAmount);
+
+            //сумму ввода умножаю на 1 000 000 чтобы уйти от запятой
+            amount = Math.round(floatAmount * MULTIPLIER_FOR_MONEY);
+
+Log.d(TAG, AddInputActivity.class.getSimpleName() + " onClick() " + amount);
 
             String strFee = eTFee.getText().toString();
+
             if (strFee.length() == 0)
                 throw new UnsupportedOperationException("Fee не задан");
 
-            Float floatFee = Float.valueOf(strFee);
+            // если длина строки начиная с точки больше разрядности мультиплекатора, то разряд не поддерживается
+            {
+                int indexOfDec = strAmount.indexOf(".");
 
-            //сумму ввода умножаю на 100 чтобы уйти от запятой
-            fee = (int) (floatFee * MULTIPLIER_FOR_CURRENCY);
+                int lengthOfMult = (int) Math.log10(MULTIPLIER_FOR_CURRENCY);
 
-            // если fee и floatFee не равны значит разрядность цены слишком мала
-            //  и часть после запятой будет отброшена
-            if (fee != floatFee * MULTIPLIER_FOR_CURRENCY) {
-                throw new UnsupportedOperationException("Разряд числа fee не поддерживается");
+                if (indexOfDec >= 0) {
+
+                    if (strAmount.substring(indexOfDec).length() > lengthOfMult + 1)
+                        throw new UnsupportedOperationException("Разряд числа amount не поддерживается");
+                }
             }
 
-            // домножаю на 100, чтобы привести все деньги в программе
-            // к одной разрядности 1 руб = 10000 ед.
-            fee = fee * MULTIPLIER_FOR_MONEY / MULTIPLIER_FOR_CURRENCY;
+            Float floatFee = Float.valueOf(strFee);
+
+            //сумму ввода умножаю на 1 000 000 чтобы уйти от запятой
+            fee = Math.round(floatFee * MULTIPLIER_FOR_MONEY);
 
             note = eTNote.getText().toString();
 
@@ -236,4 +245,6 @@ Log.d(TAG, AddInputActivity.class.getSimpleName() + " onClick(); " + type);
 
         finish();
     }
+
+
 }

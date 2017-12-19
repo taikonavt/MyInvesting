@@ -260,7 +260,7 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             tvInfoItemTicker.setText(lTicker);
             tvInfoItemType.setText(lType);
             tvInfoItemDate.setText(lDate);
-            tvInfoItemPrice.setText(String.valueOf( (double) lPrice/MULTIPLIER_FOR_MONEY));
+            tvInfoItemPrice.setText(String.valueOf( (double) lPrice / MULTIPLIER_FOR_MONEY));
             tvInfoItemVolume.setText(String.valueOf(lVolume));
 
             // если список содержит id то помечаю item как отмеченный
@@ -289,14 +289,6 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
                 llRowInfo.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorSell));
 
-//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + lPrice + " " + lVolume + " " + lFee);
-//
-//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (lPrice * lVolume - lFee));
-//
-//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (double) (lPrice * lVolume - lFee));
-//
-//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
-
                 String string = "+" + String.valueOf((
                         (double) (lPrice * lVolume - lFee) / MULTIPLIER_FOR_MONEY));
 
@@ -305,14 +297,6 @@ class InfoDealAdapter extends RecyclerView.Adapter <InfoDealAdapter.InfoViewHold
             else if (lType.equals(dealsType[1])) {
                 llRowInfo.setBackgroundColor(ContextCompat.getColor(
                         itemView.getContext(), R.color.colorBuy));
-
-//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + lPrice + " " + lVolume + " " + lFee);
-//
-//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (lPrice * lVolume + lFee));
-//
-//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + (double) (lPrice * lVolume + lFee));
-//
-//Log.d(TAG, InfoDealAdapter.class.getSimpleName() + " bind() " + ((double) (lPrice * lVolume + lFee) / MULTIPLIER_FOR_MONEY));
 
                         String string = "-" + String.valueOf(
                         (double) (lPrice * lVolume + lFee)/ MULTIPLIER_FOR_MONEY);
