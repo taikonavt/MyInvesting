@@ -169,16 +169,35 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         // получаю все строки из таблицы
         Elements rows = table.getElementsByTag("tr");
 
+        int addition = findAddition(rows.get(1));
+
         for (int i = 2; i < (rows.size() - 1); i++) {
 
             // получаю одну строку
             Element oneRow = rows.get(i);
 
-            parseRowOfDealTable(oneRow);
+            parseRowOfDealTable(oneRow, addition);
         }
     }
 
-    private void parseRowOfDealTable(Element row) throws UnsupportedCharsetException {
+    private int findAddition (Element row) {
+
+        // получаю все ячейки из строки
+        Elements cells = row.getElementsByTag("td");
+
+        String firstCell = cells.get(0).text();
+
+        int x = 0;
+
+        if (firstCell.equals("№ п/п"))
+            x = 1;
+
+Log.d(TAG, HtmlParser.class.getSimpleName() + " findAddition() " + firstCell + " " + x);
+
+        return x;
+    }
+
+    private void parseRowOfDealTable(Element row, int addition) throws UnsupportedCharsetException {
 
         // получаю все ячейки из строки
         Elements cells = row.getElementsByTag("td");
@@ -186,7 +205,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         String ticker;
 
         // получаю код ISIN
-        String code = cells.get(5).text();
+        String code = cells.get(addition + 4).text();
 
         int firstSlash = code.indexOf("/", 0);
 
@@ -196,12 +215,16 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
 
             int secondSlash = code.indexOf("/", firstSlash + 1);
 
+            // если второго слэша нет беру конец слова
+            if (secondSlash < 0)
+                secondSlash = code.length();
+
             String isin = code.substring((firstSlash + 1), secondSlash);
 
             // если в полученном коде есть пробелы убираю их
             isin = isin.replace(" ", "");
 
-            Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code + " " + isin);
+Log.d(TAG, HtmlParser.class.getSimpleName() + " parseRowOfDealTable() " + code + " '" + isin + "'");
 
             SecurityData securityData = new SecurityData();
 
@@ -224,7 +247,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         }
 
         // получаю номер портфеля
-        String portfolio = cells.get(20).text();
+        String portfolio = cells.get(addition + 19).text();
 
         // если портфеля нет в списке, то добавляю
         String [] portfolios = PortfolioNames.readPortfoliosNames(MyApp.getAppContext());
@@ -243,7 +266,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         String type;
 
         // получаю тип операции
-        String typeHtml = cells.get(4).text();
+        String typeHtml = cells.get(addition + 3).text();
         String[] typeApp = MyApp.getAppContext().getResources().
                 getStringArray(R.array.spinType_deal_array);
 
@@ -255,7 +278,7 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
             throw new UnsupportedCharsetException(typeHtml);
 
         // получаю дату в виде yymmdd
-        String date = cells.get(2).text();
+        String date = cells.get(addition + 1).text();
         String subDate = date.substring(0, 6);
 
         int year = Integer.parseInt(subDate.substring(0, 2));
@@ -273,13 +296,13 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         int day = Integer.parseInt(subDate.substring(4, 6));
 
         //получаю цену
-        int price = (int) (Double.parseDouble(cells.get(7).text()) * MULTIPLIER_FOR_MONEY);
+        int price = (int) (Double.parseDouble(cells.get(addition + 6).text()) * MULTIPLIER_FOR_MONEY);
 
         // получаю объем
-        int volume = Math.abs(Integer.parseInt(cells.get(6).text()));
+        int volume = Math.abs(Integer.parseInt(cells.get(addition + 5).text()));
 
         // получаю накопленный купонный доход для облигации
-        String couponStr = cells.get(13).text();
+        String couponStr = cells.get(addition + 12).text();
 
         int couponInt;
 
@@ -295,8 +318,8 @@ public class HtmlParser extends AsyncTask <String, Void, HtmlParser.BooleanWithM
         price = price + couponForEachBond;
 
         // получаю комиссию
-        String firstFeeStr = cells.get(16).text();
-        String secondFeeStr = cells.get(17).text();
+        String firstFeeStr = cells.get(addition + 15).text();
+        String secondFeeStr = cells.get(addition + 16).text();
 
         double firstFeeFlt;
         if (firstFeeStr.length() > 0)

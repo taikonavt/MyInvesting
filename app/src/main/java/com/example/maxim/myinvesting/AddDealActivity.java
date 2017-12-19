@@ -184,6 +184,8 @@ public class AddDealActivity extends AppCompatActivity {
             //сумму ввода умножаю на 100 чтобы уйти от запятой
             fee = (int) (floatFee * MULTIPLIER_FOR_CURRENCY);
 
+Log.d(TAG, AddDealActivity.class.getSimpleName() + " onClick(); " + (floatFee * MULTIPLIER_FOR_CURRENCY) + " " + fee);
+
             // если fee и floatFee не равны значит разрядность цены слишком мала
             //  и часть после запятой будет отброшена
             if (fee != floatFee * MULTIPLIER_FOR_CURRENCY) {
